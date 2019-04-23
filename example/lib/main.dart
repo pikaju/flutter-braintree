@@ -28,10 +28,17 @@ class _MyAppState extends State<MyApp> {
                   setState(() {
                     _text = 'Waiting for payment...';
                   });
-                  BraintreeDropInResult result = await BraintreeDropIn.launch(
-                    clientToken: '<INSERT YOUR CLIENT TOKEN HERE>',
+                  var request = BraintreeDropInRequest(
+                    clientToken: '',
                     collectDeviceData: true,
+                    googlePaymentRequest: BraintreeGooglePaymentRequest(
+                      totalPrice: '4.20',
+                      currencyCode: 'USD',
+                      googleMerchantID: '<Your merchant ID>',
+                    ),
                   );
+                  BraintreeDropInResult result =
+                      await BraintreeDropIn.start(request);
                   setState(() {
                     if (result == null) {
                       _text = 'Payment canceled';

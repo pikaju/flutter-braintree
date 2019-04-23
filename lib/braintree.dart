@@ -1,6 +1,8 @@
 library braintree;
 
-export 'src/braintree_drop_in.dart';
+export 'src/drop_in.dart';
+export 'src/drop_in_request.dart';
+export 'src/drop_in_result.dart';
 
 import 'dart:async';
 import 'package:flutter/services.dart';
