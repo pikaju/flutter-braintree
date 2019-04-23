@@ -18,7 +18,7 @@ dependencies:
 In `/app/build.gradle`, set your `minSdkVersion` to at least `21`.
 
 In order for your Drop-in to support PayPal payments, you must allow for PayPal's
-browser switch by adding an intent filter to your AndroidManifest.xml:
+browser switch by adding an intent filter to your `AndroidManifest.xml`:
 ```xml
 <activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
     android:launchMode="singleTask">
