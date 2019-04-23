@@ -1,8 +1,8 @@
 name: braintree
-description: A new flutter plugin project.
-version: 0.0.1
-author:
-homepage:
+description: A Flutter plugin wrapping the native Braintree Drop-in UI SDKs
+version: 0.0.2
+author: Julien Scholz <julienscholzo@hotmail.de>
+homepage: https://github.com/Pikaju/FlutterBraintree
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
