@@ -39,7 +39,7 @@ browser switch by adding an intent filter to your `AndroidManifest.xml` (inside 
 
 #### Google Pay
 
-Add the walled enabled meta-data tag to your `AndroidManifest.xml`:
+Add the wallet enabled meta-data tag to your `AndroidManifest.xml`:
 ```xml
 <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true"/>
 ```
