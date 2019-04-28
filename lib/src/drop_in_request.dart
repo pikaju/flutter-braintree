@@ -26,7 +26,7 @@ class BraintreeDropInRequest {
   /// Whether Venmo should be enabled.
   bool venmoEnabled;
 
-  /// Whether Cards should be enabled.
+  /// Whether cards should be enabled.
   bool cardEnabled;
 
   /// Whether the card number should be masked if the field is not focused.
