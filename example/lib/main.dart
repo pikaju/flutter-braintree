@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
                       await BraintreeDropIn.start(request);
                   setState(() {
                     if (result == null) {
-                      _text = 'Payment canceled';
+                      _text = 'Selection canceled';
                     } else {
                       _text = 'Nonce: ${result.paymentMethodNonce.nonce}\n'
                           'Nonce label: ${result.paymentMethodNonce.typeLabel}\n'

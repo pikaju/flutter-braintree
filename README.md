@@ -20,7 +20,7 @@ In `/app/build.gradle`, set your `minSdkVersion` to at least `21`.
 
 #### PayPal / Venmo
 
-In order for your Drop-in to support PayPal or Venmo payments, you must allow for the
+In order for your drop-in to support PayPal or Venmo payments, you must allow for the
 browser switch by adding an intent filter to your `AndroidManifest.xml` (inside the `<application>` body):
 ```xml
 <activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
@@ -79,7 +79,7 @@ Access the payment nonce:
 if (result != null) {
   print('Nonce: ${result.paymentMethodNonce.nonce}');
 } else {
-  print('Payment was canceled.');
+  print('Selection was canceled.');
 }
 ```
 

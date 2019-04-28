@@ -13,7 +13,7 @@ class BraintreeDropIn {
   /// See its documentation for more information.
   ///
   /// Returns a Future of a `BraintreeDropInResult` containing
-  /// all the relevant information, or `null` if the payment was canceled.
+  /// all the relevant information, or `null` if the selection was canceled.
   static Future<BraintreeDropInResult> start(
       BraintreeDropInRequest request) async {
     var result = await _channel.invokeMethod<Map>(
