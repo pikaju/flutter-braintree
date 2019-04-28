@@ -8,6 +8,7 @@ import io.flutter.plugin.common.PluginRegistry.ActivityResultListener;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 import com.braintreepayments.api.dropin.DropInActivity;
@@ -26,10 +27,12 @@ public class BraintreeDropIn implements MethodCallHandler, ActivityResultListene
   private static final int DROP_IN_REQUEST_CODE = 0x1337;
 
   private Activity activity;
+  private Context context;
   private Result activeResult;
 
   public BraintreeDropIn(Registrar registrar) {
       activity = registrar.activity();
+      context = registrar.context();
       registrar.addActivityResultListener(this);
   }
 
@@ -64,7 +67,7 @@ public class BraintreeDropIn implements MethodCallHandler, ActivityResultListene
 
 
       this.activeResult = result;
-      activity.startActivityForResult(dropInRequest.getIntent(activity), DROP_IN_REQUEST_CODE);
+      activity.startActivityForResult(dropInRequest.getIntent(context), DROP_IN_REQUEST_CODE);
     } else {
       result.notImplemented();
     }
