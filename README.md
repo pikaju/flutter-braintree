@@ -10,7 +10,7 @@ Add braintree to your `pubspec.yaml` file:
 ```yaml
 dependencies:
   ...
-  braintree: ^0.1.0
+  braintree: ^0.1.1
 ```
 
 ### Android
@@ -18,9 +18,9 @@ dependencies:
 As of version `0.1.0`, you must [migrate to AndroidX.](https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility)  
 In `/app/build.gradle`, set your `minSdkVersion` to at least `21`.
 
-#### PayPal
+#### PayPal / Venmo
 
-In order for your Drop-in to support PayPal payments, you must allow for PayPal's
+In order for your Drop-in to support PayPal or Venmo payments, you must allow for the
 browser switch by adding an intent filter to your `AndroidManifest.xml` (inside the `<application>` body):
 ```xml
 <activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"

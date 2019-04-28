@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
               RaisedButton(
                 onPressed: () async {
                   setState(() {
-                    _text = 'Waiting for payment...';
+                    _text = 'Waiting for result...';
                   });
                   var request = BraintreeDropInRequest(
                     tokenizationKey: 'sandbox_8hxpnkht_kzdtzv2btm4p7s5j',
@@ -54,10 +54,12 @@ class _MyAppState extends State<MyApp> {
                     }
                   });
                 },
-                child: Text('Pay now!'),
+                child: Text('SELECT PAYMENT METHOD'),
               ),
-              SizedBox(height: 8.0),
-              Text(_text),
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(_text),
+              ),
             ],
           ),
         ),
