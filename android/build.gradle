@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.3.0'
     }
 }
 
@@ -26,7 +26,8 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        // testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     lintOptions {
         disable 'InvalidPackage'
@@ -35,5 +36,6 @@ android {
 
 dependencies {
     implementation 'com.braintreepayments.api:drop-in:4.1.0'
+    implementation 'io.card:android-sdk:5.+'
     implementation 'com.google.android.gms:play-services-wallet:16.0.1'
 }

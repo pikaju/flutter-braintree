@@ -80,7 +80,7 @@ public class BraintreeDropIn implements MethodCallHandler, ActivityResultListene
                     .setTotalPriceStatus(WalletConstants.TOTAL_PRICE_STATUS_FINAL)
                     .build())
             .billingAddressRequired((Boolean) call.argument("googlePaymentRequest_billingAddressRequired"))
-            .googleMerchantId((String) call.argument("googlePaymentRequest_merchantId"));
+            .googleMerchantId((String) call.argument("googlePaymentRequest_merchantID"));
     dropInRequest.googlePaymentRequest(googlePaymentRequest);
   }
 

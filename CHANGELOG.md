@@ -1,3 +1,10 @@
+## 0.1.0
+
+* Migrate to AndroidX
+* Completely overhaul the API to more closely resemble the native Android Drop-in API
+* Add support for Google Pay (may not work properly yet)
+* Add credit card scanning with card.io
+
 ## 0.0.2
 
 * Improve README.md

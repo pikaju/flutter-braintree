@@ -10,10 +10,12 @@ Add braintree to your `pubspec.yaml` file:
 ```yaml
 dependencies:
   ...
-  braintree: ^0.0.2
+  braintree: ^0.1.0
 ```
 
 ### Android
+
+As of version `0.1.0`, you must [migrate to AndroidX.](https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility)
 
 In `/app/build.gradle`, set your `minSdkVersion` to at least `21`.
 
@@ -42,6 +44,7 @@ Add the walled enabled meta-data tag to your `AndroidManifest.xml`:
 ```xml
 <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true"/>
 ```
+**Warning:** There may be issues with Google Pay, I am working on fixing them as soon as possible.
 
 ## Usage
 
@@ -50,16 +53,29 @@ Import the plugin:
 import 'package:braintree/braintree.dart';
 ```
 
-Then launch the Drop-in UI:
+Create a drop-in request object:
 ```dart
-BraintreeDropInResult result = await BraintreeDropIn.launch(
-  clientToken: '<INSERT YOUR CLIENT TOKEN HERE>',
-  collectDeviceData: false,
+var request = BraintreeDropInRequest(
+  clientToken: '<Insert your client token here>'
+  collectDeviceData: true,
+  googlePaymentRequest: BraintreeGooglePaymentRequest(
+    totalPrice: '4.20',
+    currencyCode: 'USD',
+    billingAddressRequired: false,
+  ),
+  paypalRequest: BraintreePayPalRequest(
+    amount: '4.20',
+    displayName: 'Example company',
+  ),
 );
 ```
 
-Access the payment nonce:
+Then launch the drop-in:
+```dart
+BraintreeDropInResult result = await BraintreeDropIn.start(request);
+```
 
+Access the payment nonce:
 ```dart
 if (result != null) {
   print('Nonce: ${result.paymentMethodNonce.nonce}');
@@ -68,5 +84,5 @@ if (result != null) {
 }
 ```
 
-See `BraintreeDropInResult` and `BraintreePaymentMethodNonce` for more documentation.
+See `BraintreeDropInRequest` and `BraintreeDropInResult` for more documentation.
 

@@ -1,6 +1,6 @@
 name: braintree
 description: A Flutter plugin wrapping the native Braintree Drop-in UI SDKs
-version: 0.0.2
+version: 0.1.0
 author: Julien Scholz <julienscholzo@hotmail.de>
 homepage: https://github.com/Pikaju/FlutterBraintree
 

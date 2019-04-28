@@ -29,12 +29,16 @@ class _MyAppState extends State<MyApp> {
                     _text = 'Waiting for payment...';
                   });
                   var request = BraintreeDropInRequest(
-                    clientToken: '',
+                    tokenizationKey: 'sandbox_8hxpnkht_kzdtzv2btm4p7s5j',
                     collectDeviceData: true,
                     googlePaymentRequest: BraintreeGooglePaymentRequest(
                       totalPrice: '4.20',
                       currencyCode: 'USD',
-                      googleMerchantID: '<Your merchant ID>',
+                      billingAddressRequired: false,
+                    ),
+                    paypalRequest: BraintreePayPalRequest(
+                      amount: '4.20',
+                      displayName: 'Example company',
                     ),
                   );
                   BraintreeDropInResult result =

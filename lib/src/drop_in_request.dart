@@ -64,7 +64,7 @@ class BraintreeGooglePaymentRequest {
   /// Whether billing address information should be collected and passed.
   bool billingAddressRequired;
 
-  /// Google Merchant ID. Optional in sandbox.
+  /// Google Merchant ID. Optional in sandbox, but if set, must be a valid production Google Merchant ID.
   String googleMerchantID;
 
   BraintreeGooglePaymentRequest({
