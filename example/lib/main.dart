@@ -47,18 +47,20 @@ class _MyAppState extends State<MyApp> {
                     if (result == null) {
                       _text = 'Selection canceled';
                     } else {
-                      _text = 'Nonce: ${result.paymentMethodNonce.nonce}\n'
-                          'Nonce label: ${result.paymentMethodNonce.typeLabel}\n'
-                          'Nonce description: ${result.paymentMethodNonce.description}\n'
+                      _text = 'Nonce: ${result.paymentMethodNonce.nonce}\n\n'
+                          'Nonce label: ${result.paymentMethodNonce.typeLabel}\n\n'
+                          'Nonce description: ${result.paymentMethodNonce.description}\n\n'
                           'Device data: ${result.deviceData}';
                     }
                   });
                 },
-                child: Text('SELECT PAYMENT METHOD'),
+                child: Text(
+                  'SELECT PAYMENT METHOD',
+                ),
               ),
               Padding(
                 padding: EdgeInsets.all(16.0),
-                child: Text(_text),
+                child: Text(_text, textAlign: TextAlign.center),
               ),
             ],
           ),
