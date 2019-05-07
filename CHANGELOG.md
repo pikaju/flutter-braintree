@@ -1,3 +1,8 @@
+## 0.1.2
+
+* Switch to Android SDK version 4.1.1 (this includes a fix for the Google Payment issue)
+* Tweak example code slightly
+
 ## 0.1.1
 
 * Minor improvements

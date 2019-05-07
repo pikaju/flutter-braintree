@@ -10,7 +10,7 @@ Add braintree to your `pubspec.yaml` file:
 ```yaml
 dependencies:
   ...
-  braintree: ^0.1.1
+  braintree: ^0.1.2
 ```
 
 ### Android
@@ -43,7 +43,6 @@ Add the wallet enabled meta-data tag to your `AndroidManifest.xml`:
 ```xml
 <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true"/>
 ```
-**Warning:** There may be issues with Google Pay, I am working on fixing them as soon as possible.
 
 ## Usage
 
