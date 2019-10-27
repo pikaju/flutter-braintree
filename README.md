@@ -10,7 +10,7 @@ Add braintree to your `pubspec.yaml` file:
 ```yaml
 dependencies:
   ...
-  flutter_braintree: ^0.1.1
+  flutter_braintree: ^0.1.2
 ```
 
 ### Android
@@ -18,9 +18,9 @@ dependencies:
 You must [migrate to AndroidX.](https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility)  
 In `/app/build.gradle`, set your `minSdkVersion` to at least `21`.
 
-#### PayPal / Venmo / 3D-Secure
+#### PayPal / Venmo / 3D Secure
 
-In order for this plugin to support PayPal, Venmo or 3D-Secure payments, you must allow for the
+In order for this plugin to support PayPal, Venmo or 3D Secure payments, you must allow for the
 browser switch by adding an intent filter to your `AndroidManifest.xml` (inside the `<application>` body):
 ```xml
 <activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
