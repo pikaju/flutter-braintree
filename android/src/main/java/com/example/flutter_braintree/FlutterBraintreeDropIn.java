@@ -1,4 +1,4 @@
-package com.example.braintree;
+package com.example.flutter_braintree;
 
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -23,22 +23,22 @@ import com.google.android.gms.wallet.WalletConstants;
 
 import java.util.HashMap;
 
-public class BraintreeDropIn implements MethodCallHandler, ActivityResultListener {
+public class FlutterBraintreeDropIn implements MethodCallHandler, ActivityResultListener {
   private static final int DROP_IN_REQUEST_CODE = 0x1337;
 
   private Activity activity;
   private Context context;
   private Result activeResult;
 
-  public BraintreeDropIn(Registrar registrar) {
+  public FlutterBraintreeDropIn(Registrar registrar) {
       activity = registrar.activity();
       context = registrar.context();
       registrar.addActivityResultListener(this);
   }
 
   public static void registerWith(Registrar registrar) {
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "braintree");
-    channel.setMethodCallHandler(new BraintreeDropIn(registrar));
+    final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_braintree.drop_in");
+    channel.setMethodCallHandler(new FlutterBraintreeDropIn(registrar));
   }
 
   @Override

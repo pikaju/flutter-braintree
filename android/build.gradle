@@ -1,5 +1,5 @@
-group 'com.example.braintree'
-version '1.0-SNAPSHOT'
+group 'com.example.flutter_braintree'
+version '1.0'
 
 buildscript {
     repositories {
@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0'
+        classpath 'com.android.tools.build:gradle:3.5.0'
     }
 }
 
@@ -26,7 +26,6 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        // testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     lintOptions {

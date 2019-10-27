@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.braintree_example">
+    package="com.example.flutter_braintree_example">
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -8,7 +8,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="braintree_example"
+        android:label="flutter_braintree_example"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -36,10 +36,10 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="com.example.braintreeexample.braintree" />
+                <data android:scheme="com.example.flutterbraintreeexample.braintree" />
             </intent-filter>
         </activity>
-        
+
         <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true"/>
     </application>
 </manifest>

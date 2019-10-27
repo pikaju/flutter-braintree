@@ -1,11 +1,15 @@
 import 'package:flutter/services.dart';
 import 'dart:async';
 
-import 'drop_in_request.dart';
-import 'drop_in_result.dart';
+import 'request.dart';
+import 'result.dart';
+
+export 'request.dart';
+export 'result.dart';
 
 class BraintreeDropIn {
-  static const MethodChannel _channel = const MethodChannel('braintree');
+  static const MethodChannel _channel =
+      const MethodChannel('flutter_braintree.drop_in');
 
   /// Launches the Braintree Drop-in UI.
   ///

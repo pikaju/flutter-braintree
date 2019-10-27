@@ -1,4 +1,4 @@
-package com.example.braintree_example;
+package com.example.flutter_braintree_example;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

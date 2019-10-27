@@ -10,7 +10,7 @@ Add braintree to your `pubspec.yaml` file:
 ```yaml
 dependencies:
   ...
-  braintree: ^0.1.2
+  flutter_braintree: ^0.1.0
 ```
 
 ### Android
@@ -18,9 +18,9 @@ dependencies:
 As of version `0.1.0`, you must [migrate to AndroidX.](https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility)  
 In `/app/build.gradle`, set your `minSdkVersion` to at least `21`.
 
-#### PayPal / Venmo
+#### PayPal / Venmo / 3D-Secure
 
-In order for your drop-in to support PayPal or Venmo payments, you must allow for the
+In order for this plugin to support PayPal, Venmo or 3D-Secure payments, you must allow for the
 browser switch by adding an intent filter to your `AndroidManifest.xml` (inside the `<application>` body):
 ```xml
 <activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
@@ -48,13 +48,13 @@ Add the wallet enabled meta-data tag to your `AndroidManifest.xml`:
 
 Import the plugin:
 ```dart
-import 'package:braintree/braintree.dart';
+import 'package:flutter_braintree/flutter_braintree.dart';
 ```
 
 Create a drop-in request object:
 ```dart
 var request = BraintreeDropInRequest(
-  clientToken: '<Insert your client token here>'
+  clientToken: '<Insert your client token here>',
   collectDeviceData: true,
   googlePaymentRequest: BraintreeGooglePaymentRequest(
     totalPrice: '4.20',

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:braintree/braintree.dart';
+import 'package:flutter_braintree/flutter_braintree.dart';
 
 void main() => runApp(MyApp());
 
