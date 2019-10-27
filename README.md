@@ -10,12 +10,12 @@ Add braintree to your `pubspec.yaml` file:
 ```yaml
 dependencies:
   ...
-  flutter_braintree: ^0.1.0
+  flutter_braintree: ^0.1.1
 ```
 
 ### Android
 
-As of version `0.1.0`, you must [migrate to AndroidX.](https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility)  
+You must [migrate to AndroidX.](https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility)  
 In `/app/build.gradle`, set your `minSdkVersion` to at least `21`.
 
 #### PayPal / Venmo / 3D-Secure

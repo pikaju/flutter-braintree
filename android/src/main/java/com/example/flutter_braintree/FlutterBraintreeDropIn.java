@@ -65,7 +65,10 @@ public class FlutterBraintreeDropIn implements MethodCallHandler, ActivityResult
       // if (!((Boolean) call.argument("cardEnabled")))
       //   dropInRequest.disableCard();
 
-
+      if (activeResult != null) {
+        result.error("drop_in_already_running", "Cannot launch another Drop-in activity while one is already running.", null);
+        return;
+      }
       this.activeResult = result;
       activity.startActivityForResult(dropInRequest.getIntent(context), DROP_IN_REQUEST_CODE);
     } else {
@@ -116,8 +119,9 @@ public class FlutterBraintreeDropIn implements MethodCallHandler, ActivityResult
           activeResult.success(null);
         } else {
           Exception error = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
-          activeResult.error("DROP_IN_ERROR", error.getMessage(), null);
+          activeResult.error("braintree_error", error.getMessage(), null);
         }
+        activeResult = null;
         return true;
       default:
         return false;
