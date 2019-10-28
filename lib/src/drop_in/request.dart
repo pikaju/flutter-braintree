@@ -1,4 +1,19 @@
 class BraintreeDropInRequest {
+  BraintreeDropInRequest({
+    this.clientToken,
+    this.tokenizationKey,
+    this.amount,
+    this.collectDeviceData = false,
+    this.requestThreeDSecureVerification = false,
+    this.googlePaymentRequest,
+    this.paypalRequest,
+    this.venmoEnabled = true,
+    this.cardEnabled = true,
+    this.maskCardNumber = false,
+    this.maskSecurityCode = false,
+    this.vaultManagerEnabled = false,
+  });
+
   /// Authorization allowing this client to communicate with Braintree.
   /// Either [clientToken] or [tokenizationKey] must be set.
   String clientToken;
@@ -38,23 +53,34 @@ class BraintreeDropInRequest {
   /// Whether customers should be allowed to manage their vaulted payment methods.
   bool vaultManagerEnabled;
 
-  BraintreeDropInRequest({
-    this.clientToken,
-    this.tokenizationKey,
-    this.amount,
-    this.collectDeviceData = false,
-    this.requestThreeDSecureVerification = false,
-    this.googlePaymentRequest,
-    this.paypalRequest,
-    this.venmoEnabled = true,
-    this.cardEnabled = true,
-    this.maskCardNumber = false,
-    this.maskSecurityCode = false,
-    this.vaultManagerEnabled = false,
-  });
+  /// Converts this request object into a JSON-encodable format.
+  Map<String, dynamic> toJson() => {
+        if (clientToken != null) 'clientToken': clientToken,
+        if (tokenizationKey != null) 'tokenizationKey': tokenizationKey,
+        if (amount != null) 'amount': amount,
+        if (collectDeviceData != null) 'collectDeviceData': collectDeviceData,
+        if (requestThreeDSecureVerification != null)
+          'requestThreeDSecureVerification': requestThreeDSecureVerification,
+        if (googlePaymentRequest != null)
+          'googlePaymentRequest': googlePaymentRequest.toJson(),
+        if (paypalRequest != null) 'paypalRequest': paypalRequest.toJson(),
+        if (venmoEnabled != null) 'venmoEnabled': venmoEnabled,
+        if (cardEnabled != null) 'cardEnabled': cardEnabled,
+        if (maskCardNumber != null) 'maskCardNumber': maskCardNumber,
+        if (maskSecurityCode != null) 'maskSecurityCode': maskSecurityCode,
+        if (vaultManagerEnabled != null)
+          'vaultManagerEnabled': vaultManagerEnabled,
+      };
 }
 
 class BraintreeGooglePaymentRequest {
+  BraintreeGooglePaymentRequest({
+    this.totalPrice,
+    this.currencyCode,
+    this.billingAddressRequired = true,
+    this.googleMerchantID,
+  });
+
   /// Total price of the payment.
   String totalPrice;
 
@@ -67,15 +93,24 @@ class BraintreeGooglePaymentRequest {
   /// Google Merchant ID. Optional in sandbox, but if set, must be a valid production Google Merchant ID.
   String googleMerchantID;
 
-  BraintreeGooglePaymentRequest({
-    this.totalPrice,
-    this.currencyCode,
-    this.billingAddressRequired = true,
-    this.googleMerchantID,
-  });
+  /// Converts this request object into a JSON-encodable format.
+  Map<String, dynamic> toJson() => {
+        if (totalPrice != null) 'totalPrice': totalPrice,
+        if (currencyCode != null) 'currencyCode': currencyCode,
+        if (billingAddressRequired != null)
+          'billingAddressRequired': billingAddressRequired,
+        if (googleMerchantID != null) 'googleMerchantID': googleMerchantID,
+      };
 }
 
 class BraintreePayPalRequest {
+  BraintreePayPalRequest({
+    this.amount,
+    this.currencyCode,
+    this.displayName,
+    this.billingAgreementDescription,
+  });
+
   /// Amount of the transaction. If [amount] is `null`, PayPal will use the billing agreement (Vault) flow.
   /// If [amount] is set, PayPal will follow the one time payment (Checkout) flow.
   String amount;
@@ -89,10 +124,12 @@ class BraintreePayPalRequest {
   /// Description for the billing agreement.
   String billingAgreementDescription;
 
-  BraintreePayPalRequest({
-    this.amount,
-    this.currencyCode,
-    this.displayName,
-    this.billingAgreementDescription,
-  });
+  /// Converts this request object into a JSON-encodable format.
+  Map<String, dynamic> toJson() => {
+        if (amount != null) 'amount': amount,
+        if (currencyCode != null) 'currencyCode': currencyCode,
+        if (displayName != null) 'displayName': displayName,
+        if (billingAgreementDescription != null)
+          'billingAgreementDescription': billingAgreementDescription,
+      };
 }

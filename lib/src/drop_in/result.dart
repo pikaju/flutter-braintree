@@ -1,14 +1,45 @@
+import 'package:meta/meta.dart';
+
 class BraintreeDropInResult {
+  const BraintreeDropInResult({
+    @required this.paymentMethodNonce,
+    @required this.deviceData,
+  });
+
+  factory BraintreeDropInResult.fromJson(dynamic source) {
+    if (source == null) return null;
+    return BraintreeDropInResult(
+      paymentMethodNonce:
+          BraintreePaymentMethodNonce.fromJson(source['paymentMethodNonce']),
+      deviceData: source['deviceData'],
+    );
+  }
+
   /// The payment method nonce containing all relevant information for the payment.
   final BraintreePaymentMethodNonce paymentMethodNonce;
 
   /// String of device data. `null`, if `collectDeviceData` was set to false.
   final String deviceData;
-
-  BraintreeDropInResult.create({this.paymentMethodNonce, this.deviceData});
 }
 
 class BraintreePaymentMethodNonce {
+  const BraintreePaymentMethodNonce({
+    @required this.nonce,
+    @required this.typeLabel,
+    @required this.description,
+    @required this.isDefault,
+  });
+
+  factory BraintreePaymentMethodNonce.fromJson(dynamic source) {
+    if (source == null) return null;
+    return BraintreePaymentMethodNonce(
+      nonce: source['nonce'],
+      typeLabel: source['typeLabel'],
+      description: source['description'],
+      isDefault: source['isDefault'],
+    );
+  }
+
   /// The nonce generated for this payment method by the Braintree gateway. The nonce will represent
   /// this PaymentMethod for the purposes of creating transactions and other monetary actions.
   final String nonce;
@@ -21,7 +52,4 @@ class BraintreePaymentMethodNonce {
 
   /// True if this payment method is the default for the current customer, false otherwise.
   final bool isDefault;
-
-  BraintreePaymentMethodNonce.create(
-      {this.nonce, this.typeLabel, this.description, this.isDefault});
 }

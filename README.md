@@ -6,11 +6,11 @@ Currently only supports Android.
 
 ## Installation
 
-Add braintree to your `pubspec.yaml` file:
+Add flutter_braintree to your `pubspec.yaml` file:
 ```yaml
 dependencies:
   ...
-  flutter_braintree: ^0.1.2
+  flutter_braintree: ^0.2.0
 ```
 
 ### Android
@@ -39,7 +39,7 @@ browser switch by adding an intent filter to your `AndroidManifest.xml` (inside 
 
 #### Google Pay
 
-Add the wallet enabled meta-data tag to your `AndroidManifest.xml`:
+Add the wallet enabled meta-data tag to your `AndroidManifest.xml` (inside the `<application>` body):
 ```xml
 <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true"/>
 ```

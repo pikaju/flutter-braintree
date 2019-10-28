@@ -1,11 +1,11 @@
 name: flutter_braintree
 description: Flutter plugin that wraps the native Braintree SDKs. Enables payments with credit cards, PayPal, Google Pay and more.
-version: 0.1.2
+version: 0.2.0
 author: Julien Scholz <julienscholzo@hotmail.de>
 homepage: https://github.com/Pikaju/FlutterBraintree
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:

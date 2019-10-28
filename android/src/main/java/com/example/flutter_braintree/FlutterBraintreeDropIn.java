@@ -43,7 +43,7 @@ public class FlutterBraintreeDropIn implements MethodCallHandler, ActivityResult
 
   @Override
   public void onMethodCall(MethodCall call, Result result) {
-    if (call.method.equals("startDropIn")) {
+    if (call.method.equals("start")) {
       String clientToken = call.argument("clientToken");
       String tokenizationKey = call.argument("tokenizationKey");
       DropInRequest dropInRequest = new DropInRequest()
@@ -76,28 +76,34 @@ public class FlutterBraintreeDropIn implements MethodCallHandler, ActivityResult
     }
   }
 
-  private void readGooglePaymentParameters(DropInRequest dropInRequest, MethodCall call) {
-    if (!((Boolean) call.argument("googlePaymentEnabled")))
+  private static void readGooglePaymentParameters(DropInRequest dropInRequest, MethodCall call) {
+    HashMap<String, Object> arg = call.argument("googlePaymentRequest");
+    if (arg == null) {
+      dropInRequest.disableGooglePayment();
       return;
+    }
     GooglePaymentRequest googlePaymentRequest = new GooglePaymentRequest()
             .transactionInfo(TransactionInfo.newBuilder()
-                    .setTotalPrice((String) call.argument("googlePaymentRequest_totalPrice"))
-                    .setCurrencyCode((String) call.argument("googlePaymentRequest_currencyCode"))
+                    .setTotalPrice((String) arg.get("totalPrice"))
+                    .setCurrencyCode((String) arg.get("currencyCode"))
                     .setTotalPriceStatus(WalletConstants.TOTAL_PRICE_STATUS_FINAL)
                     .build())
-            .billingAddressRequired((Boolean) call.argument("googlePaymentRequest_billingAddressRequired"))
-            .googleMerchantId((String) call.argument("googlePaymentRequest_merchantID"));
+            .billingAddressRequired((Boolean) arg.get("billingAddressRequired"))
+            .googleMerchantId((String) arg.get("merchantID"));
     dropInRequest.googlePaymentRequest(googlePaymentRequest);
   }
 
-  private void readPayPalParameters(DropInRequest dropInRequest, MethodCall call) {
-    if (!((Boolean) call.argument("paypalEnabled")))
+  private static void readPayPalParameters(DropInRequest dropInRequest, MethodCall call) {
+    HashMap<String, Object> arg = call.argument("paypalRequest");
+    if (arg == null) {
+      dropInRequest.disablePayPal();
       return;
-    String amount = call.argument("paypalRequest_amount");
+    }
+    String amount = (String) arg.get("amount");
     PayPalRequest paypalRequest = amount == null ? new PayPalRequest() : new PayPalRequest(amount);
-    paypalRequest.currencyCode((String) call.argument("paypalRequest_currencyCode"))
-            .displayName((String) call.argument("paypalRequest_displayName"))
-            .billingAgreementDescription((String) call.argument("paypalRequest_billingAgreementDescription"));
+    paypalRequest.currencyCode((String) arg.get("currencyCode"))
+            .displayName((String) arg.get("displayName"))
+            .billingAgreementDescription((String) arg.get("billingAgreementDescription"));
     dropInRequest.paypalRequest(paypalRequest);
   }
 
@@ -108,13 +114,17 @@ public class FlutterBraintreeDropIn implements MethodCallHandler, ActivityResult
         if (resultCode == Activity.RESULT_OK) {
           DropInResult dropInResult = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
           PaymentMethodNonce paymentMethodNonce = dropInResult.getPaymentMethodNonce();
-          HashMap<String, Object> map = new HashMap<String, Object>();
-          map.put("paymentMethodNonce_nonce", paymentMethodNonce.getNonce());
-          map.put("paymentMethodNonce_typeLabel", paymentMethodNonce.getTypeLabel());
-          map.put("paymentMethodNonce_description", paymentMethodNonce.getDescription());
-          map.put("paymentMethodNonce_isDefault", paymentMethodNonce.isDefault());
-          map.put("deviceData", dropInResult.getDeviceData());
-          activeResult.success(map);
+          HashMap<String, Object> result = new HashMap<String, Object>();
+
+          HashMap<String, Object> nonceResult = new HashMap<String, Object>();
+          nonceResult.put("nonce", paymentMethodNonce.getNonce());
+          nonceResult.put("typeLabel", paymentMethodNonce.getTypeLabel());
+          nonceResult.put("description", paymentMethodNonce.getDescription());
+          nonceResult.put("isDefault", paymentMethodNonce.isDefault());
+
+          result.put("paymentMethodNonce", nonceResult);
+          result.put("deviceData", dropInResult.getDeviceData());
+          activeResult.success(result);
         } else if (resultCode == Activity.RESULT_CANCELED) {
           activeResult.success(null);
         } else {

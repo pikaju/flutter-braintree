@@ -1,3 +1,8 @@
+## 0.2.0
+
+* Refactor source code
+* Set minimum Dart version to 2.2.2
+
 ## 0.1.2
 
 * Fix typo in README.md
