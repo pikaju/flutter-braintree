@@ -18,6 +18,5 @@ Pod::Spec.new do |s|
   s.dependency 'Braintree/PayPal'
   s.ios.deployment_target = '10.0'
   s.swift_version = '5.0'
-  s.static_framework = true
   
 end
