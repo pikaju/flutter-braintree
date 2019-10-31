@@ -13,6 +13,7 @@ Pod::Spec.new do |s|
   s.author           = { 'Julien Scholz' => '' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
+  s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
   s.dependency 'BraintreeDropIn'
   s.dependency 'Braintree/PayPal'
