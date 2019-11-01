@@ -18,7 +18,7 @@ class BraintreeDropIn {
   /// The required options can be placed inside the [request] object.
   /// See its documentation for more information.
   ///
-  /// Returns a Future that resolves to a `BraintreeDropInResult` containing
+  /// Returns a Future that resolves to a [BraintreeDropInResult] containing
   /// all the relevant information, or `null` if the selection was canceled.
   static Future<BraintreeDropInResult> start(
       BraintreeDropInRequest request) async {

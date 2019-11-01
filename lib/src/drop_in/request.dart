@@ -25,7 +25,7 @@ class BraintreeDropInRequest {
   /// Amount for the transaction. This is only used for 3D secure verfications.
   String amount;
 
-  /// If the Drop-in should collect and return device data for fraud prevention.
+  /// Whether the Drop-in should collect and return device data for fraud prevention.
   bool collectDeviceData;
 
   /// If 3D Secure has been enabled in the control panel and an amount is specified in
