@@ -1,5 +1,6 @@
 name: flutter_braintree_example
 description: Demonstrates how to use the flutter_braintree plugin.
+version: 0.2.0
 publish_to: 'none'
 
 environment:
