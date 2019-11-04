@@ -13,8 +13,6 @@ public class SwiftFlutterBraintreePlugin: NSObject, FlutterPlugin {
         
         let instance = SwiftFlutterBraintreePlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
-        
-        BTAppSwitch.setReturnURLScheme("com.example.flutterBraintreeExample.payments")
     }
 
     
