@@ -49,7 +49,7 @@ Add the wallet enabled meta-data tag to your `AndroidManifest.xml` (inside the `
 In your App Delegate or your Runner project, you need to specify the URL scheme for redirecting payments as following:
 
 ```swift 
-BTAppSwitch.setReturnURLScheme("com.example.flutterBraintreeExample.payments")
+BTAppSwitch.setReturnURLScheme("com.your-company.your-app.braintree")
 ```
 Moreover, you need to specify the same URL scheme in your Info.plist: 
 
@@ -60,10 +60,10 @@ Moreover, you need to specify the same URL scheme in your Info.plist:
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>com.example.flutterBraintreeExample.payments</string>
+        <string>com.your-company.your-app.braintree</string>
         <key>CFBundleURLSchemes</key>
         <array>
-            <string>com.example.flutterBraintreeExample.payments</string>
+            <string>com.your-company.your-app.braintree</string>
         </array>
     </dict>
 </array>
