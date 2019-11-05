@@ -1,3 +1,8 @@
+## 0.3.0
+
+* Add iOS support (thank you to Johannes Erschbamer!)
+* Improve documentation
+
 ## 0.2.0
 
 * Refactor source code
