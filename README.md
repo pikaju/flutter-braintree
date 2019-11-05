@@ -54,7 +54,7 @@ In your App Delegate or your Runner project, you need to specify the URL scheme 
 BTAppSwitch.setReturnURLScheme("com.your-company.your-app.braintree")
 ```
 
-Moreover, you need to specify the same URL scheme in your Info.plist: 
+Moreover, you need to specify the same URL scheme in your `Info.plist`: 
 ```xml
 <key>CFBundleURLTypes</key>
 <array>
