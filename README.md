@@ -1,8 +1,7 @@
 # Braintree for Flutter
 
-A Flutter plugin that wraps the native
-[Braintree Drop-In UI SDKs](https://www.braintreepayments.com/features/seamless-checkout/drop-in-ui).
-Currently only supports Android.
+A Flutter plugin that wraps the native [Braintree Drop-In UI SDKs](https://www.braintreepayments.com/features/seamless-checkout/drop-in-ui).
+**Now supports both Android and iOS!**
 
 ## Installation
 
@@ -10,7 +9,7 @@ Add flutter_braintree to your `pubspec.yaml` file:
 ```yaml
 dependencies:
   ...
-  flutter_braintree: ^0.2.0
+  flutter_braintree: ^0.3.0
 ```
 
 ### Android
@@ -46,13 +45,16 @@ Add the wallet enabled meta-data tag to your `AndroidManifest.xml` (inside the `
 
 ### iOS
 
-In your App Delegate or your Runner project, you need to specify the URL scheme for redirecting payments as following:
+**Warning:** Device data collection is not yet supported for iOS.
 
+#### PayPal / Venmo / 3D Secure
+
+In your App Delegate or your Runner project, you need to specify the URL scheme for redirecting payments as following:
 ```swift 
 BTAppSwitch.setReturnURLScheme("com.your-company.your-app.braintree")
 ```
-Moreover, you need to specify the same URL scheme in your Info.plist: 
 
+Moreover, you need to specify the same URL scheme in your Info.plist: 
 ```xml
 <key>CFBundleURLTypes</key>
 <array>
@@ -68,6 +70,8 @@ Moreover, you need to specify the same URL scheme in your Info.plist:
     </dict>
 </array>
 ```
+
+See the official [Braintree documentation](https://developers.braintreepayments.com/guides/paypal/client-side/ios/v4) for a more detailed explanation.
 
 ## Usage
 
