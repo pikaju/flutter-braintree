@@ -44,6 +44,31 @@ Add the wallet enabled meta-data tag to your `AndroidManifest.xml` (inside the `
 <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true"/>
 ```
 
+### iOS
+
+In your App Delegate or your Runner project, you need to specify the URL scheme for redirecting payments as following:
+
+```swift 
+BTAppSwitch.setReturnURLScheme("com.your-company.your-app.braintree")
+```
+Moreover, you need to specify the same URL scheme in your Info.plist: 
+
+```xml
+<key>CFBundleURLTypes</key>
+<array>
+    <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <string>com.your-company.your-app.braintree</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>com.your-company.your-app.braintree</string>
+        </array>
+    </dict>
+</array>
+```
+
 ## Usage
 
 Import the plugin:
