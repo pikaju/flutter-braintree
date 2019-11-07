@@ -13,6 +13,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  static final String tokenizationKey = 'sandbox_8hxpnkht_kzdtzv2btm4p7s5j';
+
   void showNonce(BraintreePaymentMethodNonce nonce) {
     showDialog(
       context: context,
@@ -46,7 +48,7 @@ class _MyAppState extends State<MyApp> {
             RaisedButton(
               onPressed: () async {
                 var request = BraintreeDropInRequest(
-                  tokenizationKey: 'sandbox_8hxpnkht_kzdtzv2btm4p7s5j',
+                  tokenizationKey: tokenizationKey,
                   collectDeviceData: true,
                   googlePaymentRequest: BraintreeGooglePaymentRequest(
                     totalPrice: '4.20',
@@ -64,9 +66,25 @@ class _MyAppState extends State<MyApp> {
                   showNonce(result.paymentMethodNonce);
                 }
               },
-              child: Text(
-                'SELECT PAYMENT METHOD',
-              ),
+              child: Text('SELECT PAYMENT METHOD'),
+            ),
+            RaisedButton(
+              onPressed: () async {
+                final request = BraintreeCreditCardRequest(
+                  cardNumber: '4111111111111111',
+                  expirationMonth: '12',
+                  expirationYear: '2021',
+                );
+                BraintreePaymentMethodNonce result =
+                    await Braintree.tokenizeCreditCard(
+                  tokenizationKey,
+                  request,
+                );
+                if (result != null) {
+                  showNonce(result);
+                }
+              },
+              child: Text('TOKENIZE CREDIT CARD'),
             ),
           ],
         ),

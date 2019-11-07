@@ -73,6 +73,29 @@ class BraintreeDropInRequest {
       };
 }
 
+class BraintreeCreditCardRequest {
+  BraintreeCreditCardRequest({
+    this.cardNumber,
+    this.expirationMonth,
+    this.expirationYear,
+  });
+
+  /// Number shown on the credit card.
+  String cardNumber;
+
+  /// Two didgit expiration month, e.g. `'05'`.
+  String expirationMonth;
+
+  /// Four didgit expiration year, e.g. `'2021'`.
+  String expirationYear;
+
+  Map<String, dynamic> toJson() => {
+        if (cardNumber != null) 'cardNumber': cardNumber,
+        if (expirationMonth != null) 'expirationMonth': expirationMonth,
+        if (expirationYear != null) 'expirationYear': expirationYear,
+      };
+}
+
 class BraintreeGooglePaymentRequest {
   BraintreeGooglePaymentRequest({
     this.totalPrice,

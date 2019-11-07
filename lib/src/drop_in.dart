@@ -4,9 +4,6 @@ import 'dart:async';
 import 'request.dart';
 import 'result.dart';
 
-export 'request.dart';
-export 'result.dart';
-
 class BraintreeDropIn {
   static const MethodChannel _kChannel =
       const MethodChannel('flutter_braintree.drop_in');
