@@ -86,6 +86,38 @@ class _MyAppState extends State<MyApp> {
               },
               child: Text('TOKENIZE CREDIT CARD'),
             ),
+            RaisedButton(
+              onPressed: () async {
+                final request = BraintreePayPalRequest(
+                  billingAgreementDescription:
+                      'I hearby agree that flutter_braintree is great.',
+                  displayName: 'Your Company',
+                );
+                BraintreePaymentMethodNonce result =
+                    await Braintree.requestPaypalNonce(
+                  tokenizationKey,
+                  request,
+                );
+                if (result != null) {
+                  showNonce(result);
+                }
+              },
+              child: Text('PAYPAL VAULT FLOW'),
+            ),
+            RaisedButton(
+              onPressed: () async {
+                final request = BraintreePayPalRequest(amount: '13.37');
+                BraintreePaymentMethodNonce result =
+                    await Braintree.requestPaypalNonce(
+                  tokenizationKey,
+                  request,
+                );
+                if (result != null) {
+                  showNonce(result);
+                }
+              },
+              child: Text('PAYPAL CHECKOUT FLOW'),
+            ),
           ],
         ),
       ),

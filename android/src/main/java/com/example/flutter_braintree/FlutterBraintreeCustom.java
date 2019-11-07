@@ -7,11 +7,13 @@ import android.os.Bundle;
 
 import com.braintreepayments.api.BraintreeFragment;
 import com.braintreepayments.api.Card;
+import com.braintreepayments.api.PayPal;
 import com.braintreepayments.api.exceptions.InvalidArgumentException;
 import com.braintreepayments.api.interfaces.BraintreeCancelListener;
 import com.braintreepayments.api.interfaces.BraintreeErrorListener;
 import com.braintreepayments.api.interfaces.PaymentMethodNonceCreatedListener;
 import com.braintreepayments.api.models.CardBuilder;
+import com.braintreepayments.api.models.PayPalRequest;
 import com.braintreepayments.api.models.PaymentMethodNonce;
 
 import java.util.HashMap;
@@ -29,6 +31,8 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
             String type = intent.getStringExtra("type");
             if (type.equals("tokenizeCreditCard")) {
                 tokenizeCreditCard();
+            } else if (type.equals("requestPaypalNonce")) {
+                requestPaypalNonce();
             } else {
                 throw new Exception("Invalid request type: " + type);
             }
@@ -48,6 +52,23 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
                 .expirationMonth("expirationMonth")
                 .expirationYear("expirationYear");
         Card.tokenize(braintreeFragment, builder);
+    }
+
+    protected void requestPaypalNonce() {
+        Intent intent = getIntent();
+        PayPalRequest request = new PayPalRequest(intent.getStringExtra("amount"))
+                .currencyCode(intent.getStringExtra("currencyCode"))
+                .displayName(intent.getStringExtra("displayName"))
+                .billingAgreementDescription(intent.getStringExtra("billingAgreementDescription"))
+                .intent(PayPalRequest.INTENT_AUTHORIZE);
+
+        if (intent.getStringExtra("amount") == null) {
+            // Vault flow
+            PayPal.requestBillingAgreement(braintreeFragment, request);
+        } else {
+            // Checkout flow
+            PayPal.requestOneTimePayment(braintreeFragment, request);
+        }
     }
 
     @Override

@@ -144,7 +144,7 @@ class BraintreePayPalRequest {
   /// The merchant name displayed in the PayPal flow. If set to `null`, PayPal will use the company name in your Braintree account.
   String displayName;
 
-  /// Description for the billing agreement.
+  /// Description for the billing agreement for the Vault flow.
   String billingAgreementDescription;
 
   /// Converts this request object into a JSON-encodable format.

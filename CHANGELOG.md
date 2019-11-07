@@ -1,3 +1,7 @@
+## 0.5.0
+
+* Add basic support for the direct PayPal Checkout and Vault flow Android
+
 ## 0.4.0
 
 * Add basic support for direct credit card tokenization on Android

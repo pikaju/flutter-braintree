@@ -55,6 +55,17 @@ public class FlutterBraintreePlugin implements MethodCallHandler, ActivityResult
       intent.putExtra("expirationMonth", (String) request.get("expirationMonth"));
       intent.putExtra("expirationYear", (String) request.get("expirationYear"));
       activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
+    } else if (call.method.equals("requestPaypalNonce")) {
+      String authorization = call.argument("authorization");
+      Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
+      intent.putExtra("type", "requestPaypalNonce");
+      intent.putExtra("authorization", (String) call.argument("authorization"));
+      HashMap<String, Object> request = (HashMap<String, Object>) call.argument("request");
+      intent.putExtra("amount", (String) request.get("amount"));
+      intent.putExtra("currencyCode", (String) request.get("currencyCode"));
+      intent.putExtra("displayName", (String) request.get("displayName"));
+      intent.putExtra("billingAgreementDescription", (String) request.get("billingAgreementDescription"));
+      activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
     } else {
       result.notImplemented();
       activeResult = null;

@@ -11,7 +11,7 @@ Add flutter_braintree to your `pubspec.yaml` file:
 ```yaml
 dependencies:
   ...
-  flutter_braintree: ^0.4.0
+  flutter_braintree: ^0.5.0
 ```
 
 ### Android
@@ -100,6 +100,29 @@ final request = BraintreeCreditCardRequest(
 Then ask Braintree to tokenize the credit card:
 ```dart
 BraintreePaymentMethodNonce result = await Braintree.tokenizeCreditCard(
+   '<Insert your tokenization key or client token here>',
+   request,
+);
+print(result.nonce);
+```
+
+#### PayPal
+
+Create a PayPal request object:
+```dart
+final request = BraintreePayPalRequest(amount: '13.37');
+```
+
+Or, for the Vault flow:
+```dart
+final request = BraintreePayPalRequest(
+  billingAgreementDescription: 'I hearby agree that flutter_braintree is great.',
+);
+```
+
+Then launch the PayPal request:
+```dart
+BraintreePaymentMethodNonce result = await Braintree.requestPaypalNonce(
    '<Insert your tokenization key or client token here>',
    request,
 );
