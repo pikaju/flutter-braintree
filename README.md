@@ -1,7 +1,9 @@
 # Braintree for Flutter
 
-A Flutter plugin that wraps the native [Braintree Drop-In UI SDKs](https://www.braintreepayments.com/features/seamless-checkout/drop-in-ui).
-**Now supports both Android and iOS!**
+A Flutter plugin that wraps the native [Braintree SDKs](https://www.braintreepayments.com/features/seamless-checkout/drop-in-ui).
+Unlike other plugins, this plugin not only lets you start Braintree's native Drop-in UI, but also allows you to create your own custom Flutter UI with Braintree functionality.
+
+**Custom UI is still early in development and does not yet work on iOS!**
 
 ## Installation
 
@@ -9,7 +11,7 @@ Add flutter_braintree to your `pubspec.yaml` file:
 ```yaml
 dependencies:
   ...
-  flutter_braintree: ^0.3.0
+  flutter_braintree: ^0.4.0
 ```
 
 ### Android
@@ -75,14 +77,40 @@ See the official [Braintree documentation](https://developers.braintreepayments.
 
 ## Usage
 
-Import the plugin:
+First, import the plugin:
 ```dart
 import 'package:flutter_braintree/flutter_braintree.dart';
 ```
 
+### Your own custom UI
+
+**Warning:** This feature is only implemented for Android.
+
+#### Credit cards
+
+Create a credit card request object:
+```dart
+final request = BraintreeCreditCardRequest(
+  cardNumber: '4111111111111111',
+  expirationMonth: '12',
+  expirationYear: '2021',
+);
+```
+
+Then ask Braintree to tokenize the credit card:
+```dart
+BraintreePaymentMethodNonce result = await Braintree.tokenizeCreditCard(
+   '<Insert your tokenization key or client token here>',
+   request,
+);
+print(result.nonce);
+```
+
+### Braintree's native drop-in
+
 Create a drop-in request object:
 ```dart
-var request = BraintreeDropInRequest(
+final request = BraintreeDropInRequest(
   clientToken: '<Insert your client token here>',
   collectDeviceData: true,
   googlePaymentRequest: BraintreeGooglePaymentRequest(

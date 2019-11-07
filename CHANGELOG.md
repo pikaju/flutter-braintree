@@ -1,3 +1,7 @@
+## 0.4.0
+
+* Add basic support for direct credit card tokenization on Android
+
 ## 0.3.0
 
 * Add iOS support (thank you to Johannes Erschbamer!)
