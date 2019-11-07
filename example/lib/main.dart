@@ -66,7 +66,7 @@ class _MyAppState extends State<MyApp> {
                   showNonce(result.paymentMethodNonce);
                 }
               },
-              child: Text('SELECT PAYMENT METHOD'),
+              child: Text('LAUNCH NATIVE DROP-IN'),
             ),
             RaisedButton(
               onPressed: () async {
