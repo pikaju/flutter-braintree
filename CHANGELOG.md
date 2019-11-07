@@ -1,3 +1,7 @@
+## 0.5.1
+
+* Improve README.md
+
 ## 0.5.0
 
 * Add basic support for the direct PayPal Checkout and Vault flow Android

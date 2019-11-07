@@ -11,7 +11,7 @@ Add flutter_braintree to your `pubspec.yaml` file:
 ```yaml
 dependencies:
   ...
-  flutter_braintree: ^0.5.0
+  flutter_braintree: ^0.5.1
 ```
 
 ### Android
@@ -82,7 +82,7 @@ First, import the plugin:
 import 'package:flutter_braintree/flutter_braintree.dart';
 ```
 
-### Your own custom UI
+### Flutter UI
 
 **Warning:** This feature is only implemented for Android.
 
@@ -97,7 +97,7 @@ final request = BraintreeCreditCardRequest(
 );
 ```
 
-Then ask Braintree to tokenize the credit card:
+Then ask Braintree to tokenize it:
 ```dart
 BraintreePaymentMethodNonce result = await Braintree.tokenizeCreditCard(
    '<Insert your tokenization key or client token here>',
@@ -126,7 +126,11 @@ BraintreePaymentMethodNonce result = await Braintree.requestPaypalNonce(
    '<Insert your tokenization key or client token here>',
    request,
 );
-print(result.nonce);
+if (result != null) {
+  print('Nonce: ${result.nonce}');
+} else {
+  print('PayPal flow was canceled.');
+}
 ```
 
 ### Braintree's native drop-in
