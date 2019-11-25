@@ -1,3 +1,7 @@
+## 0.5.2
+
+* Fix credit card expiration not being included correctly
+
 ## 0.5.1
 
 * Improve README.md
