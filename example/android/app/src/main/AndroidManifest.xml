@@ -7,12 +7,9 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <application
-        android:name="io.flutter.app.FlutterApplication"
-        android:label="flutter_braintree_example"
         android:icon="@mipmap/ic_launcher">
         <activity
-            android:name=".MainActivity"
-            android:launchMode="singleTop"
+            android:name="io.flutter.embedding.android.FlutterActivity"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
@@ -41,5 +38,9 @@
         </activity>
 
         <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true"/>
+
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
     </application>
 </manifest>
