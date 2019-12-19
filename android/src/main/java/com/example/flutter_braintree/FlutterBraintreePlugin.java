@@ -11,6 +11,9 @@ import com.braintreepayments.api.models.PaymentMethodNonce;
 
 import java.util.HashMap;
 
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -18,23 +21,62 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.plugin.common.PluginRegistry.ActivityResultListener;
 
-public class FlutterBraintreePlugin implements MethodCallHandler, ActivityResultListener {
+public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, MethodCallHandler, ActivityResultListener {
   private static final int CUSTOM_ACTIVITY_REQUEST_CODE = 0x420;
 
   private Activity activity;
-  private Context context;
   private Result activeResult;
 
-  public FlutterBraintreePlugin(Registrar registrar) {
-    activity = registrar.activity();
-    context = registrar.context();
-    registrar.addActivityResultListener(this);
-  }
+  private FlutterBraintreeDropIn dropIn;
 
   public static void registerWith(Registrar registrar) {
     FlutterBraintreeDropIn.registerWith(registrar);
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_braintree.custom");
-    channel.setMethodCallHandler(new FlutterBraintreePlugin(registrar));
+    FlutterBraintreePlugin plugin = new FlutterBraintreePlugin();
+    plugin.activity = registrar.activity();
+    registrar.addActivityResultListener(plugin);
+    channel.setMethodCallHandler(plugin);
+  }
+
+  @Override
+  public void onAttachedToEngine(FlutterPluginBinding binding) {
+    final MethodChannel channel = new MethodChannel(binding.getBinaryMessenger(), "flutter_braintree.custom");
+    channel.setMethodCallHandler(this);
+
+    dropIn = new FlutterBraintreeDropIn();
+    dropIn.onAttachedToEngine(binding);
+  }
+
+  @Override
+  public void onDetachedFromEngine(FlutterPluginBinding binding) {
+    dropIn.onDetachedFromEngine(binding);
+    dropIn = null;
+  }
+
+  @Override
+  public void onAttachedToActivity(ActivityPluginBinding binding) {
+    activity = binding.getActivity();
+    binding.addActivityResultListener(this);
+    dropIn.onAttachedToActivity(binding);
+  }
+
+  @Override
+  public void onDetachedFromActivityForConfigChanges() {
+    activity = null;
+    dropIn.onDetachedFromActivity();
+  }
+
+  @Override
+  public void onReattachedToActivityForConfigChanges(ActivityPluginBinding binding) {
+    activity = binding.getActivity();
+    binding.addActivityResultListener(this);
+    dropIn.onReattachedToActivityForConfigChanges(binding);
+  }
+
+  @Override
+  public void onDetachedFromActivity() {
+    activity = null;
+    dropIn.onDetachedFromActivity();
   }
 
   @Override
