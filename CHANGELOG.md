@@ -1,3 +1,8 @@
+## 0.5.3
+
+* Fix incompatibility with Flutter's new v2 embedding
+* Update example project to use v2 embedding
+
 ## 0.5.2
 
 * Fix credit card expiration not being included correctly
