@@ -1,5 +1,8 @@
 package com.example.flutter_braintree;
 
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -23,22 +26,51 @@ import com.google.android.gms.wallet.WalletConstants;
 
 import java.util.HashMap;
 
-public class FlutterBraintreeDropIn implements MethodCallHandler, ActivityResultListener {
+public class FlutterBraintreeDropIn implements FlutterPlugin, ActivityAware, MethodCallHandler, ActivityResultListener {
   private static final int DROP_IN_REQUEST_CODE = 0x1337;
 
   private Activity activity;
-  private Context context;
   private Result activeResult;
-
-  public FlutterBraintreeDropIn(Registrar registrar) {
-      activity = registrar.activity();
-      context = registrar.context();
-      registrar.addActivityResultListener(this);
-  }
 
   public static void registerWith(Registrar registrar) {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_braintree.drop_in");
-    channel.setMethodCallHandler(new FlutterBraintreeDropIn(registrar));
+    FlutterBraintreeDropIn dropIn = new FlutterBraintreeDropIn();
+    dropIn.activity = registrar.activity();
+    registrar.addActivityResultListener(dropIn);
+    channel.setMethodCallHandler(dropIn);
+  }
+
+  @Override
+  public void onAttachedToEngine(FlutterPluginBinding binding) {
+    final MethodChannel channel = new MethodChannel(binding.getBinaryMessenger(), "flutter_braintree.drop_in");
+    channel.setMethodCallHandler(this);
+  }
+
+  @Override
+  public void onDetachedFromEngine(FlutterPluginBinding binding) {
+
+  }
+
+  @Override
+  public void onAttachedToActivity(ActivityPluginBinding binding) {
+    activity = binding.getActivity();
+    binding.addActivityResultListener(this);
+  }
+
+  @Override
+  public void onDetachedFromActivityForConfigChanges() {
+    activity = null;
+  }
+
+  @Override
+  public void onReattachedToActivityForConfigChanges(ActivityPluginBinding binding) {
+    activity = binding.getActivity();
+    binding.addActivityResultListener(this);
+  }
+
+  @Override
+  public void onDetachedFromActivity() {
+    activity = null;
   }
 
   @Override
@@ -70,7 +102,7 @@ public class FlutterBraintreeDropIn implements MethodCallHandler, ActivityResult
         return;
       }
       this.activeResult = result;
-      activity.startActivityForResult(dropInRequest.getIntent(context), DROP_IN_REQUEST_CODE);
+      activity.startActivityForResult(dropInRequest.getIntent(activity), DROP_IN_REQUEST_CODE);
     } else {
       result.notImplemented();
     }
