@@ -9,7 +9,7 @@ import com.braintreepayments.api.dropin.DropInRequest;
 import com.braintreepayments.api.dropin.DropInResult;
 import com.braintreepayments.api.models.PaymentMethodNonce;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
@@ -92,7 +92,8 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
       Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
       intent.putExtra("type", "tokenizeCreditCard");
       intent.putExtra("authorization", (String) call.argument("authorization"));
-      HashMap<String, Object> request = (HashMap<String, Object>) call.argument("request");
+      assert(call.argument("request") instanceof Map);
+      Map request = (Map) call.argument("request");
       intent.putExtra("cardNumber", (String) request.get("cardNumber"));
       intent.putExtra("expirationMonth", (String) request.get("expirationMonth"));
       intent.putExtra("expirationYear", (String) request.get("expirationYear"));
@@ -102,7 +103,8 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
       Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
       intent.putExtra("type", "requestPaypalNonce");
       intent.putExtra("authorization", (String) call.argument("authorization"));
-      HashMap<String, Object> request = (HashMap<String, Object>) call.argument("request");
+      assert(call.argument("request") instanceof Map);
+      Map request = (Map) call.argument("request");
       intent.putExtra("amount", (String) request.get("amount"));
       intent.putExtra("currencyCode", (String) request.get("currencyCode"));
       intent.putExtra("displayName", (String) request.get("displayName"));
