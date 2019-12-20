@@ -17,5 +17,9 @@ dev_dependencies:
 
 flutter:
   plugin:
-    androidPackage: com.example.flutter_braintree
-    pluginClass: FlutterBraintreePlugin
+    platforms:
+      android:
+        package: com.example.flutter_braintree
+        pluginClass: FlutterBraintreePlugin
+      ios:
+        pluginClass: FlutterBraintreePlugin
