@@ -2,6 +2,7 @@
 
 * Fix incompatibility with Flutter's new v2 embedding
 * Update example project to use v2 embedding
+* Use new platforms key in `pubspec.yaml` (requires Flutter 1.10 or newer!)
 
 ## 0.5.2
 

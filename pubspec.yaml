@@ -5,15 +5,12 @@ homepage: https://github.com/Pikaju/FlutterBraintree
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
+  flutter: ">=1.10.0 <2.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   meta: ">= 1.0.0 <2.0.0"
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
 
 flutter:
   plugin:
