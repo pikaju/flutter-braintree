@@ -141,7 +141,9 @@ public class FlutterBraintreeDropIn implements FlutterPlugin, ActivityAware, Met
 
   @Override
   public boolean onActivityResult(int requestCode, int resultCode, Intent data)  {
-    if(activeResult == null){return true;}
+    if(activeResult == null)
+      return true;
+
     switch (requestCode) {
       case DROP_IN_REQUEST_CODE:
         if (resultCode == Activity.RESULT_OK) {
