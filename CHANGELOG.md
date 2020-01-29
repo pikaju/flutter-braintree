@@ -1,3 +1,7 @@
+## 0.5.3+1
+
+* Temporarily fix crashes (thank you to peternagy1332)
+
 ## 0.5.3
 
 * Fix incompatibility with Flutter's new v2 embedding
