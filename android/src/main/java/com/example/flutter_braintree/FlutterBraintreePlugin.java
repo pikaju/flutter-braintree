@@ -118,8 +118,8 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
 
   @Override
   public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
-    if(activeResult == null)
-      return true;
+    if (activeResult == null)
+      return false;
     
     switch (requestCode) {
       case CUSTOM_ACTIVITY_REQUEST_CODE:

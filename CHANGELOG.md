@@ -1,3 +1,7 @@
+## 0.5.3+2
+
+* Fix incompatibilities with Google and Facebook sign in plugins
+
 ## 0.5.3+1
 
 * Temporarily fix crashes (thank you to peternagy1332)
