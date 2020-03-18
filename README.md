@@ -11,7 +11,7 @@ Add flutter_braintree to your `pubspec.yaml` file:
 ```yaml
 dependencies:
   ...
-  flutter_braintree: ^0.5.3+1
+  flutter_braintree: <version>
 ```
 
 ### Android

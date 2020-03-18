@@ -1,3 +1,7 @@
+## 0.5.3+3
+
+* Fix disabling card not working for drop-in UI
+
 ## 0.5.3+2
 
 * Fix incompatibilities with Google and Facebook sign in plugins
