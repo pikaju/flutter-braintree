@@ -1,3 +1,7 @@
+## 0.6.0
+
+* Make card.io optional on Android to potentially reduce app sizes
+
 ## 0.5.3+3
 
 * Fix disabling card not working for drop-in UI

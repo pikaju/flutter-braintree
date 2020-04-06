@@ -19,6 +19,18 @@ dependencies:
 You must [migrate to AndroidX.](https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility)  
 In `/app/build.gradle`, set your `minSdkVersion` to at least `21`.
 
+#### Card.io
+
+[Card.io](https://github.com/card-io) enables credit card scanning so as to remove the need to type in credit card details manually.
+This feature became optional in `flutter_braintree` version `0.6.0` to potentially reduce app sizes.
+To enable it for the Braintree Drop-in UI, add the following line to your `app` level `build.gradle` file:
+```gradle
+dependencies {
+    ...
+    implementation 'io.card:android-sdk:5.+'
+}
+```
+
 #### PayPal / Venmo / 3D Secure
 
 In order for this plugin to support PayPal, Venmo or 3D Secure payments, you must allow for the

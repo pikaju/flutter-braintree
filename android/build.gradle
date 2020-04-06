@@ -35,7 +35,6 @@ android {
 
 dependencies {
     implementation 'com.braintreepayments.api:drop-in:4.1.1'
-    implementation 'io.card:android-sdk:5.+'
     implementation 'com.google.android.gms:play-services-wallet:16.0.1'
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
