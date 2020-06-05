@@ -128,7 +128,7 @@ final request = BraintreePayPalRequest(amount: '13.37');
 Or, for the Vault flow:
 ```dart
 final request = BraintreePayPalRequest(
-  billingAgreementDescription: 'I hearby agree that flutter_braintree is great.',
+  billingAgreementDescription: 'I hereby agree that flutter_braintree is great.',
 );
 ```
 
