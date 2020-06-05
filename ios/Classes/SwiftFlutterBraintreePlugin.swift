@@ -25,7 +25,7 @@ public class SwiftFlutterBraintreePlugin: NSObject, FlutterPlugin {
             let dropInRequest = BTDropInRequest()
             
             if let amount = string(for: "amount", in: call) {
-                dropInRequest.threeDSecureRequest?.amount = NSDecimalNumber(string: amount)
+                dropInRequest.amount = amount
             }
             
             if let requestThreeDSecureVerification = bool(for: "requestThreeDSecureVerification", in: call) {
@@ -39,6 +39,18 @@ public class SwiftFlutterBraintreePlugin: NSObject, FlutterPlugin {
             let clientToken = string(for: "clientToken", in: call)
             let tokenizationKey = string(for: "tokenizationKey", in: call)
             
+            if let paypalInfo = dict(for: "paypalRequest", in: call) {
+                let amount = paypalInfo["amount"] as? String;
+                
+                let paypalRequest = amount != nil ? BTPayPalRequest(amount: amount!) : BTPayPalRequest();
+                paypalRequest.currencyCode = paypalInfo["currencyCode"] as? String;
+                paypalRequest.displayName = paypalInfo["displayName"] as? String;
+                paypalRequest.billingAgreementDescription = paypalInfo["billingAgreementDescription"] as? String;
+                dropInRequest.payPalRequest = paypalRequest
+            } else {
+                dropInRequest.paypalDisabled = true
+            }
+    
             guard let authorization = clientToken ?? tokenizationKey else {
                 result(FlutterError(code: "braintree_error", message: "Authorization not specified (no clientToken or tokenizationKey)", details: nil))
                 isHandlingResult = false
@@ -95,4 +107,8 @@ public class SwiftFlutterBraintreePlugin: NSObject, FlutterPlugin {
         return (call.arguments as? [String: Any])?[key] as? Bool
     }
     
+    
+    private func dict(for key: String, in call: FlutterMethodCall) -> [String: Any]? {
+        return (call.arguments as? [String: Any])?[key] as? [String: Any]
+    }
 }
