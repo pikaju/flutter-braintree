@@ -3,6 +3,7 @@
 
 @implementation FlutterBraintreePlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  [SwiftFlutterBraintreePlugin registerWithRegistrar:registrar];
+    [FlutterBraintreeCustomPlugin registerWithRegistrar:registrar];
+    [FlutterBraintreeDropInPlugin registerWithRegistrar:registrar];
 }
 @end
