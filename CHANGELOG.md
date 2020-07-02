@@ -1,3 +1,7 @@
+## 1.0.0
+
+* Support custom UI on iOS (thank you to WipeAir)
+
 ## 0.6.0
 
 * Make card.io optional on Android to potentially reduce app sizes
