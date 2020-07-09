@@ -57,11 +57,11 @@ Add the wallet enabled meta-data tag to your `AndroidManifest.xml` (inside the `
 
 ### iOS
 
-**Warning:** Device data collection is not yet supported for iOS.
 You may need to add or uncomment the following line at the top of your `ios/Podfile`:
 ```ruby
 platform :ios, '10.0'
 ```
+**Warning:** Device data collection is not yet supported for iOS.
 
 #### PayPal / Venmo / 3D Secure
 
