@@ -1,3 +1,7 @@
+## 1.0.2+1
+
+* Hotfix Braintree versions
+
 ## 1.0.2
 
 * Add Podfile change to installation section
