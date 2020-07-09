@@ -1,3 +1,7 @@
+## 1.0.2
+
+* Add Podfile change to installation section
+
 ## 1.0.1
 
 * Update outdated iOS Braintree dependency
