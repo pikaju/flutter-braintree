@@ -1,3 +1,7 @@
+## 1.0.1
+
+* Update outdated iOS Braintree dependency
+
 ## 1.0.0
 
 * Support custom UI on iOS (thank you to WipeAir)
