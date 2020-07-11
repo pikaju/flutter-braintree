@@ -3,7 +3,12 @@ import UIKit
 import Braintree
 import BraintreeDropIn
 
-public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPlugin {
+public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPlugin, BTThreeDSecureRequestDelegate {
+    
+    public func onLookupComplete(_ request: BTThreeDSecureRequest, result: BTThreeDSecureLookup, next: @escaping () -> Void) {
+        next();
+    }
+    
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "flutter_braintree.drop_in", binaryMessenger: registrar.messenger())
         
@@ -23,7 +28,10 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
             let dropInRequest = BTDropInRequest()
             
             if let amount = string(for: "amount", in: call) {
-                dropInRequest.amount = amount
+                let threeDSecureRequest = BTThreeDSecureRequest()
+                threeDSecureRequest.threeDSecureRequestDelegate = self
+                threeDSecureRequest.amount = NSDecimalNumber(string: amount)
+                dropInRequest.threeDSecureRequest = threeDSecureRequest
             }
             
             if let requestThreeDSecureVerification = bool(for: "requestThreeDSecureVerification", in: call) {
