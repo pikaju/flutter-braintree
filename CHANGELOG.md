@@ -1,3 +1,8 @@
+## 1.0.2+2
+
+* Hotfix 3D Secure (thank you to enzobonggio!)
+* Hotfix compilation issues
+
 ## 1.0.2+1
 
 * Hotfix Braintree versions
