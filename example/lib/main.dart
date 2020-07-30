@@ -59,6 +59,7 @@ class _MyAppState extends State<MyApp> {
                     amount: '4.20',
                     displayName: 'Example company',
                   ),
+                  cardEnabled: true,
                 );
                 BraintreeDropInResult result =
                     await BraintreeDropIn.start(request);

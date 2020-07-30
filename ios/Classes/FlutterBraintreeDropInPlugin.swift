@@ -42,6 +42,10 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
                 dropInRequest.vaultManager = vaultManagerEnabled
             }
             
+            if let cardEnabled = bool(for: "cardEnabled", in: call) {
+                dropInRequest.cardDisabled = !cardEnabled
+            }
+            
             if let paypalInfo = dict(for: "paypalRequest", in: call) {
                 let amount = paypalInfo["amount"] as? String;
                 
