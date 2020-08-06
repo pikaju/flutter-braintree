@@ -91,7 +91,7 @@ class _MyAppState extends State<MyApp> {
               onPressed: () async {
                 final request = BraintreePayPalRequest(
                   billingAgreementDescription:
-                      'I hearby agree that flutter_braintree is great.',
+                      'I hereby agree that flutter_braintree is great.',
                   displayName: 'Your Company',
                 );
                 BraintreePaymentMethodNonce result =
