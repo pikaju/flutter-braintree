@@ -1,3 +1,7 @@
+## 1.0.3
+
+* Fix `cardEnabled = false` not working on iOS drop-in (thank you to HareshGediya)
+
 ## 1.0.2+2
 
 * Hotfix 3D Secure (thank you to enzobonggio!)
