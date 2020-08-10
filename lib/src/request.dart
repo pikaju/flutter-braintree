@@ -7,6 +7,7 @@ class BraintreeDropInRequest {
     this.requestThreeDSecureVerification = false,
     this.googlePaymentRequest,
     this.paypalRequest,
+    this.applePayRequest,
     this.venmoEnabled = true,
     this.cardEnabled = true,
     this.maskCardNumber = false,
@@ -53,6 +54,11 @@ class BraintreeDropInRequest {
   /// Whether customers should be allowed to manage their vaulted payment methods.
   bool vaultManagerEnabled;
 
+  /// ApplePay request. ApplePay will be disabled if this is set to `null`.
+  /// ApplePay option not visible in DropIn-UI if proper setup not done at
+  /// Xcode, App Store connects and Braintree control panel.
+  BraintreeApplePayRequest applePayRequest;
+
   /// Converts this request object into a JSON-encodable format.
   Map<String, dynamic> toJson() => {
         if (clientToken != null) 'clientToken': clientToken,
@@ -64,6 +70,7 @@ class BraintreeDropInRequest {
         if (googlePaymentRequest != null)
           'googlePaymentRequest': googlePaymentRequest.toJson(),
         if (paypalRequest != null) 'paypalRequest': paypalRequest.toJson(),
+        if (applePayRequest != null) 'applePayRequest': applePayRequest.toJson(),
         if (venmoEnabled != null) 'venmoEnabled': venmoEnabled,
         if (cardEnabled != null) 'cardEnabled': cardEnabled,
         if (maskCardNumber != null) 'maskCardNumber': maskCardNumber,
@@ -154,5 +161,42 @@ class BraintreePayPalRequest {
         if (displayName != null) 'displayName': displayName,
         if (billingAgreementDescription != null)
           'billingAgreementDescription': billingAgreementDescription,
+      };
+}
+
+class BraintreeApplePayRequest {
+  BraintreeApplePayRequest({
+    this.amount,
+    this.displayName,
+    this.currencyCode,
+    this.countryCode,
+    this.appleMerchantID,
+  })  : assert(amount != null),
+        assert(displayName != null),
+        assert(currencyCode != null && countryCode != null),
+        assert(appleMerchantID != null);
+
+  /// The item’s amount.
+  final double amount;
+
+  /// Short description of the item.
+  final String displayName;
+
+  /// The three-letter ISO 4217 currency code.
+  final String currencyCode;
+
+  /// The three-letter ISO 4217 currency code.
+  final String countryCode;
+
+  /// Apple merchant identifier.
+  final String appleMerchantID;
+
+  /// Converts this request object into a JSON-encodable format.
+  Map<String, dynamic> toJson() => {
+        if (amount != null) 'amount': amount,
+        if (currencyCode != null) 'currencyCode': currencyCode,
+        if (displayName != null) 'displayName': displayName,
+        if (countryCode != null) 'countryCode': countryCode,
+        if (appleMerchantID != null) 'appleMerchantID': appleMerchantID,
       };
 }
