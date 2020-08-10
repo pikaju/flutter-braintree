@@ -121,7 +121,11 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
         } else if result?.isCancelled ?? false {
             flutterResult(nil)
         } else {
-            flutterResult(["paymentMethodNonce": buildPaymentNonceDict(nonce: result?.paymentMethod)])
+            if let result = result, result.paymentOptionType == .applePay {
+                setupApplePay(flutterResult: flutterResult)
+            } else {
+                flutterResult(["paymentMethodNonce": buildPaymentNonceDict(nonce: result?.paymentMethod)])
+            }
         }
     }
     
