@@ -1,3 +1,7 @@
+## 1.1.0
+
+* Add ApplePay support for the drop-in UI (thank you again to HareshGediya!)
+
 ## 1.0.3
 
 * Fix `cardEnabled = false` not working on iOS drop-in (thank you to HareshGediya)

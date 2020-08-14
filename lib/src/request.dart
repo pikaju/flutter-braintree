@@ -55,8 +55,8 @@ class BraintreeDropInRequest {
   bool vaultManagerEnabled;
 
   /// ApplePay request. ApplePay will be disabled if this is set to `null`.
-  /// ApplePay option not visible in DropIn-UI if proper setup not done at
-  /// Xcode, App Store connects and Braintree control panel.
+  /// The ApplePay option will not be visible in the drop-in UI if the setup in
+  /// Xcode, App Store Connect or Braintree control panel was done incorrectly.
   BraintreeApplePayRequest applePayRequest;
 
   /// Converts this request object into a JSON-encodable format.
@@ -70,7 +70,8 @@ class BraintreeDropInRequest {
         if (googlePaymentRequest != null)
           'googlePaymentRequest': googlePaymentRequest.toJson(),
         if (paypalRequest != null) 'paypalRequest': paypalRequest.toJson(),
-        if (applePayRequest != null) 'applePayRequest': applePayRequest.toJson(),
+        if (applePayRequest != null)
+          'applePayRequest': applePayRequest.toJson(),
         if (venmoEnabled != null) 'venmoEnabled': venmoEnabled,
         if (cardEnabled != null) 'cardEnabled': cardEnabled,
         if (maskCardNumber != null) 'maskCardNumber': maskCardNumber,
@@ -176,7 +177,7 @@ class BraintreeApplePayRequest {
         assert(currencyCode != null && countryCode != null),
         assert(appleMerchantID != null);
 
-  /// The item’s amount.
+  /// The item's amount.
   final double amount;
 
   /// Short description of the item.
