@@ -1,3 +1,7 @@
+## 1.1.0+1
+
+* Fix vulnerability in Braintree plugin (Play Store issue)
+
 ## 1.1.0
 
 * Add ApplePay support for the drop-in UI (thank you again to HareshGediya!)
