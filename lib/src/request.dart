@@ -86,6 +86,7 @@ class BraintreeCreditCardRequest {
     this.cardNumber,
     this.expirationMonth,
     this.expirationYear,
+    this.cvv,
   });
 
   /// Number shown on the credit card.
@@ -97,11 +98,15 @@ class BraintreeCreditCardRequest {
   /// Four didgit expiration year, e.g. `'2021'`.
   String expirationYear;
 
+  /// A 3 or 4 digit card verification value assigned to credit cards.
+  String cvv;
+
   Map<String, dynamic> toJson() => {
         if (cardNumber != null) 'cardNumber': cardNumber,
         if (expirationMonth != null) 'expirationMonth': expirationMonth,
         if (expirationYear != null) 'expirationYear': expirationYear,
-      };
+        if (cvv != null) 'cvv': cvv,
+  };
 }
 
 class BraintreeGooglePaymentRequest {

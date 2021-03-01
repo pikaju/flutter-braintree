@@ -109,6 +109,7 @@ final request = BraintreeCreditCardRequest(
   cardNumber: '4111111111111111',
   expirationMonth: '12',
   expirationYear: '2021',
+  cvv: '367'
 );
 ```
 

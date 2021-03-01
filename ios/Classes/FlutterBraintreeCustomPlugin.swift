@@ -59,10 +59,11 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
             let cardClient = BTCardClient(apiClient: client!)
             
             guard let cardRequestInfo = dict(for: "request", in: call) else {return}
-            
+
             let card = BTCard(number: (cardRequestInfo["cardNumber"] as? String)!,
                    expirationMonth: (cardRequestInfo["expirationMonth"] as? String)!,
-                   expirationYear: (cardRequestInfo["expirationYear"] as? String)!, cvv: nil)
+                   expirationYear: (cardRequestInfo["expirationYear"] as? String)!,
+                   cvv: (cardRequestInfo["cvv"] as? String)!)
             
             cardClient.tokenizeCard(card) { (nonce, error) in
                 self.handleResult(nonce: nonce, error: error, flutterResult: result)
