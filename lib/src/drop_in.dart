@@ -17,13 +17,13 @@ class BraintreeDropIn {
   ///
   /// Returns a Future that resolves to a [BraintreeDropInResult] containing
   /// all the relevant information, or `null` if the selection was canceled.
-  static Future<BraintreeDropInResult> start(
+  static Future<BraintreeDropInResult?> start(
       BraintreeDropInRequest request) async {
-    assert(request != null);
     var result = await _kChannel.invokeMethod(
       'start',
       request.toJson(),
     );
+    if (result == null) return null;
     return BraintreeDropInResult.fromJson(result);
   }
 }

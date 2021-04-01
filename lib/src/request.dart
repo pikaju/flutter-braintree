@@ -17,14 +17,14 @@ class BraintreeDropInRequest {
 
   /// Authorization allowing this client to communicate with Braintree.
   /// Either [clientToken] or [tokenizationKey] must be set.
-  String clientToken;
+  String? clientToken;
 
   /// Authorization allowing this client to communicate with Braintree.
   /// Either [clientToken] or [tokenizationKey] must be set.
-  String tokenizationKey;
+  String? tokenizationKey;
 
   /// Amount for the transaction. This is only used for 3D secure verfications.
-  String amount;
+  String? amount;
 
   /// Whether the Drop-in should collect and return device data for fraud prevention.
   bool collectDeviceData;
@@ -34,10 +34,10 @@ class BraintreeDropInRequest {
   bool requestThreeDSecureVerification;
 
   /// Google Payment request. Google Pay will be disabled if this is set to `null`.
-  BraintreeGooglePaymentRequest googlePaymentRequest;
+  BraintreeGooglePaymentRequest? googlePaymentRequest;
 
   /// PayPal request. PayPal will be disabled if this is set to `null`.
-  BraintreePayPalRequest paypalRequest;
+  BraintreePayPalRequest? paypalRequest;
 
   /// Whether Venmo should be enabled.
   bool venmoEnabled;
@@ -57,36 +57,34 @@ class BraintreeDropInRequest {
   /// ApplePay request. ApplePay will be disabled if this is set to `null`.
   /// The ApplePay option will not be visible in the drop-in UI if the setup in
   /// Xcode, App Store Connect or Braintree control panel was done incorrectly.
-  BraintreeApplePayRequest applePayRequest;
+  BraintreeApplePayRequest? applePayRequest;
 
   /// Converts this request object into a JSON-encodable format.
   Map<String, dynamic> toJson() => {
         if (clientToken != null) 'clientToken': clientToken,
         if (tokenizationKey != null) 'tokenizationKey': tokenizationKey,
         if (amount != null) 'amount': amount,
-        if (collectDeviceData != null) 'collectDeviceData': collectDeviceData,
-        if (requestThreeDSecureVerification != null)
-          'requestThreeDSecureVerification': requestThreeDSecureVerification,
+        'collectDeviceData': collectDeviceData,
+        'requestThreeDSecureVerification': requestThreeDSecureVerification,
         if (googlePaymentRequest != null)
-          'googlePaymentRequest': googlePaymentRequest.toJson(),
-        if (paypalRequest != null) 'paypalRequest': paypalRequest.toJson(),
+          'googlePaymentRequest': googlePaymentRequest!.toJson(),
+        if (paypalRequest != null) 'paypalRequest': paypalRequest!.toJson(),
         if (applePayRequest != null)
-          'applePayRequest': applePayRequest.toJson(),
-        if (venmoEnabled != null) 'venmoEnabled': venmoEnabled,
-        if (cardEnabled != null) 'cardEnabled': cardEnabled,
-        if (maskCardNumber != null) 'maskCardNumber': maskCardNumber,
-        if (maskSecurityCode != null) 'maskSecurityCode': maskSecurityCode,
-        if (vaultManagerEnabled != null)
-          'vaultManagerEnabled': vaultManagerEnabled,
+          'applePayRequest': applePayRequest!.toJson(),
+        'venmoEnabled': venmoEnabled,
+        'cardEnabled': cardEnabled,
+        'maskCardNumber': maskCardNumber,
+        'maskSecurityCode': maskSecurityCode,
+        'vaultManagerEnabled': vaultManagerEnabled,
       };
 }
 
 class BraintreeCreditCardRequest {
   BraintreeCreditCardRequest({
-    this.cardNumber,
-    this.expirationMonth,
-    this.expirationYear,
-    this.cvv,
+    required this.cardNumber,
+    required this.expirationMonth,
+    required this.expirationYear,
+    required this.cvv,
   });
 
   /// Number shown on the credit card.
@@ -102,17 +100,17 @@ class BraintreeCreditCardRequest {
   String cvv;
 
   Map<String, dynamic> toJson() => {
-        if (cardNumber != null) 'cardNumber': cardNumber,
-        if (expirationMonth != null) 'expirationMonth': expirationMonth,
-        if (expirationYear != null) 'expirationYear': expirationYear,
-        if (cvv != null) 'cvv': cvv,
-  };
+        'cardNumber': cardNumber,
+        'expirationMonth': expirationMonth,
+        'expirationYear': expirationYear,
+        'cvv': cvv,
+      };
 }
 
 class BraintreeGooglePaymentRequest {
   BraintreeGooglePaymentRequest({
-    this.totalPrice,
-    this.currencyCode,
+    required this.totalPrice,
+    required this.currencyCode,
     this.billingAddressRequired = true,
     this.googleMerchantID,
   });
@@ -127,14 +125,13 @@ class BraintreeGooglePaymentRequest {
   bool billingAddressRequired;
 
   /// Google Merchant ID. Optional in sandbox, but if set, must be a valid production Google Merchant ID.
-  String googleMerchantID;
+  String? googleMerchantID;
 
   /// Converts this request object into a JSON-encodable format.
   Map<String, dynamic> toJson() => {
-        if (totalPrice != null) 'totalPrice': totalPrice,
-        if (currencyCode != null) 'currencyCode': currencyCode,
-        if (billingAddressRequired != null)
-          'billingAddressRequired': billingAddressRequired,
+        'totalPrice': totalPrice,
+        'currencyCode': currencyCode,
+        'billingAddressRequired': billingAddressRequired,
         if (googleMerchantID != null) 'googleMerchantID': googleMerchantID,
       };
 }
@@ -149,16 +146,16 @@ class BraintreePayPalRequest {
 
   /// Amount of the transaction. If [amount] is `null`, PayPal will use the billing agreement (Vault) flow.
   /// If [amount] is set, PayPal will follow the one time payment (Checkout) flow.
-  String amount;
+  String? amount;
 
   /// Currency code. If set to null`null`, PayPal will choose it based on the active merchant account in the client token.
-  String currencyCode;
+  String? currencyCode;
 
   /// The merchant name displayed in the PayPal flow. If set to `null`, PayPal will use the company name in your Braintree account.
-  String displayName;
+  String? displayName;
 
   /// Description for the billing agreement for the Vault flow.
-  String billingAgreementDescription;
+  String? billingAgreementDescription;
 
   /// Converts this request object into a JSON-encodable format.
   Map<String, dynamic> toJson() => {
@@ -172,15 +169,12 @@ class BraintreePayPalRequest {
 
 class BraintreeApplePayRequest {
   BraintreeApplePayRequest({
-    this.amount,
-    this.displayName,
-    this.currencyCode,
-    this.countryCode,
-    this.appleMerchantID,
-  })  : assert(amount != null),
-        assert(displayName != null),
-        assert(currencyCode != null && countryCode != null),
-        assert(appleMerchantID != null);
+    required this.amount,
+    required this.displayName,
+    required this.currencyCode,
+    required this.countryCode,
+    required this.appleMerchantID,
+  });
 
   /// The item's amount.
   final double amount;
@@ -199,10 +193,10 @@ class BraintreeApplePayRequest {
 
   /// Converts this request object into a JSON-encodable format.
   Map<String, dynamic> toJson() => {
-        if (amount != null) 'amount': amount,
-        if (currencyCode != null) 'currencyCode': currencyCode,
-        if (displayName != null) 'displayName': displayName,
-        if (countryCode != null) 'countryCode': countryCode,
-        if (appleMerchantID != null) 'appleMerchantID': appleMerchantID,
+        'amount': amount,
+        'currencyCode': currencyCode,
+        'displayName': displayName,
+        'countryCode': countryCode,
+        'appleMerchantID': appleMerchantID,
       };
 }

@@ -15,16 +15,15 @@ class Braintree {
   /// [request] should contain all the credit card information necessary for tokenization.
   ///
   /// Returns a [Future] that resolves to a [BraintreePaymentMethodNonce] if the tokenization was successful.
-  static Future<BraintreePaymentMethodNonce> tokenizeCreditCard(
+  static Future<BraintreePaymentMethodNonce?> tokenizeCreditCard(
     String authorization,
     BraintreeCreditCardRequest request,
   ) async {
-    assert(authorization != null);
-    assert(request != null);
     final result = await _kChannel.invokeMethod('tokenizeCreditCard', {
       'authorization': authorization,
       'request': request.toJson(),
     });
+    if (result == null) return null;
     return BraintreePaymentMethodNonce.fromJson(result);
   }
 
@@ -35,16 +34,15 @@ class Braintree {
   ///
   /// Returns a [Future] that resolves to a [BraintreePaymentMethodNonce] if the user confirmed the request,
   /// or `null` if the user canceled the Vault or Checkout flow.
-  static Future<BraintreePaymentMethodNonce> requestPaypalNonce(
+  static Future<BraintreePaymentMethodNonce?> requestPaypalNonce(
     String authorization,
     BraintreePayPalRequest request,
   ) async {
-    assert(authorization != null);
-    assert(request != null);
     final result = await _kChannel.invokeMethod('requestPaypalNonce', {
       'authorization': authorization,
       'request': request.toJson(),
     });
+    if (result == null) return null;
     return BraintreePaymentMethodNonce.fromJson(result);
   }
 }

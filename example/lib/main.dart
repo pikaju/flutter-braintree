@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RaisedButton(
+            ElevatedButton(
               onPressed: () async {
                 var request = BraintreeDropInRequest(
                   tokenizationKey: tokenizationKey,
@@ -61,23 +61,22 @@ class _MyAppState extends State<MyApp> {
                   ),
                   cardEnabled: true,
                 );
-                BraintreeDropInResult result =
-                    await BraintreeDropIn.start(request);
+                final result = await BraintreeDropIn.start(request);
                 if (result != null) {
                   showNonce(result.paymentMethodNonce);
                 }
               },
               child: Text('LAUNCH NATIVE DROP-IN'),
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () async {
                 final request = BraintreeCreditCardRequest(
                   cardNumber: '4111111111111111',
                   expirationMonth: '12',
                   expirationYear: '2021',
+                  cvv: '123',
                 );
-                BraintreePaymentMethodNonce result =
-                    await Braintree.tokenizeCreditCard(
+                final result = await Braintree.tokenizeCreditCard(
                   tokenizationKey,
                   request,
                 );
@@ -87,15 +86,14 @@ class _MyAppState extends State<MyApp> {
               },
               child: Text('TOKENIZE CREDIT CARD'),
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () async {
                 final request = BraintreePayPalRequest(
                   billingAgreementDescription:
                       'I hereby agree that flutter_braintree is great.',
                   displayName: 'Your Company',
                 );
-                BraintreePaymentMethodNonce result =
-                    await Braintree.requestPaypalNonce(
+                final result = await Braintree.requestPaypalNonce(
                   tokenizationKey,
                   request,
                 );
@@ -105,11 +103,10 @@ class _MyAppState extends State<MyApp> {
               },
               child: Text('PAYPAL VAULT FLOW'),
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () async {
                 final request = BraintreePayPalRequest(amount: '13.37');
-                BraintreePaymentMethodNonce result =
-                    await Braintree.requestPaypalNonce(
+                final result = await Braintree.requestPaypalNonce(
                   tokenizationKey,
                   request,
                 );

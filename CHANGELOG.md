@@ -1,3 +1,7 @@
+## 2.0.0-nullsafety.0
+
+* Add null-safety support
+
 ## 1.2.1
 
 * Fix Android build (hopefully)
