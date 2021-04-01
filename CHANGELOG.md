@@ -1,3 +1,7 @@
+## 1.2.1
+
+* Fix Android build (hopefully)
+
 ## 1.2.0
 
 * Add option for CreditCard CVV number (thank you to [ilicmilan](https://github.com/ilicmilan)!)
