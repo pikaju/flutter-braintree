@@ -1,3 +1,7 @@
+## 1.2.0
+
+* Add option for CreditCard CVV number (thank you to [ilicmilan](https://github.com/ilicmilan)!)
+
 ## 1.1.0+1
 
 * Fix vulnerability in Braintree plugin (Play Store issue)
