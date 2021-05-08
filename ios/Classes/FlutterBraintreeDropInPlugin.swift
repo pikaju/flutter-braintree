@@ -4,6 +4,31 @@ import Braintree
 import BraintreeDropIn
 import PassKit
 
+func makePaymentSummaryItems(from: Dictionary<String, Any>) -> [PKPaymentSummaryItem]? {
+    guard let paymentSummaryItems = from["paymentSummaryItems"] as? [Dictionary<String, Any>] else {
+        return nil;
+    }
+
+    var outList: [PKPaymentSummaryItem] = []
+    for paymentSummaryItem in paymentSummaryItems {
+        guard let label = paymentSummaryItem["label"] as? String else {
+            return nil;
+        }
+        guard let amount = paymentSummaryItem["amount"] as? Double else {
+            return nil;
+        }
+        guard let type = paymentSummaryItem["type"] as? UInt else {
+            return nil;
+        }
+        guard let pkType = PKPaymentSummaryItemType.init(rawValue: type) else {
+            return nil;
+        }
+        outList.append(PKPaymentSummaryItem(label: label, amount: NSDecimalNumber(value: amount), type: pkType));
+    }
+
+    return outList;
+}
+
 public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPlugin, BTThreeDSecureRequestDelegate {
     
     private var completionBlock: FlutterResult!
@@ -100,12 +125,15 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
         let paymentRequest = PKPaymentRequest()
         paymentRequest.supportedNetworks = [.visa, .masterCard, .amex, .discover]
         paymentRequest.merchantCapabilities = .capability3DS
-        let amount = applePayInfo["amount"] as! Double
-        paymentRequest.paymentSummaryItems = [PKPaymentSummaryItem(label: applePayInfo["displayName"] as! String, amount: NSDecimalNumber(value: amount))]
         paymentRequest.countryCode = applePayInfo["countryCode"] as! String
         paymentRequest.currencyCode = applePayInfo["currencyCode"] as! String
         paymentRequest.merchantIdentifier = applePayInfo["appleMerchantID"] as! String
         
+        guard let paymentSummaryItems = makePaymentSummaryItems(from: applePayInfo) else {
+            return;
+        }
+        paymentRequest.paymentSummaryItems = paymentSummaryItems;
+
         guard let applePayController = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest) else {
             return
         }
