@@ -28,7 +28,7 @@ open class BaseFlutterBraintreePlugin: NSObject {
         [
             "nonce": nonce?.nonce,
             "typeLabel": nonce?.type,
-            "description": nonce?.localizedDescription,
+            "description": nonce?.nonce,
             "isDefault": nonce?.isDefault
         ];
     }
