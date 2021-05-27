@@ -21,10 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a91dc45c-820b-4f9c-9ec5-330558cb4d90" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/Podfile.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Classes/BaseFlutterBraintreePlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/BaseFlutterBraintreePlugin.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Classes/FlutterBraintreeCustomPlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/FlutterBraintreeCustomPlugin.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/flutter_braintree.podspec" beforeDir="false" afterPath="$PROJECT_DIR$/ios/flutter_braintree.podspec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,22 +69,22 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1383" height="409" key="GridCell.Tab.0.bottom" timestamp="1622096630922">
+    <state width="1383" height="364" key="GridCell.Tab.0.bottom" timestamp="1622097905386">
       <screen x="58" y="25" width="1862" height="1055" />
     </state>
-    <state width="1383" height="409" key="GridCell.Tab.0.bottom/58.25.1862.1055/1920.187.1792.1095@58.25.1862.1055" timestamp="1622096630922" />
-    <state width="1383" height="409" key="GridCell.Tab.0.center" timestamp="1622096630921">
+    <state width="1383" height="364" key="GridCell.Tab.0.bottom/58.25.1862.1055/1920.187.1792.1095@58.25.1862.1055" timestamp="1622097905386" />
+    <state width="1383" height="364" key="GridCell.Tab.0.center" timestamp="1622097905385">
       <screen x="58" y="25" width="1862" height="1055" />
     </state>
-    <state width="1383" height="409" key="GridCell.Tab.0.center/58.25.1862.1055/1920.187.1792.1095@58.25.1862.1055" timestamp="1622096630921" />
-    <state width="1383" height="409" key="GridCell.Tab.0.left" timestamp="1622096630921">
+    <state width="1383" height="364" key="GridCell.Tab.0.center/58.25.1862.1055/1920.187.1792.1095@58.25.1862.1055" timestamp="1622097905385" />
+    <state width="1383" height="364" key="GridCell.Tab.0.left" timestamp="1622097905385">
       <screen x="58" y="25" width="1862" height="1055" />
     </state>
-    <state width="1383" height="409" key="GridCell.Tab.0.left/58.25.1862.1055/1920.187.1792.1095@58.25.1862.1055" timestamp="1622096630921" />
-    <state width="1383" height="409" key="GridCell.Tab.0.right" timestamp="1622096630922">
+    <state width="1383" height="364" key="GridCell.Tab.0.left/58.25.1862.1055/1920.187.1792.1095@58.25.1862.1055" timestamp="1622097905385" />
+    <state width="1383" height="364" key="GridCell.Tab.0.right" timestamp="1622097905385">
       <screen x="58" y="25" width="1862" height="1055" />
     </state>
-    <state width="1383" height="409" key="GridCell.Tab.0.right/58.25.1862.1055/1920.187.1792.1095@58.25.1862.1055" timestamp="1622096630922" />
+    <state width="1383" height="364" key="GridCell.Tab.0.right/58.25.1862.1055/1920.187.1792.1095@58.25.1862.1055" timestamp="1622097905385" />
     <state x="508" y="393" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1622096628792">
       <screen x="58" y="25" width="1862" height="1055" />
     </state>
