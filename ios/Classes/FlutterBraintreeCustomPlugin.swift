@@ -35,10 +35,14 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
                 return
             }
             
-            let amount = requestInfo["amount"] as? String;
+            guard let amount = requestInfo["amount"] as? String else {
+                returnMissingAmountError(result: result)
+                self.isHandlingResult = false
+                return
+            };
             
             
-            let paypalRequest = BTPayPalCheckoutRequest(amount: amount!)
+            let paypalRequest = BTPayPalCheckoutRequest(amount: amount)
             paypalRequest.currencyCode = requestInfo["currencyCode"] as? String;
             paypalRequest.displayName = requestInfo["displayName"] as? String;
             paypalRequest.billingAgreementDescription = requestInfo["billingAgreementDescription"] as? String;
