@@ -1,3 +1,7 @@
+## 2.0.0+1
+
+* Fix new build issue on iOS (thank you to [JideGuru](https://github.com/JideGuru)!)
+
 ## 2.0.0
 
 * Upgrade several dependencies to fix build issues on Android and iOS (thank you to [bennibau](https://github.com/bennibau), [reverie-ss](https://github.com/reverie-ss), and [andesappal](https://github.com/andesappal)!)
