@@ -6,11 +6,13 @@ import PassKit
 
 public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPlugin, BTThreeDSecureRequestDelegate {
     
+
+    
     private var completionBlock: FlutterResult!
     private var applePayInfo = [String : Any]()
     private var authorization: String!
     
-    public func onLookupComplete(_ request: BTThreeDSecureRequest, result: BTThreeDSecureLookup, next: @escaping () -> Void) {
+    public func onLookupComplete(_ request: BTThreeDSecureRequest, lookupResult result: BTThreeDSecureResult, next: @escaping () -> Void) {
         next();
     }
     
@@ -40,10 +42,7 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
                 threeDSecureRequest.amount = NSDecimalNumber(string: amount)
                 dropInRequest.threeDSecureRequest = threeDSecureRequest
             }
-            
-            if let requestThreeDSecureVerification = bool(for: "requestThreeDSecureVerification", in: call) {
-                dropInRequest.threeDSecureVerification = requestThreeDSecureVerification
-            }
+
             
             if let vaultManagerEnabled = bool(for: "vaultManagerEnabled", in: call) {
                 dropInRequest.vaultManager = vaultManagerEnabled
@@ -54,9 +53,12 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
             }
             
             if let paypalInfo = dict(for: "paypalRequest", in: call) {
-                let amount = paypalInfo["amount"] as? String;
+                guard let amount = paypalInfo["amount"] as? String else {
+                    result(FlutterError(code: "braintree_error", message: "No Amount found for payment request", details: nil))
+                    return
+                };
                 
-                let paypalRequest = amount != nil ? BTPayPalRequest(amount: amount!) : BTPayPalRequest();
+                let paypalRequest = BTPayPalCheckoutRequest(amount: amount);
                 paypalRequest.currencyCode = paypalInfo["currencyCode"] as? String;
                 paypalRequest.displayName = paypalInfo["displayName"] as? String;
                 paypalRequest.billingAgreementDescription = paypalInfo["billingAgreementDescription"] as? String;
@@ -118,10 +120,10 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
     private func handleResult(result: BTDropInResult?, error: Error?, flutterResult: FlutterResult) {
         if error != nil {
             returnBraintreeError(result: flutterResult, error: error!)
-        } else if result?.isCancelled ?? false {
+        } else if result?.isCanceled ?? false {
             flutterResult(nil)
         } else {
-            if let result = result, result.paymentOptionType == .applePay {
+            if let result = result, result.paymentMethodType == .applePay {
                 setupApplePay(flutterResult: flutterResult)
             } else {
                 flutterResult(["paymentMethodNonce": buildPaymentNonceDict(nonce: result?.paymentMethod)])

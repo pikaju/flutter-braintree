@@ -28,13 +28,17 @@ open class BaseFlutterBraintreePlugin: NSObject {
         [
             "nonce": nonce?.nonce,
             "typeLabel": nonce?.type,
-            "description": nonce?.localizedDescription,
+            "description": nonce?.nonce,
             "isDefault": nonce?.isDefault
         ];
     }
     
     internal func returnAuthorizationMissingError (result: FlutterResult) {
         result(FlutterError(code: "braintree_error", message: "Authorization not specified (no clientToken or tokenizationKey)", details: nil))
+    }
+    
+    internal func returnMissingAmountError (result: FlutterResult) {
+        result(FlutterError(code: "braintree_error", message: "There was no amount provided in the request", details: nil))
     }
     
     internal func returnBraintreeError(result: FlutterResult, error: Error) {
