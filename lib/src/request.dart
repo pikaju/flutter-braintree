@@ -167,17 +167,59 @@ class BraintreePayPalRequest {
       };
 }
 
+enum ApplePaySummaryItemType {
+  Final,
+  Pending,
+}
+
+extension ApplePaySummaryItemTypeExtension on ApplePaySummaryItemType {
+  int? get rawValue {
+    switch (this) {
+      case ApplePaySummaryItemType.Final:
+        return 0;
+      case ApplePaySummaryItemType.Pending:
+        return 1;
+      default:
+        return null;
+    }
+  }
+}
+
+class ApplePaySummaryItem {
+  ApplePaySummaryItem({
+    required this.label,
+    required this.amount,
+    required this.type,
+  });
+
+  /// Payment summary item label (name).
+  final String label;
+
+  /// Payment summary item amount (price).
+  final double amount;
+
+  /// Payment summary item type - `Final` if the amount is final, or `Pending` if the amount is not known at the time (eg. Taxi fare).
+  final ApplePaySummaryItemType type;
+
+  /// Converts this summary item object into a JSON-encodable format.
+  Map<String, dynamic> toJson() => {
+        'label': label,
+        'amount': amount,
+        'type': type.rawValue,
+      };
+}
+
 class BraintreeApplePayRequest {
   BraintreeApplePayRequest({
-    required this.amount,
+    required this.paymentSummaryItems,
     required this.displayName,
     required this.currencyCode,
     required this.countryCode,
     required this.appleMerchantID,
   });
 
-  /// The item's amount.
-  final double amount;
+  /// A summary of the payment.
+  final List<ApplePaySummaryItem> paymentSummaryItems;
 
   /// Short description of the item.
   final String displayName;
@@ -193,7 +235,8 @@ class BraintreeApplePayRequest {
 
   /// Converts this request object into a JSON-encodable format.
   Map<String, dynamic> toJson() => {
-        'amount': amount,
+        'paymentSummaryItems':
+            paymentSummaryItems.map((item) => item.toJson()).toList(),
         'currencyCode': currencyCode,
         'displayName': displayName,
         'countryCode': countryCode,
