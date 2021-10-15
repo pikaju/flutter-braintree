@@ -43,6 +43,10 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
                 dropInRequest.threeDSecureRequest = threeDSecureRequest
             }
 
+            var deviceData: String?
+            if let collectDeviceData = bool(for: "collectDeviceData", in: call), collectDeviceData {
+                deviceData = PPDataCollector.collectPayPalDeviceData()
+            }
             
             if let vaultManagerEnabled = bool(for: "vaultManagerEnabled", in: call) {
                 dropInRequest.vaultManager = vaultManagerEnabled
@@ -53,16 +57,18 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
             }
             
             if let paypalInfo = dict(for: "paypalRequest", in: call) {
-                guard let amount = paypalInfo["amount"] as? String else {
-                    result(FlutterError(code: "braintree_error", message: "No Amount found for payment request", details: nil))
-                    return
-                };
-                
-                let paypalRequest = BTPayPalCheckoutRequest(amount: amount);
-                paypalRequest.currencyCode = paypalInfo["currencyCode"] as? String;
-                paypalRequest.displayName = paypalInfo["displayName"] as? String;
-                paypalRequest.billingAgreementDescription = paypalInfo["billingAgreementDescription"] as? String;
-                dropInRequest.payPalRequest = paypalRequest
+                if let amount = paypalInfo["amount"] as? String {
+                    let paypalRequest = BTPayPalCheckoutRequest(amount: amount)
+                    paypalRequest.currencyCode = paypalInfo["currencyCode"] as? String
+                    paypalRequest.displayName = paypalInfo["displayName"] as? String
+                    paypalRequest.billingAgreementDescription = paypalInfo["billingAgreementDescription"] as? String
+                    dropInRequest.payPalRequest = paypalRequest
+                } else {
+                    let paypalRequest = BTPayPalVaultRequest()
+                    paypalRequest.displayName = paypalInfo["displayName"] as? String
+                    paypalRequest.billingAgreementDescription = paypalInfo["billingAgreementDescription"] as? String
+                    dropInRequest.payPalRequest = paypalRequest
+                }
             } else {
                 dropInRequest.paypalDisabled = true
             }
@@ -84,7 +90,7 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
             let dropInController = BTDropInController(authorization: authorization, request: dropInRequest) { (controller, braintreeResult, error) in
                 controller.dismiss(animated: true, completion: nil)
                 
-                self.handleResult(result: braintreeResult, error: error, flutterResult: result)
+                self.handleResult(result: braintreeResult, error: error, flutterResult: result, deviceData: deviceData)
                 self.isHandlingResult = false
             }
             
@@ -117,7 +123,7 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
         UIApplication.shared.keyWindow?.rootViewController?.present(applePayController, animated: true, completion: nil)
     }
     
-    private func handleResult(result: BTDropInResult?, error: Error?, flutterResult: FlutterResult) {
+    private func handleResult(result: BTDropInResult?, error: Error?, flutterResult: FlutterResult, deviceData: String?) {
         if error != nil {
             returnBraintreeError(result: flutterResult, error: error!)
         } else if result?.isCanceled ?? false {
@@ -126,7 +132,7 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
             if let result = result, result.paymentMethodType == .applePay {
                 setupApplePay(flutterResult: flutterResult)
             } else {
-                flutterResult(["paymentMethodNonce": buildPaymentNonceDict(nonce: result?.paymentMethod)])
+                flutterResult(["paymentMethodNonce": buildPaymentNonceDict(nonce: result?.paymentMethod), "deviceData": deviceData])
             }
         }
     }
