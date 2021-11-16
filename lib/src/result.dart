@@ -25,6 +25,7 @@ class BraintreePaymentMethodNonce {
     required this.typeLabel,
     required this.description,
     required this.isDefault,
+    this.paypalPayerId,
   });
 
   factory BraintreePaymentMethodNonce.fromJson(dynamic source) {
@@ -33,6 +34,7 @@ class BraintreePaymentMethodNonce {
       typeLabel: source['typeLabel'],
       description: source['description'],
       isDefault: source['isDefault'],
+      paypalPayerId: source['paypalPayerId'],
     );
   }
 
@@ -48,4 +50,7 @@ class BraintreePaymentMethodNonce {
 
   /// True if this payment method is the default for the current customer, false otherwise.
   final bool isDefault;
+
+  /// PayPal payer id if requesting for paypal nonce
+  final String? paypalPayerId;
 }
