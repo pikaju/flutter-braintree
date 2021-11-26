@@ -1,6 +1,10 @@
-## 2.1.0
+## 2.2.0
 
-* Add PayPal Payer ID to Android result object (thank you to [nabinadhikari](https://github.com/nabinadhikari)!)
+* Add PayPal Payer ID to result object (thank you to [nabinadhikari](https://github.com/nabinadhikari)!)
+
+## 2.1.0
+* Fix PayPal vault flow not working on iOS (thank you to [andrea689](https://github.com/andrea689)!)
+* Add support for Apple Pay's `PKPaymentSummaryItem` (thank you to [bkovac](https://github.com/bkovac)!)
 
 ## 2.0.0+1
 
