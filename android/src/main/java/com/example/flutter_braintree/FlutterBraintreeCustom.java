@@ -15,6 +15,7 @@ import com.braintreepayments.api.interfaces.PaymentMethodNonceCreatedListener;
 import com.braintreepayments.api.models.CardBuilder;
 import com.braintreepayments.api.models.PayPalRequest;
 import com.braintreepayments.api.models.PaymentMethodNonce;
+import com.braintreepayments.api.models.PayPalAccountNonce;
 
 import java.util.HashMap;
 
@@ -79,6 +80,10 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
         nonceMap.put("typeLabel", paymentMethodNonce.getTypeLabel());
         nonceMap.put("description", paymentMethodNonce.getDescription());
         nonceMap.put("isDefault", paymentMethodNonce.isDefault());
+        if (paymentMethodNonce instanceof PayPalAccountNonce) {
+            PayPalAccountNonce paypalAccountNonce = (PayPalAccountNonce) paymentMethodNonce;
+            nonceMap.put("paypalPayerId", paypalAccountNonce.getPayerId());
+        }
 
         Intent result = new Intent();
         result.putExtra("type", "paymentMethodNonce");
