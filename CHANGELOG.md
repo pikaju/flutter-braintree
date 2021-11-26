@@ -1,3 +1,7 @@
+## 2.1.0
+
+* Add PayPal Payer ID to Android result object (thank you to [nabinadhikari](https://github.com/nabinadhikari)!)
+
 ## 2.0.0+1
 
 * Fix new build issue on iOS (thank you to [JideGuru](https://github.com/JideGuru)!)
