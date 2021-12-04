@@ -229,8 +229,8 @@
 				"${BUILT_PRODUCTS_DIR}/Braintree/Braintree.framework",
 				"${BUILT_PRODUCTS_DIR}/BraintreeDropIn/BraintreeDropIn.framework",
 				"${BUILT_PRODUCTS_DIR}/flutter_braintree/flutter_braintree.framework",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/PPRiskMagnes/PPRiskMagnes.framework/PPRiskMagnes",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/CardinalMobile/CardinalMobile.framework/CardinalMobile",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Braintree/PayPalDataCollector/PPRiskMagnes.framework/PPRiskMagnes",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Braintree/ThreeDSecure/CardinalMobile.framework/CardinalMobile",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (

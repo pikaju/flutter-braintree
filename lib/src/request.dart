@@ -10,6 +10,7 @@ class BraintreeDropInRequest {
     this.applePayRequest,
     this.venmoEnabled = true,
     this.cardEnabled = true,
+    this.paypalEnabled = true,
     this.maskCardNumber = false,
     this.maskSecurityCode = false,
     this.vaultManagerEnabled = false,
@@ -45,6 +46,9 @@ class BraintreeDropInRequest {
   /// Whether cards should be enabled.
   bool cardEnabled;
 
+  /// Whether paypal should be enabled.
+  bool paypalEnabled;
+
   /// Whether the card number should be masked if the field is not focused.
   bool maskCardNumber;
 
@@ -73,6 +77,7 @@ class BraintreeDropInRequest {
           'applePayRequest': applePayRequest!.toJson(),
         'venmoEnabled': venmoEnabled,
         'cardEnabled': cardEnabled,
+        'paypalEnabled': cardEnabled,
         'maskCardNumber': maskCardNumber,
         'maskSecurityCode': maskSecurityCode,
         'vaultManagerEnabled': vaultManagerEnabled,
