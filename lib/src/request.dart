@@ -142,6 +142,8 @@ class BraintreePayPalRequest {
     this.currencyCode,
     this.displayName,
     this.billingAgreementDescription,
+    this.payPalPaymentIntent,
+    this.payPalPaymentUserAction,
   });
 
   /// Amount of the transaction. If [amount] is `null`, PayPal will use the billing agreement (Vault) flow.
@@ -157,6 +159,12 @@ class BraintreePayPalRequest {
   /// Description for the billing agreement for the Vault flow.
   String? billingAgreementDescription;
 
+  /// PayPalPaymentIntent. Options are INTENT_AUTHORIZE,INTENT_SALE,INTENT_ORDER
+  PayPalPaymentIntent? payPalPaymentIntent;
+
+  ///PayPalPaymentUserAction. Options are USER_ACTION_DEFAULT, USER_ACTION_COMMIT
+  PayPalPaymentUserAction? payPalPaymentUserAction;
+
   /// Converts this request object into a JSON-encodable format.
   Map<String, dynamic> toJson() => {
         if (amount != null) 'amount': amount,
@@ -164,7 +172,44 @@ class BraintreePayPalRequest {
         if (displayName != null) 'displayName': displayName,
         if (billingAgreementDescription != null)
           'billingAgreementDescription': billingAgreementDescription,
+        'payPalPaymentIntent': payPalPaymentIntent == null
+            ? PayPalPaymentIntent.INTENT_AUTHORIZE.rawValue
+            : payPalPaymentIntent?.rawValue,
+        if (payPalPaymentUserAction != null)
+          'payPalPaymentUserAction': payPalPaymentUserAction,
       };
+}
+
+enum PayPalPaymentUserAction { USER_ACTION_DEFAULT, USER_ACTION_COMMIT }
+
+extension PayPalPaymentUserActionExtension on PayPalPaymentUserAction {
+  String? get rawValue {
+    switch (this) {
+      case PayPalPaymentUserAction.USER_ACTION_DEFAULT:
+        return '';
+      case PayPalPaymentUserAction.USER_ACTION_COMMIT:
+        return 'commit';
+      default:
+        return null;
+    }
+  }
+}
+
+enum PayPalPaymentIntent { INTENT_ORDER, INTENT_SALE, INTENT_AUTHORIZE }
+
+extension PayPalPaymentIntentExtension on PayPalPaymentIntent {
+  String? get rawValue {
+    switch (this) {
+      case PayPalPaymentIntent.INTENT_AUTHORIZE:
+        return 'authorize';
+      case PayPalPaymentIntent.INTENT_SALE:
+        return 'sale';
+      case PayPalPaymentIntent.INTENT_ORDER:
+        return 'order';
+      default:
+        return null;
+    }
+  }
 }
 
 enum ApplePaySummaryItemType {
