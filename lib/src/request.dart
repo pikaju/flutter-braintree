@@ -176,7 +176,7 @@ class BraintreePayPalRequest {
             ? PayPalPaymentIntent.INTENT_AUTHORIZE.rawValue
             : payPalPaymentIntent?.rawValue,
         if (payPalPaymentUserAction != null)
-          'payPalPaymentUserAction': payPalPaymentUserAction,
+          'payPalPaymentUserAction': payPalPaymentUserAction?.rawValue,
       };
 }
 
