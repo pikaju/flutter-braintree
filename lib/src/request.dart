@@ -143,6 +143,7 @@ class BraintreePayPalRequest {
     this.displayName,
     this.billingAgreementDescription,
     this.payPalPaymentIntent,
+    this.payPalPaymentUserAction,
   });
 
   /// Amount of the transaction. If [amount] is `null`, PayPal will use the billing agreement (Vault) flow.
