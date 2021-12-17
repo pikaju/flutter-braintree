@@ -66,24 +66,7 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
                 let paypalRequest = BTPayPalVaultRequest()
                 paypalRequest.displayName = requestInfo["displayName"] as? String
                 paypalRequest.billingAgreementDescription = requestInfo["billingAgreementDescription"] as? String
-                if let intent = requestInfo["payPalPaymentIntent"] as? String {
-                    switch intent {
-                    case "order":
-                        paypalRequest.intent = BTPayPalRequestIntent.order
-                    case "sale":
-                        paypalRequest.intent = BTPayPalRequestIntent.sale
-                    default:
-                        paypalRequest.intent = BTPayPalRequestIntent.authorize
-                    }
-                }
-                if let userAction = requestInfo["payPalPaymentUserAction"] as? String {
-                    switch userAction {
-                    case "commit":
-                        paypalRequest.userAction = BTPayPalRequestUserAction.commit
-                    default:
-                        paypalRequest.userAction = BTPayPalRequestUserAction.default
-                    }
-                }
+                
                 driver.tokenizePayPalAccount(with: paypalRequest) { (nonce, error) in
                     self.handleResult(nonce: nonce, error: error, flutterResult: result)
                     self.isHandlingResult = false
