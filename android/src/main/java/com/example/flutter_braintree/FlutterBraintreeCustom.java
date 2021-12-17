@@ -58,11 +58,17 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
 
     protected void requestPaypalNonce() {
         Intent intent = getIntent();
+        String paypalIntent;
+        switch (intent.getStringExtra("payPalPaymentIntent")){
+            case PayPalRequest.INTENT_ORDER: paypalIntent = PayPalRequest.INTENT_ORDER; break;
+            case PayPalRequest.INTENT_SALE: paypalIntent = PayPalRequest.INTENT_SALE; break;
+            default: paypalIntent = PayPalRequest.INTENT_AUTHORIZE; break;
+        }
         PayPalRequest request = new PayPalRequest(intent.getStringExtra("amount"))
                 .currencyCode(intent.getStringExtra("currencyCode"))
                 .displayName(intent.getStringExtra("displayName"))
                 .billingAgreementDescription(intent.getStringExtra("billingAgreementDescription"))
-                .intent(PayPalRequest.INTENT_AUTHORIZE);
+                .intent(paypalIntent);
 
         if (intent.getStringExtra("amount") == null) {
             // Vault flow

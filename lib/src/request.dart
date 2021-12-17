@@ -142,6 +142,7 @@ class BraintreePayPalRequest {
     this.currencyCode,
     this.displayName,
     this.billingAgreementDescription,
+    this.payPalPaymentIntent,
   });
 
   /// Amount of the transaction. If [amount] is `null`, PayPal will use the billing agreement (Vault) flow.
@@ -157,6 +158,9 @@ class BraintreePayPalRequest {
   /// Description for the billing agreement for the Vault flow.
   String? billingAgreementDescription;
 
+  /// PayPalPaymentIntent. Options are INTENT_AUTHORIZE,INTENT_SALE,INTENT_ORDER
+  PayPalPaymentIntent? payPalPaymentIntent;
+
   /// Converts this request object into a JSON-encodable format.
   Map<String, dynamic> toJson() => {
         if (amount != null) 'amount': amount,
@@ -164,7 +168,27 @@ class BraintreePayPalRequest {
         if (displayName != null) 'displayName': displayName,
         if (billingAgreementDescription != null)
           'billingAgreementDescription': billingAgreementDescription,
+        'payPalPaymentIntent': payPalPaymentIntent == null
+            ? PayPalPaymentIntent.INTENT_AUTHORIZE.rawValue
+            : payPalPaymentIntent?.rawValue,
       };
+}
+
+enum PayPalPaymentIntent { INTENT_ORDER, INTENT_SALE, INTENT_AUTHORIZE }
+
+extension PayPalPaymentIntentExtension on PayPalPaymentIntent {
+  String? get rawValue {
+    switch (this) {
+      case PayPalPaymentIntent.INTENT_AUTHORIZE:
+        return 'authorize';
+      case PayPalPaymentIntent.INTENT_SALE:
+        return 'sale';
+      case PayPalPaymentIntent.INTENT_ORDER:
+        return 'order';
+      default:
+        return null;
+    }
+  }
 }
 
 enum ApplePaySummaryItemType {
