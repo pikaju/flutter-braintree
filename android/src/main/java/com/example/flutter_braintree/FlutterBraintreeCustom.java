@@ -64,11 +64,17 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
             case PayPalRequest.INTENT_SALE: paypalIntent = PayPalRequest.INTENT_SALE; break;
             default: paypalIntent = PayPalRequest.INTENT_AUTHORIZE; break;
         }
+        String payPalPaymentUserAction = PayPalRequest.USER_ACTION_DEFAULT;
+        if (PayPalRequest.USER_ACTION_COMMIT.equals(intent.getStringExtra("payPalPaymentUserAction"))) {
+            payPalPaymentUserAction = PayPalRequest.USER_ACTION_COMMIT;
+        }
         PayPalRequest request = new PayPalRequest(intent.getStringExtra("amount"))
                 .currencyCode(intent.getStringExtra("currencyCode"))
                 .displayName(intent.getStringExtra("displayName"))
                 .billingAgreementDescription(intent.getStringExtra("billingAgreementDescription"))
-                .intent(paypalIntent);
+                .intent(paypalIntent)
+                .userAction(payPalPaymentUserAction);
+        
 
         if (intent.getStringExtra("amount") == null) {
             // Vault flow

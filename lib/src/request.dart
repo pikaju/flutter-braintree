@@ -161,6 +161,9 @@ class BraintreePayPalRequest {
   /// PayPalPaymentIntent. Options are INTENT_AUTHORIZE,INTENT_SALE,INTENT_ORDER
   PayPalPaymentIntent? payPalPaymentIntent;
 
+  ///PayPalPaymentUserAction. Options are USER_ACTION_DEFAULT, USER_ACTION_COMMIT
+  PayPalPaymentUserAction? payPalPaymentUserAction;
+
   /// Converts this request object into a JSON-encodable format.
   Map<String, dynamic> toJson() => {
         if (amount != null) 'amount': amount,
@@ -171,7 +174,24 @@ class BraintreePayPalRequest {
         'payPalPaymentIntent': payPalPaymentIntent == null
             ? PayPalPaymentIntent.INTENT_AUTHORIZE.rawValue
             : payPalPaymentIntent?.rawValue,
+        if (payPalPaymentUserAction != null)
+          'payPalPaymentUserAction': payPalPaymentUserAction,
       };
+}
+
+enum PayPalPaymentUserAction { USER_ACTION_DEFAULT, USER_ACTION_COMMIT }
+
+extension PayPalPaymentUserActionExtension on PayPalPaymentUserAction {
+  String? get rawValue {
+    switch (this) {
+      case PayPalPaymentUserAction.USER_ACTION_DEFAULT:
+        return '';
+      case PayPalPaymentUserAction.USER_ACTION_COMMIT:
+        return 'commit';
+      default:
+        return null;
+    }
+  }
 }
 
 enum PayPalPaymentIntent { INTENT_ORDER, INTENT_SALE, INTENT_AUTHORIZE }
