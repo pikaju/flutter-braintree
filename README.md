@@ -59,7 +59,7 @@ Add the wallet enabled meta-data tag to your `AndroidManifest.xml` (inside the `
 
 You may need to add or uncomment the following line at the top of your `ios/Podfile`:
 ```ruby
-platform :ios, '10.0'
+platform :ios, '12.0'
 ```
 **Warning:** Device data collection is not yet supported for iOS.
 
@@ -67,7 +67,7 @@ platform :ios, '10.0'
 
 In your App Delegate or your Runner project, you need to specify the URL scheme for redirecting payments as following:
 ```swift 
-BTAppSwitch.setReturnURLScheme("com.your-company.your-app.braintree")
+BTAppContextSwitcher.setReturnURLScheme("com.your-company.your-app.payments")
 ```
 
 Moreover, you need to specify the same URL scheme in your `Info.plist`: 
@@ -78,10 +78,10 @@ Moreover, you need to specify the same URL scheme in your `Info.plist`:
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>com.your-company.your-app.braintree</string>
+        <string>com.your-company.your-app.payments</string>
         <key>CFBundleURLSchemes</key>
         <array>
-            <string>com.your-company.your-app.braintree</string>
+            <string>com.your-company.your-app.payments</string>
         </array>
     </dict>
 </array>
