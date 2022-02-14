@@ -1,3 +1,8 @@
+## 2.2.1
+
+* Switch to mavenCentral for Android builds (thank you to [asmengistu](https://github.com/asmengistu)!)
+* Fix README to account for code changes (thank you to [hrvojecukman](https://github.com/hrvojecukman)!)
+
 ## 2.2.0
 
 * Add PayPal Payer ID to result object (thank you to [nabinadhikari](https://github.com/nabinadhikari)!)
