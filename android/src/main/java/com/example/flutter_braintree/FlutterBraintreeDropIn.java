@@ -85,6 +85,7 @@ public class FlutterBraintreeDropIn implements FlutterPlugin, ActivityAware, Met
               .maskCardNumber((Boolean) call.argument("maskCardNumber"))
               .vaultManager((Boolean) call.argument("vaultManagerEnabled"));
 
+
       if (clientToken != null)
         dropInRequest.clientToken(clientToken);
       else if (tokenizationKey != null)
@@ -96,6 +97,8 @@ public class FlutterBraintreeDropIn implements FlutterPlugin, ActivityAware, Met
         dropInRequest.disableVenmo();
       if (!((Boolean) call.argument("cardEnabled")))
         dropInRequest.disableCard();
+      if (!((Boolean) call.argument("paypalEnabled")))
+        dropInRequest.disablePayPal();
 
       if (activeResult != null) {
         result.error("drop_in_already_running", "Cannot launch another Drop-in activity while one is already running.", null);

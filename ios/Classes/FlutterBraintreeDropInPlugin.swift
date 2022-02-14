@@ -80,7 +80,11 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
             if let cardEnabled = bool(for: "cardEnabled", in: call) {
                 dropInRequest.cardDisabled = !cardEnabled
             }
-            
+
+            if let paypalEnabled = bool(for: "paypalEnabled", in: call) {
+                dropInRequest.paypalDisabled = !paypalEnabled
+            }
+
             if let paypalInfo = dict(for: "paypalRequest", in: call) {
                 if let amount = paypalInfo["amount"] as? String {
                     let paypalRequest = BTPayPalCheckoutRequest(amount: amount)

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
   <component name="BranchesTreeState">
     <expand>
       <path>
@@ -20,14 +23,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a91dc45c-820b-4f9c-9ec5-330558cb4d90" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/example/flutter_braintree/FlutterBraintreeDropIn.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/example/flutter_braintree/FlutterBraintreeDropIn.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Flutter/AppFrameworkInfo.plist" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Flutter/AppFrameworkInfo.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Flutter/Flutter.podspec" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Flutter/Flutter.podspec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Podfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_braintree.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_braintree.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Classes/FlutterBraintreeDropInPlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/FlutterBraintreeDropInPlugin.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/request.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/request.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[/Users/vgts/.android/avd/Nexus_6P_API_30.avd]" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -37,12 +51,15 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -67,27 +84,5 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state width="1383" height="364" key="GridCell.Tab.0.bottom" timestamp="1622097905386">
-      <screen x="58" y="25" width="1862" height="1055" />
-    </state>
-    <state width="1383" height="364" key="GridCell.Tab.0.bottom/58.25.1862.1055/1920.187.1792.1095@58.25.1862.1055" timestamp="1622097905386" />
-    <state width="1383" height="364" key="GridCell.Tab.0.center" timestamp="1622097905385">
-      <screen x="58" y="25" width="1862" height="1055" />
-    </state>
-    <state width="1383" height="364" key="GridCell.Tab.0.center/58.25.1862.1055/1920.187.1792.1095@58.25.1862.1055" timestamp="1622097905385" />
-    <state width="1383" height="364" key="GridCell.Tab.0.left" timestamp="1622097905385">
-      <screen x="58" y="25" width="1862" height="1055" />
-    </state>
-    <state width="1383" height="364" key="GridCell.Tab.0.left/58.25.1862.1055/1920.187.1792.1095@58.25.1862.1055" timestamp="1622097905385" />
-    <state width="1383" height="364" key="GridCell.Tab.0.right" timestamp="1622097905385">
-      <screen x="58" y="25" width="1862" height="1055" />
-    </state>
-    <state width="1383" height="364" key="GridCell.Tab.0.right/58.25.1862.1055/1920.187.1792.1095@58.25.1862.1055" timestamp="1622097905385" />
-    <state x="508" y="393" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1622096628792">
-      <screen x="58" y="25" width="1862" height="1055" />
-    </state>
-    <state x="508" y="393" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/58.25.1862.1055/1920.187.1792.1095@58.25.1862.1055" timestamp="1622096628792" />
   </component>
 </project>
