@@ -1,3 +1,7 @@
+## 2.3.0
+
+* Add option to disable PayPal in the Drop-In UI (thank you to [santhoshvgts](https://github.com/santhoshvgts)!)
+
 ## 2.2.1
 
 * Switch to mavenCentral for Android builds (thank you to [asmengistu](https://github.com/asmengistu)!)
