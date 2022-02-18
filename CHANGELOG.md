@@ -1,3 +1,7 @@
+## 2.3.1
+
+* Update iOS dependencies (thank you to [jorgefspereira](https://github.com/jorgefspereira)!)
+
 ## 2.3.0
 
 * Add option to disable PayPal in the Drop-In UI (thank you to [santhoshvgts](https://github.com/santhoshvgts)!)
