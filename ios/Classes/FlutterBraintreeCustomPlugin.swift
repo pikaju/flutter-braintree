@@ -40,7 +40,24 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
                 paypalRequest.currencyCode = requestInfo["currencyCode"] as? String
                 paypalRequest.displayName = requestInfo["displayName"] as? String
                 paypalRequest.billingAgreementDescription = requestInfo["billingAgreementDescription"] as? String
-                
+                if let intent = requestInfo["payPalPaymentIntent"] as? String {
+                    switch intent {
+                    case "order":
+                        paypalRequest.intent = BTPayPalRequestIntent.order
+                    case "sale":
+                        paypalRequest.intent = BTPayPalRequestIntent.sale
+                    default:
+                        paypalRequest.intent = BTPayPalRequestIntent.authorize
+                    }
+                }
+                if let userAction = requestInfo["payPalPaymentUserAction"] as? String {
+                    switch userAction {
+                    case "commit":
+                        paypalRequest.userAction = BTPayPalRequestUserAction.commit
+                    default:
+                        paypalRequest.userAction = BTPayPalRequestUserAction.default
+                    }
+                }
                 driver.tokenizePayPalAccount(with: paypalRequest) { (nonce, error) in
                     self.handleResult(nonce: nonce, error: error, flutterResult: result)
                     self.isHandlingResult = false
@@ -66,6 +83,7 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
             card.expirationMonth = cardRequestInfo["expirationMonth"] as? String
             card.expirationYear = cardRequestInfo["expirationYear"] as? String
             card.cvv = cardRequestInfo["cvv"] as? String
+            card.cardholderName = cardRequestInfo["cardholderName"] as? String
             
             cardClient.tokenizeCard(card) { (nonce, error) in
                 self.handleResult(nonce: nonce, error: error, flutterResult: result)
