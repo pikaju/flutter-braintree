@@ -139,7 +139,7 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
         paymentRequest.merchantCapabilities = .capability3DS
         paymentRequest.countryCode = applePayInfo["countryCode"] as! String
         paymentRequest.currencyCode = applePayInfo["currencyCode"] as! String
-        paymentRequest.merchantIdentifier = applePayInfo["appleMerchantID"] as! String
+        paymentRequest.merchantIdentifier = applePayInfo["merchantIdentifier"] as! String
         
         guard let paymentSummaryItems = makePaymentSummaryItems(from: applePayInfo) else {
             return;

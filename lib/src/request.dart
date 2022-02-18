@@ -148,19 +148,19 @@ class BraintreeGooglePaymentRequest {
 
 class BraintreePayPalRequest {
   BraintreePayPalRequest({
-    this.amount,
+    required this.amount,
     this.currencyCode,
     this.displayName,
     this.billingAgreementDescription,
-    this.payPalPaymentIntent,
-    this.payPalPaymentUserAction,
+    this.payPalPaymentIntent = PayPalPaymentIntent.authorize,
+    this.payPalPaymentUserAction = PayPalPaymentUserAction.default_,
   });
 
   /// Amount of the transaction. If [amount] is `null`, PayPal will use the billing agreement (Vault) flow.
   /// If [amount] is set, PayPal will follow the one time payment (Checkout) flow.
   String? amount;
 
-  /// Currency code. If set to null`null`, PayPal will choose it based on the active merchant account in the client token.
+  /// Currency code. If set to `null`, PayPal will choose it based on the active merchant account in the client token.
   String? currencyCode;
 
   /// The merchant name displayed in the PayPal flow. If set to `null`, PayPal will use the company name in your Braintree account.
@@ -169,11 +169,12 @@ class BraintreePayPalRequest {
   /// Description for the billing agreement for the Vault flow.
   String? billingAgreementDescription;
 
-  /// PayPalPaymentIntent. Options are INTENT_AUTHORIZE,INTENT_SALE,INTENT_ORDER
-  PayPalPaymentIntent? payPalPaymentIntent;
+  /// The payment intent in the PayPal Checkout flow.
+  PayPalPaymentIntent payPalPaymentIntent;
 
-  ///PayPalPaymentUserAction. Options are USER_ACTION_DEFAULT, USER_ACTION_COMMIT
-  PayPalPaymentUserAction? payPalPaymentUserAction;
+  /// The user action in the PayPal Checkout flow. See [PayPalPaymentUserAction]
+  /// for additional documentation.
+  PayPalPaymentUserAction payPalPaymentUserAction;
 
   /// Converts this request object into a JSON-encodable format.
   Map<String, dynamic> toJson() => {
@@ -182,60 +183,50 @@ class BraintreePayPalRequest {
         if (displayName != null) 'displayName': displayName,
         if (billingAgreementDescription != null)
           'billingAgreementDescription': billingAgreementDescription,
-        'payPalPaymentIntent': payPalPaymentIntent == null
-            ? PayPalPaymentIntent.INTENT_AUTHORIZE.rawValue
-            : payPalPaymentIntent?.rawValue,
-        if (payPalPaymentUserAction != null)
-          'payPalPaymentUserAction': payPalPaymentUserAction?.rawValue,
+        'payPalPaymentIntent': payPalPaymentIntent.name,
+        'payPalPaymentUserAction': payPalPaymentUserAction.name,
       };
 }
 
-enum PayPalPaymentUserAction { USER_ACTION_DEFAULT, USER_ACTION_COMMIT }
+enum PayPalPaymentUserAction {
+  /// Shows the default call-to-action text on the PayPal Express Checkout page.
+  /// This option indicates that a final confirmation will be shown on the
+  /// merchant checkout site before the user's payment method is charged.
+  default_,
 
-extension PayPalPaymentUserActionExtension on PayPalPaymentUserAction {
-  String? get rawValue {
-    switch (this) {
-      case PayPalPaymentUserAction.USER_ACTION_DEFAULT:
-        return '';
-      case PayPalPaymentUserAction.USER_ACTION_COMMIT:
-        return 'commit';
-      default:
-        return null;
-    }
-  }
+  /// Shows a deterministic call-to-action. This option indicates to the user
+  /// that their payment method will be charged when they click the
+  /// call-to-action button on the PayPal Checkout page, and that no final
+  /// confirmation page will be shown on the merchant's checkout page. This
+  /// option works for both checkout and vault flows.
+  commit
 }
 
-enum PayPalPaymentIntent { INTENT_ORDER, INTENT_SALE, INTENT_AUTHORIZE }
+enum PayPalPaymentIntent {
+  /// Payment intent to create an order.
+  order,
 
-extension PayPalPaymentIntentExtension on PayPalPaymentIntent {
-  String? get rawValue {
-    switch (this) {
-      case PayPalPaymentIntent.INTENT_AUTHORIZE:
-        return 'authorize';
-      case PayPalPaymentIntent.INTENT_SALE:
-        return 'sale';
-      case PayPalPaymentIntent.INTENT_ORDER:
-        return 'order';
-      default:
-        return null;
-    }
-  }
+  /// Payment intent for immediate payment.
+  sale,
+
+  /// Payment intent to authorize a payment for capture later.
+  authorize,
 }
 
 enum ApplePaySummaryItemType {
-  Final,
-  Pending,
+  /// The amount is final.
+  final_,
+  // The amount is not known at the time (e.g. taxi fare).
+  pending,
 }
 
 extension ApplePaySummaryItemTypeExtension on ApplePaySummaryItemType {
-  int? get rawValue {
+  int get rawValue {
     switch (this) {
-      case ApplePaySummaryItemType.Final:
+      case ApplePaySummaryItemType.final_:
         return 0;
-      case ApplePaySummaryItemType.Pending:
+      case ApplePaySummaryItemType.pending:
         return 1;
-      default:
-        return null;
     }
   }
 }
@@ -253,7 +244,7 @@ class ApplePaySummaryItem {
   /// Payment summary item amount (price).
   final double amount;
 
-  /// Payment summary item type - `Final` if the amount is final, or `Pending` if the amount is not known at the time (eg. Taxi fare).
+  /// Payment summary item type.
   final ApplePaySummaryItemType type;
 
   /// Converts this summary item object into a JSON-encodable format.
@@ -270,7 +261,7 @@ class BraintreeApplePayRequest {
     required this.displayName,
     required this.currencyCode,
     required this.countryCode,
-    required this.appleMerchantID,
+    required this.merchantIdentifier,
   });
 
   /// A summary of the payment.
@@ -286,7 +277,7 @@ class BraintreeApplePayRequest {
   final String countryCode;
 
   /// Apple merchant identifier.
-  final String appleMerchantID;
+  final String merchantIdentifier;
 
   /// Converts this request object into a JSON-encodable format.
   Map<String, dynamic> toJson() => {
@@ -295,6 +286,6 @@ class BraintreeApplePayRequest {
         'currencyCode': currencyCode,
         'displayName': displayName,
         'countryCode': countryCode,
-        'appleMerchantID': appleMerchantID,
+        'merchantIdentifier': merchantIdentifier,
       };
 }
