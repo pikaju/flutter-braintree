@@ -1,4 +1,4 @@
-## 3.0.0
+## 3.0.0-dev.1
 
 * Add support for specifying payment intent and user action in `BraintreePayPalRequest` (thank you to [nabinadhikari](https://github.com/nabinadhikari)!)
 * Clean up naming conventions and documentation
