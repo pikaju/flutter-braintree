@@ -98,6 +98,7 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
       intent.putExtra("expirationMonth", (String) request.get("expirationMonth"));
       intent.putExtra("expirationYear", (String) request.get("expirationYear"));
       intent.putExtra("cvv", (String) request.get("cvv"));
+      intent.putExtra("cardholderName", (String) request.get("cardholderName"));
       activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
     } else if (call.method.equals("requestPaypalNonce")) {
       String authorization = call.argument("authorization");
@@ -109,6 +110,8 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
       intent.putExtra("amount", (String) request.get("amount"));
       intent.putExtra("currencyCode", (String) request.get("currencyCode"));
       intent.putExtra("displayName", (String) request.get("displayName"));
+      intent.putExtra("payPalPaymentIntent", (String) request.get("payPalPaymentIntent"));
+      intent.putExtra("payPalPaymentUserAction", (String) request.get("payPalPaymentUserAction"));
       intent.putExtra("billingAgreementDescription", (String) request.get("billingAgreementDescription"));
       activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
     } else {

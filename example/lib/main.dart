@@ -89,6 +89,7 @@ class _MyAppState extends State<MyApp> {
             ElevatedButton(
               onPressed: () async {
                 final request = BraintreePayPalRequest(
+                  amount: null,
                   billingAgreementDescription:
                       'I hereby agree that flutter_braintree is great.',
                   displayName: 'Your Company',

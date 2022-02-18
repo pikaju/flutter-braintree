@@ -52,17 +52,31 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
                 .cardNumber(intent.getStringExtra("cardNumber"))
                 .expirationMonth(intent.getStringExtra("expirationMonth"))
                 .expirationYear(intent.getStringExtra("expirationYear"))
-                .cvv(intent.getStringExtra("cvv"));
+                .cvv(intent.getStringExtra("cvv"))
+                .validate(false)
+                .cardholderName(intent.getStringExtra("cardholderName"));
         Card.tokenize(braintreeFragment, builder);
     }
 
     protected void requestPaypalNonce() {
         Intent intent = getIntent();
+        String paypalIntent;
+        switch (intent.getStringExtra("payPalPaymentIntent")){
+            case PayPalRequest.INTENT_ORDER: paypalIntent = PayPalRequest.INTENT_ORDER; break;
+            case PayPalRequest.INTENT_SALE: paypalIntent = PayPalRequest.INTENT_SALE; break;
+            default: paypalIntent = PayPalRequest.INTENT_AUTHORIZE; break;
+        }
+        String payPalPaymentUserAction = PayPalRequest.USER_ACTION_DEFAULT;
+        if (PayPalRequest.USER_ACTION_COMMIT.equals(intent.getStringExtra("payPalPaymentUserAction"))) {
+            payPalPaymentUserAction = PayPalRequest.USER_ACTION_COMMIT;
+        }
         PayPalRequest request = new PayPalRequest(intent.getStringExtra("amount"))
                 .currencyCode(intent.getStringExtra("currencyCode"))
                 .displayName(intent.getStringExtra("displayName"))
                 .billingAgreementDescription(intent.getStringExtra("billingAgreementDescription"))
-                .intent(PayPalRequest.INTENT_AUTHORIZE);
+                .intent(paypalIntent)
+                .userAction(payPalPaymentUserAction);
+        
 
         if (intent.getStringExtra("amount") == null) {
             // Vault flow
