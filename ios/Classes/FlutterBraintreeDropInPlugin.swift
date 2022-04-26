@@ -150,24 +150,24 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
         
         UIApplication.shared.keyWindow?.rootViewController?.present(applePayController, animated: true, completion: nil)
     }
-    
-    private func handleResult(result: BTDropInResult?, error: Error?, flutterResult: FlutterResult, deviceData: String?) {
-        if error != nil {
-            returnBraintreeError(result: flutterResult, error: error!)
-        } else if result?.isCanceled ?? false {
-            flutterResult(nil)
-        } else {
-            if let result = result, result.paymentMethodType == .applePay {
-                setupApplePay(flutterResult: flutterResult)
-            } else {
-                flutterResult(["paymentMethodNonce": buildPaymentNonceDict(nonce: result?.paymentMethod), "deviceData": deviceData])
-            }
-        }
-    }
-    
-    private func handleApplePayResult(_ result: BTPaymentMethodNonce, flutterResult: FlutterResult) {
-        flutterResult(["paymentMethodNonce": buildPaymentNonceDict(nonce: result)])
-    }
+	
+	private func handleResult(result: BTDropInResult?, error: Error?, flutterResult: FlutterResult, deviceData: String?) {
+		if error != nil {
+			returnBraintreeError(result: flutterResult, error: error!)
+		} else if result?.isCanceled ?? false {
+			flutterResult(nil)
+		} else {
+			if let result = result, result.paymentMethodType == .applePay {
+				setupApplePay(flutterResult: flutterResult)
+			} else {
+				flutterResult(["paymentMethodNonce": buildPaymentNonceDict(nonce: result?.paymentMethod, deviceData: deviceData)])
+			}
+		}
+	}
+	
+	private func handleApplePayResult(_ result: BTPaymentMethodNonce, flutterResult: FlutterResult) {
+		flutterResult(["paymentMethodNonce": buildPaymentNonceDict(nonce: result, deviceData: nil)])
+	}
 }
 
 // MARK: PKPaymentAuthorizationViewControllerDelegate

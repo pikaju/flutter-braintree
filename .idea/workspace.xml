@@ -20,8 +20,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a91dc45c-820b-4f9c-9ec5-330558cb4d90" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Podfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_braintree.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_braintree.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Classes/BaseFlutterBraintreePlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/BaseFlutterBraintreePlugin.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Classes/FlutterBraintreeCustomPlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/FlutterBraintreeCustomPlugin.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/flutter_braintree.podspec" beforeDir="false" afterPath="$PROJECT_DIR$/ios/flutter_braintree.podspec" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,16 +38,24 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
+  </component>
   <component name="ProjectId" id="1t3xBYtdaUr1HbLfh2bBukRt2Ez" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="dart.analysis.tool.window.force.activate" value="true" />
+    <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="flutter.settings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="SvnConfiguration">
@@ -61,33 +76,18 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1383" height="364" key="GridCell.Tab.0.bottom" timestamp="1622097905386">
-      <screen x="58" y="25" width="1862" height="1055" />
+    <state x="221" y="86" key="SettingsEditor" timestamp="1650945546587">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1383" height="364" key="GridCell.Tab.0.bottom/58.25.1862.1055/1920.187.1792.1095@58.25.1862.1055" timestamp="1622097905386" />
-    <state width="1383" height="364" key="GridCell.Tab.0.center" timestamp="1622097905385">
-      <screen x="58" y="25" width="1862" height="1055" />
-    </state>
-    <state width="1383" height="364" key="GridCell.Tab.0.center/58.25.1862.1055/1920.187.1792.1095@58.25.1862.1055" timestamp="1622097905385" />
-    <state width="1383" height="364" key="GridCell.Tab.0.left" timestamp="1622097905385">
-      <screen x="58" y="25" width="1862" height="1055" />
-    </state>
-    <state width="1383" height="364" key="GridCell.Tab.0.left/58.25.1862.1055/1920.187.1792.1095@58.25.1862.1055" timestamp="1622097905385" />
-    <state width="1383" height="364" key="GridCell.Tab.0.right" timestamp="1622097905385">
-      <screen x="58" y="25" width="1862" height="1055" />
-    </state>
-    <state width="1383" height="364" key="GridCell.Tab.0.right/58.25.1862.1055/1920.187.1792.1095@58.25.1862.1055" timestamp="1622097905385" />
-    <state x="508" y="393" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1622096628792">
-      <screen x="58" y="25" width="1862" height="1055" />
-    </state>
-    <state x="508" y="393" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/58.25.1862.1055/1920.187.1792.1095@58.25.1862.1055" timestamp="1622096628792" />
+    <state x="221" y="86" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1650945546587" />
   </component>
 </project>
