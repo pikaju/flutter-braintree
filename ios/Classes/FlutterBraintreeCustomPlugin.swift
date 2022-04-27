@@ -26,7 +26,7 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
         }
         
         let client = BTAPIClient(authorization: authorization)
-		var deviceData = collectDeviceData()
+		let deviceData = collectDeviceData()
 
         if call.method == "requestPaypalNonce" {
             let driver = BTPayPalDriver(apiClient: client!)
@@ -103,7 +103,7 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
         } else if nonce == nil {
             flutterResult(nil)
         } else {
-            flutterResult(buildPaymentNonceDict(nonce: nonce, deviceData: deviceData);
+            flutterResult(buildPaymentNonceDict(nonce: nonce, deviceData: deviceData))
         }
     }
     

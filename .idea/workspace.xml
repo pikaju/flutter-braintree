@@ -20,15 +20,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a91dc45c-820b-4f9c-9ec5-330558cb4d90" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Podfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_braintree.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_braintree.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Classes/BaseFlutterBraintreePlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/BaseFlutterBraintreePlugin.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/example/flutter_braintree/FlutterBraintreeCustom.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/example/flutter_braintree/FlutterBraintreeCustom.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Classes/FlutterBraintreeCustomPlugin.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/FlutterBraintreeCustomPlugin.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/flutter_braintree.podspec" beforeDir="false" afterPath="$PROJECT_DIR$/ios/flutter_braintree.podspec" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -11,16 +11,19 @@ import com.braintreepayments.api.PayPal;
 import com.braintreepayments.api.exceptions.InvalidArgumentException;
 import com.braintreepayments.api.interfaces.BraintreeCancelListener;
 import com.braintreepayments.api.interfaces.BraintreeErrorListener;
+import com.braintreepayments.api.interfaces.BraintreeResponseListener;
 import com.braintreepayments.api.interfaces.PaymentMethodNonceCreatedListener;
 import com.braintreepayments.api.models.CardBuilder;
 import com.braintreepayments.api.models.PayPalRequest;
 import com.braintreepayments.api.models.PaymentMethodNonce;
 import com.braintreepayments.api.models.PayPalAccountNonce;
+import com.braintreepayments.api.DataCollector;
 
 import java.util.HashMap;
 
 public class FlutterBraintreeCustom extends AppCompatActivity implements PaymentMethodNonceCreatedListener, BraintreeCancelListener, BraintreeErrorListener {
     private BraintreeFragment braintreeFragment;
+    String deviceDataValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,9 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
     protected void requestPaypalNonce() {
         Intent intent = getIntent();
         String paypalIntent;
+
+        collectDeviceData();
+
         switch (intent.getStringExtra("payPalPaymentIntent")){
             case PayPalRequest.INTENT_ORDER: paypalIntent = PayPalRequest.INTENT_ORDER; break;
             case PayPalRequest.INTENT_SALE: paypalIntent = PayPalRequest.INTENT_SALE; break;
@@ -87,6 +93,16 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
         }
     }
 
+    public void collectDeviceData() {
+        DataCollector.collectDeviceData(braintreeFragment, new BraintreeResponseListener<String>() {
+            @Override
+            public void onResponse(String deviceData) {
+                // send deviceData to your server
+                deviceDataValue = deviceData;
+            }
+        });
+    }
+
     @Override
     public void onPaymentMethodNonceCreated(PaymentMethodNonce paymentMethodNonce) {
         HashMap<String, Object> nonceMap = new HashMap<String, Object>();
@@ -99,6 +115,9 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
             nonceMap.put("paypalPayerId", paypalAccountNonce.getPayerId());
         }
 
+        if (deviceDataValue != null) {
+            nonceMap.put("deviceData", deviceDataValue);
+        }
         Intent result = new Intent();
         result.putExtra("type", "paymentMethodNonce");
         result.putExtra("paymentMethodNonce", nonceMap);
