@@ -45,4 +45,10 @@ class Braintree {
     if (result == null) return null;
     return BraintreePaymentMethodNonce.fromJson(result);
   }
+
+  static Future<BraintreeDeviceData?> requestBraintreeDeviceData() async {
+    final result = await _kChannel.invokeMethod('collectDeviceData');
+    if (result == null) return null;
+    return BraintreeDeviceData.fromJson(result);
+  }
 }

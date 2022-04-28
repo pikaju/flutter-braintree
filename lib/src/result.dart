@@ -26,7 +26,6 @@ class BraintreePaymentMethodNonce {
     required this.description,
     required this.isDefault,
     this.paypalPayerId,
-    this.deviceData
   });
 
   factory BraintreePaymentMethodNonce.fromJson(dynamic source) {
@@ -36,7 +35,6 @@ class BraintreePaymentMethodNonce {
       description: source['description'],
       isDefault: source['isDefault'],
       paypalPayerId: source['paypalPayerId'],
-      deviceData: source['deviceData']
     );
   }
 
@@ -56,5 +54,20 @@ class BraintreePaymentMethodNonce {
   /// PayPal payer id if requesting for paypal nonce
   final String? paypalPayerId;
 
+}
+
+class BraintreeDeviceData {
+  const BraintreeDeviceData({
+    this.deviceData
+  });
+
+  factory BraintreeDeviceData.fromJson(dynamic source) {
+    return BraintreeDeviceData(
+      deviceData: source['deviceData']
+    );
+  }
+
+  /// The nonce generated for this payment method by the Braintree gateway. The nonce will represent
+  /// this PaymentMethod for the purposes of creating transactions and other monetary actions.
   final String? deviceData;
 }

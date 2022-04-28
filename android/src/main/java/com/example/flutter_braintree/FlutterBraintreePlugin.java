@@ -114,7 +114,11 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
       intent.putExtra("payPalPaymentUserAction", (String) request.get("payPalPaymentUserAction"));
       intent.putExtra("billingAgreementDescription", (String) request.get("billingAgreementDescription"));
       activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
-    } else {
+    }  else if (call.method.equals("collectDeviceData")) {
+      Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
+      activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
+    }
+    else {
       result.notImplemented();
       activeResult = null;
     }

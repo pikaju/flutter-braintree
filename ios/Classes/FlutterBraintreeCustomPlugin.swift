@@ -26,7 +26,6 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
         }
         
         let client = BTAPIClient(authorization: authorization)
-		let deviceData = collectDeviceData()
 
         if call.method == "requestPaypalNonce" {
             let driver = BTPayPalDriver(apiClient: client!)
@@ -61,7 +60,7 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
                     }
                 }
                 driver.tokenizePayPalAccount(with: paypalRequest) { (nonce, error) in
-                    self.handleResult(nonce: nonce, deviceData: deviceData, error: error, flutterResult: result)
+                    self.handleResult(nonce: nonce, error: error, flutterResult: result)
                     self.isHandlingResult = false
                 }
             } else {
@@ -70,7 +69,7 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
                 paypalRequest.billingAgreementDescription = requestInfo["billingAgreementDescription"] as? String
                 
                 driver.tokenizePayPalAccount(with: paypalRequest) { (nonce, error) in
-                    self.handleResult(nonce: nonce, deviceData: deviceData, error: error, flutterResult: result)
+                    self.handleResult(nonce: nonce, error: error, flutterResult: result)
                     self.isHandlingResult = false
                 }
             }
@@ -88,22 +87,30 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
             card.cardholderName = cardRequestInfo["cardholderName"] as? String
             
             cardClient.tokenizeCard(card) { (nonce, error) in
-                self.handleResult(nonce: nonce, deviceData: deviceData, error: error, flutterResult: result)
+                self.handleResult(nonce: nonce, error: error, flutterResult: result)
                 self.isHandlingResult = false
             }
-        } else {
+		} else if call.method == "collectDeviceData" {
+			let deviceData = collectDeviceData()
+			if (deviceData != nil) {
+				flutterResult(buildDeviceDataDict(deviceData))
+			} else {
+				flutterResult(nil)
+			}
+		}
+		else {
             result(FlutterMethodNotImplemented)
             self.isHandlingResult = false
         }
     }
     
-	private func handleResult(nonce: BTPaymentMethodNonce?, deviceData: String?, error: Error?, flutterResult: FlutterResult) {
+	private func handleResult(nonce: BTPaymentMethodNonce?, error: Error?, flutterResult: FlutterResult) {
         if error != nil {
             returnBraintreeError(result: flutterResult, error: error!)
         } else if nonce == nil {
             flutterResult(nil)
         } else {
-            flutterResult(buildPaymentNonceDict(nonce: nonce, deviceData: deviceData))
+            flutterResult(buildPaymentNonceDict(nonce: nonce))
         }
     }
     

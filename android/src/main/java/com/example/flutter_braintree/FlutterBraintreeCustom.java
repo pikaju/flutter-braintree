@@ -23,7 +23,6 @@ import java.util.HashMap;
 
 public class FlutterBraintreeCustom extends AppCompatActivity implements PaymentMethodNonceCreatedListener, BraintreeCancelListener, BraintreeErrorListener {
     private BraintreeFragment braintreeFragment;
-    String deviceDataValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +36,8 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
                 tokenizeCreditCard();
             } else if (type.equals("requestPaypalNonce")) {
                 requestPaypalNonce();
+            } else if (type.equals("collectDeviceData")) {
+                collectDeviceData();
             } else {
                 throw new Exception("Invalid request type: " + type);
             }
@@ -64,8 +65,6 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
     protected void requestPaypalNonce() {
         Intent intent = getIntent();
         String paypalIntent;
-
-        collectDeviceData();
 
         switch (intent.getStringExtra("payPalPaymentIntent")){
             case PayPalRequest.INTENT_ORDER: paypalIntent = PayPalRequest.INTENT_ORDER; break;
@@ -97,8 +96,10 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
         DataCollector.collectDeviceData(braintreeFragment, new BraintreeResponseListener<String>() {
             @Override
             public void onResponse(String deviceData) {
-                // send deviceData to your server
-                deviceDataValue = deviceData;
+                Intent result = new Intent();
+                result.putExtra("deviceData", deviceData);
+                setResult(RESULT_OK, result);
+                finish();
             }
         });
     }
@@ -113,10 +114,6 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
         if (paymentMethodNonce instanceof PayPalAccountNonce) {
             PayPalAccountNonce paypalAccountNonce = (PayPalAccountNonce) paymentMethodNonce;
             nonceMap.put("paypalPayerId", paypalAccountNonce.getPayerId());
-        }
-
-        if (deviceDataValue != null) {
-            nonceMap.put("deviceData", deviceDataValue);
         }
         Intent result = new Intent();
         result.putExtra("type", "paymentMethodNonce");
