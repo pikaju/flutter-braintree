@@ -126,7 +126,7 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 	
 	private func handleDeviceDataResult(deviceData: String?, flutterResult: FlutterResult) {
 		if (deviceData != nil) {
-			flutterResult(buildDeviceDataDict(deviceData))
+			flutterResult(buildDeviceDataDict(deviceData: deviceData))
 		} else {
 			flutterResult(nil)
 		}
