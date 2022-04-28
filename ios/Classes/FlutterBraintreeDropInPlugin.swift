@@ -115,7 +115,7 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
             let dropInController = BTDropInController(authorization: authorization, request: dropInRequest) { (controller, braintreeResult, error) in
                 controller.dismiss(animated: true, completion: nil)
                 
-                self.handleResult(result: braintreeResult, error: error, flutterResult: result, deviceData: deviceData)
+                self.handleResult(result: braintreeResult, error: error, flutterResult: result)
                 self.isHandlingResult = false
             }
             
@@ -151,7 +151,7 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
         UIApplication.shared.keyWindow?.rootViewController?.present(applePayController, animated: true, completion: nil)
     }
 	
-	private func handleResult(result: BTDropInResult?, error: Error?, flutterResult: FlutterResult, deviceData: String?) {
+	private func handleResult(result: BTDropInResult?, error: Error?, flutterResult: FlutterResult) {
 		if error != nil {
 			returnBraintreeError(result: flutterResult, error: error!)
 		} else if result?.isCanceled ?? false {
@@ -160,13 +160,13 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
 			if let result = result, result.paymentMethodType == .applePay {
 				setupApplePay(flutterResult: flutterResult)
 			} else {
-				flutterResult(["paymentMethodNonce": buildPaymentNonceDict(nonce: result?.paymentMethod, deviceData: deviceData)])
+				flutterResult(["paymentMethodNonce": buildPaymentNonceDict(nonce: result?.paymentMethod)])
 			}
 		}
 	}
 	
 	private func handleApplePayResult(_ result: BTPaymentMethodNonce, flutterResult: FlutterResult) {
-		flutterResult(["paymentMethodNonce": buildPaymentNonceDict(nonce: result, deviceData: nil)])
+		flutterResult(["paymentMethodNonce": buildPaymentNonceDict(nonce: result)])
 	}
 }
 
