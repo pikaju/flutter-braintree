@@ -4,6 +4,9 @@ import Braintree
 import BraintreeDropIn
 
 public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPlugin, BTViewControllerPresentingDelegate {
+	
+	var flutterResult: FlutterResult?
+	
 	public static func register(with registrar: FlutterPluginRegistrar) {
 		let channel = FlutterMethodChannel(name: "flutter_braintree.custom", binaryMessenger: registrar.messenger())
 		
@@ -29,7 +32,6 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 		
 		if call.method == "requestPaypalNonce" {
 			let driver = BTPayPalDriver(apiClient: client!)
-			
 			
 			guard let requestInfo = dict(for: "request", in: call) else {
 				isHandlingResult = false
@@ -91,8 +93,8 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 				self.isHandlingResult = false
 			}
 		} else if call.method == "collectDeviceData" {
-			let deviceData = collectDeviceData()
-			handleDeviceDataResult(deviceData: deviceData, flutterResult: result)
+			self.flutterResult = result
+			collectDeviceData(client)
 		}
 		else {
 			result(FlutterMethodNotImplemented)
@@ -118,17 +120,26 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 		
 	}
 	
-	public func collectDeviceData() -> String? {
-		let deviceData = PPDataCollector.collectPayPalDeviceData()
-		print("Send this device data to your server: \(deviceData)")
-		return deviceData
+	public func collectDeviceData(_ client: BTAPIClient?) {
+		guard let apiClient = client else {
+			return
+		}
+		let dataCollector = BTDataCollector(apiClient: apiClient)
+		//			dataCollector.setFraudMerchantID("")
+		dataCollector.collectDeviceData { [weak self] (deviceData: String) in
+			print(deviceData)
+			self?.handleDeviceDataResult(deviceData: deviceData)
+		}
 	}
 	
-	private func handleDeviceDataResult(deviceData: String?, flutterResult: FlutterResult) {
+	private func handleDeviceDataResult(deviceData: String?) {
+		guard let result = flutterResult else {
+			return
+		}
 		if (deviceData != nil) {
-			flutterResult(buildDeviceDataDict(deviceData: deviceData))
+			result(buildDeviceDataDict(deviceData: deviceData))
 		} else {
-			flutterResult(nil)
+			result(nil)
 		}
 	}
 }

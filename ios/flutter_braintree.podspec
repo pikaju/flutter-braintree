@@ -3,7 +3,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'flutter_braintree'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'A Flutter plugin for Braintree'
   s.description      = <<-DESC
   A Flutter plugin that wraps the native Braintree Drop-In UI SDKs.
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.dependency 'BraintreeDropIn', '9.0.2'
   s.dependency 'Braintree/PayPal', '~> 5.3.2'
   s.dependency 'Braintree/ApplePay', '~> 5.3.2'
-  s.dependency 'Braintree/PayPalDataCollector'
+  s.dependency 'Braintree/DataCollector'
   s.ios.deployment_target = '12.0'
   s.swift_version = '5.0'
 end

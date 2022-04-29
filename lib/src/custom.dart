@@ -46,8 +46,10 @@ class Braintree {
     return BraintreePaymentMethodNonce.fromJson(result);
   }
 
-  static Future<BraintreeDeviceData?> requestBraintreeDeviceData() async {
-    final result = await _kChannel.invokeMethod('collectDeviceData');
+  static Future<BraintreeDeviceData?> requestBraintreeDeviceData(String authorization) async {
+    final result = await _kChannel.invokeMethod('collectDeviceData', {
+      'authorization': authorization
+    });
     if (result == null) return null;
     return BraintreeDeviceData.fromJson(result);
   }
