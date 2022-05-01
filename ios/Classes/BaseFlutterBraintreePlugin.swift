@@ -24,7 +24,7 @@ open class BaseFlutterBraintreePlugin: NSObject {
         return authorization
     }
 
-	internal func buildPaymentNonceDict(nonce: BTPaymentMethodNonce?) -> [String: Any?] {
+	internal func buildPaymentNonceDict(nonce: BTPaymentMethodNonce?, deviceData: String? = nil) -> [String: Any?] {
         var dict = [String: Any?]()
         dict["nonce"] = nonce?.nonce
         dict["typeLabel"] = nonce?.type
@@ -34,6 +34,7 @@ open class BaseFlutterBraintreePlugin: NSObject {
             dict["paypalPayerId"] = paypalNonce.payerID
             dict["description"] = paypalNonce.email
         }
+		dict["deviceData"] = deviceData
         return dict
     }
     

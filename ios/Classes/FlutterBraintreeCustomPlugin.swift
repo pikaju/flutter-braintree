@@ -6,6 +6,7 @@ import BraintreeDropIn
 public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPlugin, BTViewControllerPresentingDelegate {
 	
 	var flutterResult: FlutterResult?
+	var deviceData: String?
 	
 	public static func register(with registrar: FlutterPluginRegistrar) {
 		let channel = FlutterMethodChannel(name: "flutter_braintree.custom", binaryMessenger: registrar.messenger())
@@ -29,7 +30,8 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 		}
 		
 		let client = BTAPIClient(authorization: authorization)
-		
+		collectDeviceData(client)
+
 		if call.method == "requestPaypalNonce" {
 			let driver = BTPayPalDriver(apiClient: client!)
 			
@@ -108,7 +110,7 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 		} else if nonce == nil {
 			flutterResult(nil)
 		} else {
-			flutterResult(buildPaymentNonceDict(nonce: nonce))
+			flutterResult(buildPaymentNonceDict(nonce: nonce, deviceData: self.deviceData))
 		}
 	}
 	
@@ -126,9 +128,9 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 		}
 		let dataCollector = BTDataCollector(apiClient: apiClient)
 		//			dataCollector.setFraudMerchantID("")
-		dataCollector.collectDeviceData { [weak self] (deviceData: String) in
-			print(deviceData)
-			self?.handleDeviceDataResult(deviceData: deviceData)
+		dataCollector.collectDeviceData { [weak self] (data: String) in
+			print(data)
+			self?.deviceData = data
 		}
 	}
 	
