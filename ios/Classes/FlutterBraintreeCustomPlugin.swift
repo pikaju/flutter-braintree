@@ -30,7 +30,6 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 		}
 		
 		let client = BTAPIClient(authorization: authorization)
-		collectDeviceData(client)
 
 		if call.method == "requestPaypalNonce" {
 			let driver = BTPayPalDriver(apiClient: client!)
@@ -40,6 +39,8 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 				return
 			}
 			
+			collectDeviceData(client)
+
 			if let amount = requestInfo["amount"] as? String {
 				let paypalRequest = BTPayPalCheckoutRequest(amount: amount)
 				paypalRequest.currencyCode = requestInfo["currencyCode"] as? String
@@ -68,6 +69,8 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 					self.isHandlingResult = false
 				}
 			} else {
+				collectDeviceData(client)
+
 				let paypalRequest = BTPayPalVaultRequest()
 				paypalRequest.displayName = requestInfo["displayName"] as? String
 				paypalRequest.billingAgreementDescription = requestInfo["billingAgreementDescription"] as? String
@@ -79,6 +82,8 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 			}
 			
 		} else if call.method == "tokenizeCreditCard" {
+			collectDeviceData(client)
+
 			let cardClient = BTCardClient(apiClient: client!)
 			
 			guard let cardRequestInfo = dict(for: "request", in: call) else {return}
@@ -95,8 +100,14 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 				self.isHandlingResult = false
 			}
 		} else if call.method == "collectDeviceData" {
-			self.flutterResult = result
-			collectDeviceData(client)
+			guard let apiClient = client else {
+				return
+			}
+			let dataCollector = BTDataCollector(apiClient: apiClient)
+			dataCollector.collectDeviceData { [weak self] (data: String) in
+				handleDeviceDataResult(deviceData: data)
+				self?.isHandlingResult = false
+			}
 		}
 		else {
 			result(FlutterMethodNotImplemented)

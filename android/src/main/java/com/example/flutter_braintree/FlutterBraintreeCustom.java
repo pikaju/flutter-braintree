@@ -37,7 +37,18 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
                 tokenizeCreditCard();
             } else if (type.equals("requestPaypalNonce")) {
                 requestPaypalNonce();
-            } else {
+            } else if (type.equals("collectDeviceData")) {
+                DataCollector.collectDeviceData(braintreeFragment, new BraintreeResponseListener<String>() {
+                  @Override
+                  public void onResponse(String data) {
+                        Intent result = new Intent();
+                        result.putExtra("deviceData", data);
+                        setResult(RESULT_OK, result);
+                        finish();
+                }
+            });
+            }
+            else {
                 throw new Exception("Invalid request type: " + type);
             }
         } catch (Exception e) {

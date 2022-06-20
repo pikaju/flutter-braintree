@@ -59,3 +59,18 @@ class BraintreePaymentMethodNonce {
   final String? deviceData;
 
 }
+
+class BraintreeDeviceData {
+  const BraintreeDeviceData({
+    this.deviceData
+  });
+
+  factory BraintreeDeviceData.fromJson(dynamic source) {
+    return BraintreeDeviceData(
+        deviceData: source['deviceData']
+    );
+  }
+
+  final String? deviceData;
+
+}
