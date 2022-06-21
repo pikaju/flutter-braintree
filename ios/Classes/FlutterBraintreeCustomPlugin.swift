@@ -105,7 +105,7 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 			}
 			let dataCollector = BTDataCollector(apiClient: apiClient)
 			dataCollector.collectDeviceData { [weak self] (data: String) in
-				handleDeviceDataResult(deviceData: data)
+				self?.handleDeviceDataResult(deviceData: data)
 				self?.isHandlingResult = false
 			}
 		}
