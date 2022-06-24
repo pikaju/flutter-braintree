@@ -126,6 +126,7 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
 
     protected void requestGooglePayPayment() {
         Intent intent = getIntent();
+        collectDeviceData();
         GooglePaymentRequest googlePaymentRequest = new GooglePaymentRequest()
                 .transactionInfo(TransactionInfo.newBuilder()
                         .setTotalPrice(intent.getStringExtra("totalPrice"))
