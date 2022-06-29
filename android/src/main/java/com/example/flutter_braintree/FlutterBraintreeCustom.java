@@ -8,16 +8,22 @@ import android.os.Bundle;
 import com.braintreepayments.api.BraintreeFragment;
 import com.braintreepayments.api.Card;
 import com.braintreepayments.api.PayPal;
+import com.braintreepayments.api.GooglePayment;
 import com.braintreepayments.api.exceptions.InvalidArgumentException;
+import com.braintreepayments.api.interfaces.BraintreeResponseListener;
 import com.braintreepayments.api.interfaces.BraintreeCancelListener;
 import com.braintreepayments.api.interfaces.BraintreeErrorListener;
 import com.braintreepayments.api.interfaces.BraintreeResponseListener;
 import com.braintreepayments.api.interfaces.PaymentMethodNonceCreatedListener;
 import com.braintreepayments.api.models.CardBuilder;
 import com.braintreepayments.api.models.PayPalRequest;
+import com.braintreepayments.api.models.GooglePaymentRequest;
 import com.braintreepayments.api.models.PaymentMethodNonce;
 import com.braintreepayments.api.models.PayPalAccountNonce;
 import com.braintreepayments.api.DataCollector;
+
+import com.google.android.gms.wallet.TransactionInfo;
+import com.google.android.gms.wallet.WalletConstants;
 
 import java.util.HashMap;
 
@@ -47,6 +53,10 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
                         finish();
                 }
             });
+            } else if (type.equals("googlePayPayment")) {
+                requestGooglePayPayment();
+            } else if (type.equals("isGooglePayReady")) {
+                isGooglePayReady();
             }
             else {
                 throw new Exception("Invalid request type: " + type);
@@ -110,6 +120,44 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
             @Override
             public void onResponse(String data) {
                 deviceData = data;
+            }
+        });
+    }
+
+    protected void requestGooglePayPayment() {
+        Intent intent = getIntent();
+        collectDeviceData();
+        GooglePaymentRequest googlePaymentRequest = new GooglePaymentRequest()
+                .transactionInfo(TransactionInfo.newBuilder()
+                        .setTotalPrice(intent.getStringExtra("totalPrice"))
+                        .setCurrencyCode(intent.getStringExtra("currencyCode"))
+                        .setTotalPriceStatus(WalletConstants.TOTAL_PRICE_STATUS_FINAL)
+                        .build())
+                .billingAddressRequired(true)
+                .googleMerchantId(intent.getStringExtra("googleMerchantID"));
+
+        GooglePayment.requestPayment(braintreeFragment, googlePaymentRequest);
+    }
+
+    protected void isGooglePayReady() {
+        GooglePayment.isReadyToPay(braintreeFragment, new BraintreeResponseListener<Boolean>() {
+            @Override
+            public void onResponse(Boolean isReadyToPay) {
+                if (isReadyToPay) {
+                    // Show Google Pay button
+                    Intent result = new Intent();
+                    result.putExtra("isReadyToPay", "true");
+                    result.putExtra("type", "isReadyToPay");
+                    setResult(RESULT_OK, result);
+                    finish();
+                } else {
+                    // Do not show Google Pay button
+                    Intent result = new Intent();
+                    result.putExtra("isReadyToPay", "false");
+                    result.putExtra("type", "isReadyToPay");
+                    setResult(RESULT_OK, result);
+                    finish();
+                }
             }
         });
     }

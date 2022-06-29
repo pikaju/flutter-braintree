@@ -55,4 +55,25 @@ class Braintree {
      if (result == null) return null;
     return BraintreeDeviceData.fromJson(result);
   }
+
+  static Future<String> isGooglePayReady(
+      String authorization,
+      ) async {
+    final result = await _kChannel.invokeMethod('isGooglePayReady', {
+      'authorization': authorization,
+    });
+    return result;
+  }
+
+  static Future<BraintreePaymentMethodNonce?> googlePayPayment(
+      String authorization,
+      BraintreeGooglePaymentRequest request,
+      ) async {
+    final result = await _kChannel.invokeMethod('googlePayPayment', {
+      'authorization': authorization,
+      'request': request.toJson(),
+    });
+    if (result == null) return null;
+    return BraintreePaymentMethodNonce.fromJson(result);
+  }
 }
