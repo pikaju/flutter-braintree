@@ -105,7 +105,7 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 			}
 			let dataCollector = BTDataCollector(apiClient: apiClient)
 			dataCollector.collectDeviceData { [weak self] (data: String) in
-				self?.handleDeviceDataResult(deviceData: data)
+				self?.handleDeviceDataResult(deviceData: data, flutterResult: result)
 				self?.isHandlingResult = false
 			}
 		}
@@ -145,14 +145,11 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 		}
 	}
 	
-	private func handleDeviceDataResult(deviceData: String?) {
-		guard let result = flutterResult else {
-			return
-		}
+	private func handleDeviceDataResult(deviceData: String?, flutterResult: FlutterResult) {
 		if (deviceData != nil) {
-			result(buildDeviceDataDict(deviceData: deviceData))
+			flutterResult(buildDeviceDataDict(deviceData: deviceData))
 		} else {
-			result(nil)
+			flutterResult(nil)
 		}
 	}
 }
