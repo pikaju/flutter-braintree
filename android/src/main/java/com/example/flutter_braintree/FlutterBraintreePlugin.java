@@ -164,7 +164,7 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
           } else if (type.equals("isReadyToPay")) {
             activeResult.success(data.getStringExtra("isReadyToPay"));
           } else if (type.equals("collectDeviceData")) {
-            activeResult.success("deviceData", data.getSerializableExtra("deviceData"));
+            activeResult.success(data.getSerializableExtra("deviceData"));
           }
            else {
             Exception error = new Exception("Invalid activity result type.");
