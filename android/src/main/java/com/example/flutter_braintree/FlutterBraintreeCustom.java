@@ -48,8 +48,13 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
                   @Override
                   public void onResponse(String data) {
                         Intent result = new Intent();
+
+                        HashMap<String, Object> deviceDataMap= new HashMap<String, Object>();
+                        deviceDataMap.put("deviceData", data);
+
                         result.putExtra("type", "collectDeviceData");
-                        result.putExtra("deviceData", data);
+                        result.putExtra("deviceData", deviceDataMap);
+
                         setResult(RESULT_OK, result);
                         finish();
                 }
