@@ -18,7 +18,7 @@ import Braintree
             return BTAppContextSwitcher.handleOpenURL(url)
         }
 
-        return false
+        return super.application(app, open: url, options:  options);
     }
 
 }
