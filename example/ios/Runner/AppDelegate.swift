@@ -17,7 +17,7 @@ import Braintree
         if url.scheme == "com.example.flutterBraintreeExample.payments" {
             return BTAppContextSwitcher.handleOpenURL(url)
         }
-        
+
         return false
     }
 

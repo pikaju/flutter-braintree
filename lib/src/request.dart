@@ -24,8 +24,14 @@ class BraintreeDropInRequest {
   /// Either [clientToken] or [tokenizationKey] must be set.
   String? tokenizationKey;
 
+  ///Additional Information about the user to trigger 3ds 2.0
+  BraintreeBillingAddress? billingAddress;
+
   /// Amount for the transaction. This is only used for 3D secure verfications.
   String? amount;
+
+  /// Email of the user. this is used to icnrease the possibilities of success of 3ds 2.0
+  String? email;
 
   /// Whether the Drop-in should collect and return device data for fraud prevention.
   bool collectDeviceData;
@@ -67,6 +73,8 @@ class BraintreeDropInRequest {
   Map<String, dynamic> toJson() => {
         if (clientToken != null) 'clientToken': clientToken,
         if (tokenizationKey != null) 'tokenizationKey': tokenizationKey,
+        if (email != null) 'email': email,
+        if (billingAddress != null) 'billingAddress': billingAddress!.toJson(),
         if (amount != null) 'amount': amount,
         'collectDeviceData': collectDeviceData,
         'requestThreeDSecureVerification': requestThreeDSecureVerification,
@@ -81,6 +89,41 @@ class BraintreeDropInRequest {
         'maskCardNumber': maskCardNumber,
         'maskSecurityCode': maskSecurityCode,
         'vaultManagerEnabled': vaultManagerEnabled,
+      };
+}
+
+class BraintreeBillingAddress {
+  final String? givenName;
+  final String? surname;
+  final String? phoneNumber;
+  final String? streetAddress;
+  final String? extendedAddress;
+  final String? locality;
+  final String? region;
+  final String? postalCode;
+  final String? countryCodeAlpha2;
+
+  BraintreeBillingAddress(
+      {this.givenName,
+      this.surname,
+      this.phoneNumber,
+      this.streetAddress,
+      this.extendedAddress,
+      this.locality,
+      this.region,
+      this.postalCode,
+      this.countryCodeAlpha2});
+
+  Map<String, dynamic> toJson() => {
+        'givenName': givenName,
+        'surname': surname,
+        'phoneNumber': phoneNumber,
+        'streetAddress': streetAddress,
+        'extendedAddress': extendedAddress,
+        'locality': locality,
+        'region': region,
+        'postalCode': postalCode,
+        'countryCodeAlpha2': countryCodeAlpha2
       };
 }
 

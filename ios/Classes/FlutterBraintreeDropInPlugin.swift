@@ -59,6 +59,34 @@ public class FlutterBraintreeDropInPlugin: BaseFlutterBraintreePlugin, FlutterPl
             
             isHandlingResult = true
             
+            let threeDSecureRequest = BTThreeDSecureRequest()
+            threeDSecureRequest.nonce = tokenizedCard.nonce
+            if let email = dict(for: "email", in: call) {
+                threeDSecureRequest.email = email
+            }
+            threeDSecureRequest.versionRequested = .version2
+
+            if let billingAddress = dict(for: "billingAddress", in: call) {
+                let address = BTThreeDSecurePostalAddress()
+                address.givenName = billingAddress["givenName"]// ASCII-printable characters required, else will throw a validation error
+                address.surname = billingAddress["surname"] // ASCII-printable characters required, else will throw a validation error
+                address.phoneNumber = billingAddress["phoneNumber"]
+                address.streetAddress = billingAddress["streetAddress"]
+                address.extendedAddress = billingAddress["extendedAddress"]
+                address.locality = billingAddress["locality"]
+                address.region = billingAddress["region"]
+                address.postalCode = billingAddress["postalCode"]
+                address.countryCodeAlpha2 = billingAddress["countryCodeAlpha2"]
+                threeDSecureRequest.billingAddress = address
+            }
+
+
+            // Optional additional information.
+            // For best results, provide as many of these elements as possible.
+            let info = BTThreeDSecureAdditionalInformation()
+            info.shippingAddress = address
+            threeDSecureRequest.additionalInformation = info
+            
             let dropInRequest = BTDropInRequest()
             
             if let amount = string(for: "amount", in: call) {

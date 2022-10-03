@@ -81,27 +81,40 @@ public class FlutterBraintreeDropIn implements FlutterPlugin, ActivityAware, Met
     if (call.method.equals("start")) {
       String clientToken = call.argument("clientToken");
       String tokenizationKey = call.argument("tokenizationKey");
-      ThreeDSecurePostalAddress address = new ThreeDSecurePostalAddress();
-      address.givenName("Jill"); // ASCII-printable characters required, else will throw a validation error
-      address.surname("Doe"); // ASCII-printable characters required, else will throw a validation error
-      address.phoneNumber("5551234567");
-      address.streetAddress("555 Smith St");
-      address.extendedAddress("#2");
-      address.locality("Chicago");
-      address.region("IL");
-      address.postalCode("12345");
-      address.countryCodeAlpha2("US");
-
-// For best results, provide as many additional elements as possible.
-      ThreeDSecureAdditionalInformation additionalInformation = new ThreeDSecureAdditionalInformation();
-      additionalInformation.shippingAddress(address);
 
       ThreeDSecureRequest threeDSecureRequest = new ThreeDSecureRequest();
+
+
+      // For best results with 3ds 2.0, provide as many additional elements as possible.
+      HashMap<String, String> billingAddress = call.argument("billingAddress");
+      if(billingAddress != null){
+        ThreeDSecurePostalAddress address = new ThreeDSecurePostalAddress();
+        address.givenName(billingAddress.get("givenName")); // ASCII-printable characters required, else will throw a validation error
+        address.surname(billingAddress.get("surname")); // ASCII-printable characters required, else will throw a validation error
+        address.phoneNumber(billingAddress.get("phoneNumber"));
+        address.streetAddress(billingAddress.get("streetAddress"));
+        address.extendedAddress(billingAddress.get("extendedAddress"));
+        address.locality(billingAddress.get("locality"));
+        address.region(billingAddress.get("region"));
+        address.postalCode(billingAddress.get("postalCode"));
+        address.countryCodeAlpha2(billingAddress.get("countryCodeAlpha2"));
+
+        ThreeDSecureAdditionalInformation additionalInformation = new ThreeDSecureAdditionalInformation();
+        additionalInformation.shippingAddress(address);
+        threeDSecureRequest.billingAddress(address);
+        threeDSecureRequest.additionalInformation(additionalInformation);
+      }
+
+
+
       threeDSecureRequest.amount((String) call.argument("amount"));
-      threeDSecureRequest.email((String) call.argument("email"));
-      threeDSecureRequest.billingAddress(address);
+      String email = call.argument("email");
+      if(email != null){
+        threeDSecureRequest.email(email);
+      }
+
       threeDSecureRequest.versionRequested(ThreeDSecureRequest.VERSION_2);
-      threeDSecureRequest.additionalInformation(additionalInformation);
+
 
       DropInRequest dropInRequest = new DropInRequest()
               .collectDeviceData((Boolean) call.argument("collectDeviceData"))
