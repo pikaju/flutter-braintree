@@ -3,6 +3,8 @@ class BraintreeDropInRequest {
     this.clientToken,
     this.tokenizationKey,
     this.amount,
+    this.billingAddress,
+    this.email,
     this.collectDeviceData = false,
     this.requestThreeDSecureVerification = false,
     this.googlePaymentRequest,
