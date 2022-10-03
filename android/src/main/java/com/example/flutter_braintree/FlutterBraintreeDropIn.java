@@ -21,6 +21,9 @@ import com.braintreepayments.api.models.GooglePaymentRequest;
 import com.braintreepayments.api.models.PayPalRequest;
 import com.braintreepayments.api.models.PaymentMethodNonce;
 
+import com.braintreepayments.api.models.ThreeDSecureAdditionalInformation;
+import com.braintreepayments.api.models.ThreeDSecurePostalAddress;
+import com.braintreepayments.api.models.ThreeDSecureRequest;
 import com.google.android.gms.wallet.TransactionInfo;
 import com.google.android.gms.wallet.WalletConstants;
 
@@ -78,12 +81,34 @@ public class FlutterBraintreeDropIn implements FlutterPlugin, ActivityAware, Met
     if (call.method.equals("start")) {
       String clientToken = call.argument("clientToken");
       String tokenizationKey = call.argument("tokenizationKey");
+      ThreeDSecurePostalAddress address = new ThreeDSecurePostalAddress();
+      address.givenName("Jill"); // ASCII-printable characters required, else will throw a validation error
+      address.surname("Doe"); // ASCII-printable characters required, else will throw a validation error
+      address.phoneNumber("5551234567");
+      address.streetAddress("555 Smith St");
+      address.extendedAddress("#2");
+      address.locality("Chicago");
+      address.region("IL");
+      address.postalCode("12345");
+      address.countryCodeAlpha2("US");
+
+// For best results, provide as many additional elements as possible.
+      ThreeDSecureAdditionalInformation additionalInformation = new ThreeDSecureAdditionalInformation();
+      additionalInformation.shippingAddress(address);
+
+      ThreeDSecureRequest threeDSecureRequest = new ThreeDSecureRequest();
+      threeDSecureRequest.amount((String) call.argument("amount"));
+      threeDSecureRequest.email((String) call.argument("email"));
+      threeDSecureRequest.billingAddress(address);
+      threeDSecureRequest.versionRequested(ThreeDSecureRequest.VERSION_2);
+      threeDSecureRequest.additionalInformation(additionalInformation);
+
       DropInRequest dropInRequest = new DropInRequest()
-              .amount((String) call.argument("amount"))
               .collectDeviceData((Boolean) call.argument("collectDeviceData"))
               .requestThreeDSecureVerification((Boolean) call.argument("requestThreeDSecureVerification"))
               .maskCardNumber((Boolean) call.argument("maskCardNumber"))
-              .vaultManager((Boolean) call.argument("vaultManagerEnabled"));
+              .vaultManager((Boolean) call.argument("vaultManagerEnabled"))
+              .threeDSecureRequest(threeDSecureRequest);
 
 
       if (clientToken != null)
