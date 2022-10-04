@@ -117,6 +117,7 @@ public class FlutterBraintreeDropIn implements FlutterPlugin, ActivityAware, Met
 
 
       DropInRequest dropInRequest = new DropInRequest()
+              .amount((String) call.argument("amount"))
               .collectDeviceData((Boolean) call.argument("collectDeviceData"))
               .requestThreeDSecureVerification((Boolean) call.argument("requestThreeDSecureVerification"))
               .maskCardNumber((Boolean) call.argument("maskCardNumber"))
