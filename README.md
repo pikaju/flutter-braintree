@@ -202,15 +202,6 @@ var request = BraintreeDropInRequest(
     postalCode: "12345",
     countryCodeAlpha2: "US",
   ),
-  googlePaymentRequest: BraintreeGooglePaymentRequest(
-    totalPrice: '4.20',
-    currencyCode: 'USD',
-    billingAddressRequired: false,
-  ),
-  paypalRequest: BraintreePayPalRequest(
-    amount: '4.20',
-    displayName: 'Example company',
-  ),
   cardEnabled: true,
 );
 ```
