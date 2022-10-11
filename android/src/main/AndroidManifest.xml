@@ -4,7 +4,7 @@
 
     <application>
         <activity android:name=".FlutterBraintreeCustom"
-            android:theme="@style/bt_transparent_activity">
+            android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
     </application>
 
