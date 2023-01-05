@@ -82,7 +82,7 @@ class _MyAppState extends State<MyApp> {
               },
               child: Text('LAUNCH NATIVE DROP-IN'),
             ),
-            ElevatedButton(
+            /*ElevatedButton(
               onPressed: () async {
                 final request = BraintreeCreditCardRequest(
                   cardNumber: '4111111111111111',
@@ -130,7 +130,7 @@ class _MyAppState extends State<MyApp> {
                 }
               },
               child: Text('PAYPAL CHECKOUT FLOW'),
-            ),
+            ),*/
           ],
         ),
       ),
