@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.braintreepayments.api.BraintreeFragment;
 import com.braintreepayments.api.Card;
 import com.braintreepayments.api.PayPal;
+import com.braintreepayments.api.PayPalRequest;
 import com.braintreepayments.api.exceptions.InvalidArgumentException;
 import com.braintreepayments.api.interfaces.BraintreeCancelListener;
 import com.braintreepayments.api.interfaces.BraintreeErrorListener;
@@ -48,6 +49,11 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
 
     protected void tokenizeCreditCard() {
         Intent intent = getIntent();
+        Card card = new Card()
+                .setExpirationMonth(intent.getStringExtra("expirationMonth"))
+                .setExpirationYear(intent.getStringExtra("expirationYear"))
+                .setCvv(intent.getStringExtra("cvv"))
+
         CardBuilder builder = new CardBuilder()
                 .cardNumber(intent.getStringExtra("cardNumber"))
                 .expirationMonth(intent.getStringExtra("expirationMonth"))
