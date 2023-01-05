@@ -3,7 +3,7 @@
     package="com.example.flutter_braintree">
 
     <application>
-        <activity android:name=".FlutterBraintreeCustom"
+        <activity android:name=".DropInActivity"
             android:theme="@style/bt_transparent_activity">
         </activity>
     </application>

@@ -4,10 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.braintreepayments.api.dropin.DropInActivity;
-import com.braintreepayments.api.dropin.DropInRequest;
-import com.braintreepayments.api.dropin.DropInResult;
-import com.braintreepayments.api.models.PaymentMethodNonce;
+
 
 import java.util.Map;
 
@@ -88,7 +85,10 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
     activeResult = result;
 
     if (call.method.equals("tokenizeCreditCard")) {
-      String authorization = call.argument("authorization");
+      result.notImplemented();
+      activeResult = null;
+      return;
+      /*String authorization = call.argument("authorization");
       Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
       intent.putExtra("type", "tokenizeCreditCard");
       intent.putExtra("authorization", (String) call.argument("authorization"));
@@ -99,9 +99,12 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
       intent.putExtra("expirationYear", (String) request.get("expirationYear"));
       intent.putExtra("cvv", (String) request.get("cvv"));
       intent.putExtra("cardholderName", (String) request.get("cardholderName"));
-      activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
+      activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);*/
     } else if (call.method.equals("requestPaypalNonce")) {
-      String authorization = call.argument("authorization");
+      result.notImplemented();
+      activeResult = null;
+      return;
+      /*String authorization = call.argument("authorization");
       Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
       intent.putExtra("type", "requestPaypalNonce");
       intent.putExtra("authorization", (String) call.argument("authorization"));
@@ -113,7 +116,7 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
       intent.putExtra("payPalPaymentIntent", (String) request.get("payPalPaymentIntent"));
       intent.putExtra("payPalPaymentUserAction", (String) request.get("payPalPaymentUserAction"));
       intent.putExtra("billingAgreementDescription", (String) request.get("billingAgreementDescription"));
-      activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
+      activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);*/
     } else {
       result.notImplemented();
       activeResult = null;

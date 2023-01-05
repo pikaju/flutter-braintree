@@ -1,4 +1,4 @@
-package com.example.flutter_braintree;
+/*package com.example.flutter_braintree;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -119,4 +119,4 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
         setResult(2, result);
         finish();
     }
-}
+}*/

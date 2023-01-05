@@ -50,6 +50,7 @@ class _MyAppState extends State<MyApp> {
                 var request = BraintreeDropInRequest(
                   tokenizationKey: tokenizationKey,
                   collectDeviceData: true,
+                  vaultManagerEnabled: true,
                   requestThreeDSecureVerification: true,
                   email: "test@email.com",
                   billingAddress: BraintreeBillingAddress(

@@ -37,11 +37,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.braintreepayments.api.ThreeDSecureActivity" android:theme="@style/Theme.AppCompat.Light">
-        </activity>
-
-
-
         <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true"/>
 
         <meta-data
