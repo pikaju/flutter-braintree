@@ -34,7 +34,7 @@ dependencies {
 In order for this plugin to support PayPal, Venmo or 3D Secure payments, you must allow for the
 browser switch by adding an intent filter to your `AndroidManifest.xml` (inside the `<application>` body):
 ```xml
-<activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
+<activity android:name="com.braintreepayments.api.DropInActivity" 
     android:launchMode="singleTask">
     <intent-filter>
         <action android:name="android.intent.action.VIEW" />
