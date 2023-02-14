@@ -116,6 +116,26 @@ class _MyAppState extends State<MyApp> {
               },
               child: Text('PAYPAL CHECKOUT FLOW'),
             ),
+            ElevatedButton(
+              onPressed: () async {
+                final request = BraintreeApplePayRequest(
+                  paymentSummaryItems: [],
+                  displayName: 'BlueBet',
+                  currencyCode: 'AUD',
+                  countryCode: 'AU',
+                  appleMerchantID: 'merchant.au.com.bluebet.dev',
+                  amount: 10.0
+                );
+                final result = await Braintree.requestApplePay(
+                  tokenizationKey,
+                  request,
+                );
+                if (result != null) {
+                  showNonce(result);
+                }
+              },
+              child: Text('APPLEPAY FLOW'),
+            ),
           ],
         ),
       ),

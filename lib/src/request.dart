@@ -266,6 +266,7 @@ class BraintreeApplePayRequest {
     required this.currencyCode,
     required this.countryCode,
     required this.appleMerchantID,
+    required this.amount,
   });
 
   /// A summary of the payment.
@@ -283,6 +284,8 @@ class BraintreeApplePayRequest {
   /// Apple merchant identifier.
   final String appleMerchantID;
 
+  final double amount;
+
   /// Converts this request object into a JSON-encodable format.
   Map<String, dynamic> toJson() => {
         'paymentSummaryItems':
@@ -291,5 +294,6 @@ class BraintreeApplePayRequest {
         'displayName': displayName,
         'countryCode': countryCode,
         'appleMerchantID': appleMerchantID,
+        'amount': amount
       };
 }

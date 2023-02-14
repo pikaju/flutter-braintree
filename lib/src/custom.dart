@@ -47,18 +47,18 @@ class Braintree {
   }
 
   static Future<BraintreeDeviceData?> requestDeviceData(
-      String authorization,
-      ) async {
+    String authorization,
+  ) async {
     final result = await _kChannel.invokeMethod('collectDeviceData', {
       'authorization': authorization,
     });
-     if (result == null) return null;
+    if (result == null) return null;
     return BraintreeDeviceData.fromJson(result);
   }
 
   static Future<String> isGooglePayReady(
-      String authorization,
-      ) async {
+    String authorization,
+  ) async {
     final result = await _kChannel.invokeMethod('isGooglePayReady', {
       'authorization': authorization,
     });
@@ -66,10 +66,22 @@ class Braintree {
   }
 
   static Future<BraintreePaymentMethodNonce?> googlePayPayment(
-      String authorization,
-      BraintreeGooglePaymentRequest request,
-      ) async {
+    String authorization,
+    BraintreeGooglePaymentRequest request,
+  ) async {
     final result = await _kChannel.invokeMethod('googlePayPayment', {
+      'authorization': authorization,
+      'request': request.toJson(),
+    });
+    if (result == null) return null;
+    return BraintreePaymentMethodNonce.fromJson(result);
+  }
+
+  static Future<BraintreePaymentMethodNonce?> requestApplePay(
+      String authorization,
+      BraintreeApplePayRequest request,
+      ) async {
+    final result = await _kChannel.invokeMethod('applePayPayment', {
       'authorization': authorization,
       'request': request.toJson(),
     });
