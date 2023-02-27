@@ -114,6 +114,8 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 			}
 		} 
 		else if call.method == "applePayPayment" {
+            collectDeviceData(client)
+
 			guard let applePayRequest = dict(for: "request", in: call) else {return}
 
 			self.setupPaymentRequest(applePayRequest) {(paymentRequest, error) in
