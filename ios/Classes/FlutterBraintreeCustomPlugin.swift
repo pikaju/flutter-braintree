@@ -112,7 +112,13 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 				self?.handleDeviceDataResult(deviceData: data, flutterResult: result)
 				self?.isHandlingResult = false
 			}
-		} 
+		}
+
+		else if call.method == "isApplePayReady" {
+			let enabled = PKPaymentAuthorizationViewController.canMakePayments()
+			self.isHandlingResult = false
+			result(enabled)
+		}
 		else if call.method == "applePayPayment" {
             collectDeviceData(client)
 
@@ -120,6 +126,7 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 
 			self.setupPaymentRequest(applePayRequest) {(paymentRequest, error) in
 				guard error == nil else {
+					self.returnBraintreeError(result: result, error: error!)
 					return
 				}
 
@@ -143,10 +150,10 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 			return
 		}
 		
-		let countryCode = "AU" // request["countryCode"] as? String ?? ""
-		let currencyCode = "AUD" // request["currencyCode"]  as? String ?? ""
-		let merchantId = "merchant.au.com.bluebet.dev" // request["appleMerchantID"]  as? String ?? ""
-		let amount = 10.0 // NSDecimalNumber(string: request["amount"] as? String ?? "")
+		let countryCode = request["countryCode"] as? String ?? ""
+		let currencyCode = request["currencyCode"]  as? String ?? ""
+		let merchantId = request["appleMerchantID"]  as? String ?? ""
+		let amount = request["amount"] as? Double ?? 0.0
 
 		applePayClient = BTApplePayClient(apiClient: data)
 		applePayClient?.paymentRequest { (paymentRequest, error) in
@@ -185,6 +192,7 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 			
 			self.applePayNonce = tokenizedApplePayPayment
 			self.flutterResult?(self.buildApplePaymentNonceDict(nonce: self.applePayNonce, deviceData: self.deviceData))
+			self.isHandlingResult = false
 
 			UIApplication.shared.delegate?.window??.rootViewController?.dismiss(animated: true, completion: nil)
 			completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
@@ -198,6 +206,7 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 			return
 		}
 
+		self.isHandlingResult = false
 		result(buildApplePaymentNonceDict(nonce: self.applePayNonce, deviceData: self.deviceData))
 		UIApplication.shared.delegate?.window??.rootViewController?.dismiss(animated: true, completion: nil)
 	}

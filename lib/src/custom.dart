@@ -88,4 +88,11 @@ class Braintree {
     if (result == null) return null;
     return BraintreePaymentMethodNonce.fromJson(result);
   }
+  static Future<bool> isApplePayReady(String authorization) async {
+    final result = await _kChannel.invokeMethod('isApplePayReady', {
+      'authorization': authorization,
+    });
+    if (result == null) return false;
+    return result;
+  }
 }
