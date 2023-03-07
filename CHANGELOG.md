@@ -1,3 +1,9 @@
+## 3.0.0
+
+* Add supported networks parameter for Apple Pay request (thank you to [dessonchan](https://github.com/dessonchan)!)
+* Upgrade Braintree package versions (thank you to [dessonchan](https://github.com/dessonchan)!)
+* Fix problems with Facebook login (thank you to [nicolobozzato](https://github.com/nicolobozzato)!)
+
 ## 3.0.0-dev.1
 
 * Add support for specifying payment intent and user action in `BraintreePayPalRequest` (thank you to [nabinadhikari](https://github.com/nabinadhikari)!)

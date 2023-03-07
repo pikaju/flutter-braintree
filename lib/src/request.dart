@@ -276,6 +276,28 @@ extension ApplePaySummaryItemTypeExtension on ApplePaySummaryItemType {
   }
 }
 
+enum ApplePaySupportedNetworks {
+  visa, // ios >= 8.0
+  masterCard, // ios >= 8.0
+  amex, // ios >= 8.0
+  discover, // ios >= 9.0
+}
+
+extension ApplePaySupportedNetworksExtension on ApplePaySupportedNetworks {
+  int get rawValue {
+    switch (this) {
+      case ApplePaySupportedNetworks.visa:
+        return 0;
+      case ApplePaySupportedNetworks.masterCard:
+        return 1;
+      case ApplePaySupportedNetworks.amex:
+        return 2;
+      case ApplePaySupportedNetworks.discover:
+        return 3;
+    }
+  }
+}
+
 class ApplePaySummaryItem {
   ApplePaySummaryItem({
     required this.label,
@@ -307,6 +329,7 @@ class BraintreeApplePayRequest {
     required this.currencyCode,
     required this.countryCode,
     required this.merchantIdentifier,
+    required this.supportedNetworks,
   });
 
   /// A summary of the payment.
@@ -324,6 +347,9 @@ class BraintreeApplePayRequest {
   /// Apple merchant identifier.
   final String merchantIdentifier;
 
+  /// Supported Networks
+  final List<ApplePaySupportedNetworks> supportedNetworks;
+
   /// Converts this request object into a JSON-encodable format.
   Map<String, dynamic> toJson() => {
         'paymentSummaryItems':
@@ -332,5 +358,6 @@ class BraintreeApplePayRequest {
         'displayName': displayName,
         'countryCode': countryCode,
         'merchantIdentifier': merchantIdentifier,
+        'supportedNetworks': supportedNetworks.map((e) => e.rawValue).toList(),
       };
 }

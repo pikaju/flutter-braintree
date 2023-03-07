@@ -69,6 +69,19 @@ class _MyAppState extends State<MyApp> {
                     currencyCode: 'USD',
                     billingAddressRequired: false,
                   ),
+                  applePayRequest: BraintreeApplePayRequest(
+                      currencyCode: 'USD',
+                      supportedNetworks: [
+                        ApplePaySupportedNetworks.visa,
+                        ApplePaySupportedNetworks.masterCard,
+                        // ApplePaySupportedNetworks.amex,
+                        // ApplePaySupportedNetworks.discover,
+                      ],
+                      countryCode: 'US',
+                      merchantIdentifier: '',
+                      displayName: '',
+                      paymentSummaryItems: []
+                  ),
                   paypalRequest: BraintreePayPalRequest(
                     amount: '4.20',
                     displayName: 'Example company',
