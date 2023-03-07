@@ -1,14 +1,23 @@
 /*package com.example.flutter_braintree;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.braintreepayments.api.BraintreeClient;
 import com.braintreepayments.api.BraintreeFragment;
 import com.braintreepayments.api.Card;
+import com.braintreepayments.api.CardClient;
+import com.braintreepayments.api.CardNonce;
+import com.braintreepayments.api.CardTokenizeCallback;
+import com.braintreepayments.api.DropInClient;
 import com.braintreepayments.api.PayPal;
+import com.braintreepayments.api.PayPalAccountNonce;
+import com.braintreepayments.api.PayPalClient;
 import com.braintreepayments.api.PayPalRequest;
+import com.braintreepayments.api.PaymentMethodNonce;
 import com.braintreepayments.api.exceptions.InvalidArgumentException;
 import com.braintreepayments.api.interfaces.BraintreeCancelListener;
 import com.braintreepayments.api.interfaces.BraintreeErrorListener;
@@ -20,8 +29,9 @@ import com.braintreepayments.api.models.PayPalAccountNonce;
 
 import java.util.HashMap;
 
-public class FlutterBraintreeCustom extends AppCompatActivity implements PaymentMethodNonceCreatedListener, BraintreeCancelListener, BraintreeErrorListener {
-    private BraintreeFragment braintreeFragment;
+public class FlutterBraintreeCustom extends AppCompatActivity{
+    private BraintreeClient braintreeClient;
+    private PayPalClient payPalClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +39,8 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
         setContentView(R.layout.activity_flutter_braintree_custom);
         try {
             Intent intent = getIntent();
-            braintreeFragment = BraintreeFragment.newInstance(this, intent.getStringExtra("authorization"));
+            braintreeClient = new BraintreeClient(this, intent.getStringExtra("authorization"));
+            payPalClient = new PayPalClient(this, braintreeClient);
             String type = intent.getStringExtra("type");
             if (type.equals("tokenizeCreditCard")) {
                 tokenizeCreditCard();
@@ -49,19 +60,27 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
 
     protected void tokenizeCreditCard() {
         Intent intent = getIntent();
-        Card card = new Card()
-                .setExpirationMonth(intent.getStringExtra("expirationMonth"))
-                .setExpirationYear(intent.getStringExtra("expirationYear"))
-                .setCvv(intent.getStringExtra("cvv"))
+        Card card = new Card();
+        card.setExpirationMonth(intent.getStringExtra("expirationMonth"));
+        card.setExpirationYear(intent.getStringExtra("expirationYear"));
+        card.setCvv(intent.getStringExtra("cvv"));
+        card.setCardholderName(intent.getStringExtra("cardholderName"));
+        card.setNumber(intent.getStringExtra("cardNumber"));
 
-        CardBuilder builder = new CardBuilder()
-                .cardNumber(intent.getStringExtra("cardNumber"))
-                .expirationMonth(intent.getStringExtra("expirationMonth"))
-                .expirationYear(intent.getStringExtra("expirationYear"))
-                .cvv(intent.getStringExtra("cvv"))
-                .validate(false)
-                .cardholderName(intent.getStringExtra("cardholderName"));
-        Card.tokenize(braintreeFragment, builder);
+
+        CardClient cardClient = new CardClient(braintreeClient);
+        CardTokenizeCallback callback = new CardTokenizeCallback() {
+            @Override
+            public void onResult(@Nullable CardNonce cardNonce, @Nullable Exception error) {
+                if(cardNonce != null){
+                    onPaymentMethodNonceCreated(cardNonce);
+                }
+                if(error != null){
+                    onError(error);
+                }
+            }
+        };
+        cardClient.tokenize(card, callback);
     }
 
     protected void requestPaypalNonce() {
@@ -93,10 +112,9 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
         }
     }
 
-    @Override
     public void onPaymentMethodNonceCreated(PaymentMethodNonce paymentMethodNonce) {
         HashMap<String, Object> nonceMap = new HashMap<String, Object>();
-        nonceMap.put("nonce", paymentMethodNonce.getNonce());
+        nonceMap.put("nonce", paymentMethodNonce.getString());
         nonceMap.put("typeLabel", paymentMethodNonce.getTypeLabel());
         nonceMap.put("description", paymentMethodNonce.getDescription());
         nonceMap.put("isDefault", paymentMethodNonce.isDefault());
@@ -112,13 +130,11 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
         finish();
     }
 
-    @Override
     public void onCancel(int requestCode) {
         setResult(RESULT_CANCELED);
         finish();
     }
 
-    @Override
     public void onError(Exception error) {
         Intent result = new Intent();
         result.putExtra("error", error);
