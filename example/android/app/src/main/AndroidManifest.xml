@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
+        <activity android:name="com.braintreepayments.api.DropInActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -35,6 +35,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="com.example.flutterbraintreeexample.braintree" />
             </intent-filter>
+        </activity>
+        <activity android:name="com.braintreepayments.api.ThreeDSecureActivity" android:theme="@style/Theme.AppCompat.Light" android:exported="true">
         </activity>
 
         <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true"/>
