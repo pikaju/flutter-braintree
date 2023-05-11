@@ -112,6 +112,92 @@ class BraintreeCreditCardRequest {
       };
 }
 
+/*
+threeDSecureRequest.amount = 10.00
+threeDSecureRequest.nonce = tokenizedCard.nonce
+threeDSecureRequest.email = "test@email.com"
+threeDSecureRequest.versionRequested = .version2
+
+let address = BTThreeDSecurePostalAddress()
+address.givenName = "Jill" // ASCII-printable characters required, else will throw a validation error
+address.surname = "Doe" // ASCII-printable characters required, else will throw a validation error
+address.phoneNumber = "5551234567"
+address.streetAddress = "555 Smith St"
+address.extendedAddress = "#2"
+address.locality = "Chicago"
+address.region = "IL" // ISO-3166-2 code
+address.postalCode = "12345"
+address.countryCodeAlpha2 = "US"
+threeDSecureRequest.billingAddress = address
+
+// Optional additional information.
+// For best results, provide as many of these elements as possible.
+let info = BTThreeDSecureAdditionalInformation()
+info.shippingAddress = address
+threeDSecureRequest.additionalInformation = info
+ */
+class BraintreeThreeDSecureRequest {
+  BraintreeThreeDSecureRequest({
+    required this.amount,
+    required this.nonce,
+    this.email,
+    this.firstName,
+    this.lastName,
+    this.phoneNumber,
+    this.address,
+  });
+
+  double amount;
+
+  String nonce;
+
+  String? email;
+
+  String? firstName;
+
+  String? lastName;
+
+  String? phoneNumber;
+
+  BraintreeThreeDSecureAddress? address;
+
+  Map<String, dynamic> toJson() => {
+    'amount': amount,
+    'nonce': nonce,
+    'email': email,
+    'firstName': firstName,
+    'lastName': lastName,
+    'phoneNumber': phoneNumber,
+    'address': address?.toJson()
+  };
+}
+
+class BraintreeThreeDSecureAddress {
+  String? streetAddress;
+  String? extendedAddress;
+  String? locality;
+  String? region;
+  String? postalCode;
+  String? countryCodeAlpha2;
+  BraintreeThreeDSecureAddress({
+    this.streetAddress,
+    this.extendedAddress,
+    this.locality,
+    this.region,
+    this.postalCode,
+    this.countryCodeAlpha2,
+  });
+
+  Map<String, dynamic> toJson() => {
+    'streetAddress': streetAddress,
+    'extendedAddress': extendedAddress,
+    'locality': locality,
+    'region': region,
+    'postalCode': postalCode,
+    'countryCodeAlpha2': countryCodeAlpha2
+  };
+}
+
 class BraintreeGooglePaymentRequest {
   BraintreeGooglePaymentRequest({
     required this.totalPrice,

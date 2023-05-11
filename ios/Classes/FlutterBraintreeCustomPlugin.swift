@@ -3,14 +3,15 @@ import UIKit
 import Braintree
 import BraintreeDropIn
 
-public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPlugin, BTViewControllerPresentingDelegate, PKPaymentAuthorizationViewControllerDelegate {
+public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPlugin, BTViewControllerPresentingDelegate, BTThreeDSecureRequestDelegate, PKPaymentAuthorizationViewControllerDelegate {
 	
 	var flutterResult: FlutterResult?
 	var deviceData: String?
 	var applePayClient: BTApplePayClient?
 	var client: BTAPIClient?
 	var applePayNonce: BTApplePayCardNonce?
-
+	var paymentFlowDriver: BTPaymentFlowDriver?
+	
 	public static func register(with registrar: FlutterPluginRegistrar) {
 		let channel = FlutterMethodChannel(name: "flutter_braintree.custom", binaryMessenger: registrar.messenger())
 		
@@ -103,7 +104,15 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 				self.handleResult(nonce: nonce, error: error, flutterResult: result)
 				self.isHandlingResult = false
 			}
-		} else if call.method == "collectDeviceData" {
+		} else if call.method == "start3DSPayment" {
+//			let cardClient = BTCardClient(apiClient: client!)
+			
+			guard let requestInfo = dict(for: "request", in: call) else {return}
+			
+			request3DPayment(requestInfo)
+		}
+		
+		else if call.method == "collectDeviceData" {
 			guard let apiClient = client else {
 				return
 			}
@@ -177,6 +186,87 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 		}
 	}
 
+	func setupPaymentFlowDriver() {
+		guard let paymentClient = self.client else {
+			return
+		}
+		self.paymentFlowDriver = BTPaymentFlowDriver(apiClient: paymentClient)
+		self.paymentFlowDriver?.viewControllerPresentingDelegate = self
+	}
+	
+	func request3DPayment(_ request: [String: Any?]?) {
+		guard let dict = request else {
+			return
+		}
+		
+		setupPaymentFlowDriver()
+		
+		let threeDSecureRequest = BTThreeDSecureRequest()
+		threeDSecureRequest.threeDSecureRequestDelegate = self
+		threeDSecureRequest.versionRequested = .version2
+
+		let amount = dict["amount"] as? Double ?? 0.0
+		threeDSecureRequest.amount = NSDecimalNumber(value: amount)
+		
+		threeDSecureRequest.nonce = dict["nonce"] as? String ?? ""
+		threeDSecureRequest.email = dict["email"] as? String ?? ""
+
+		let address = BTThreeDSecurePostalAddress()
+		address.givenName = dict["firstName"] as? String ?? ""
+		address.surname = dict["lastName"] as? String ?? ""
+		address.phoneNumber = dict["phoneNumber"] as? String ?? ""
+		address.streetAddress = dict["streetAddress"] as? String ?? ""
+		address.extendedAddress = dict["extendedAddress"] as? String ?? ""
+		address.locality = dict["locality"] as? String ?? ""
+		address.region = dict["postalCode"] as? String ?? "" // ISO-3166-2 code
+		address.postalCode = dict["region"] as? String ?? ""
+		address.countryCodeAlpha2 = dict["countryCodeAlpha2"] as? String ?? ""
+		threeDSecureRequest.billingAddress = address
+
+		// Optional additional information.
+		// For best results, provide as many of these elements as possible.
+		let info = BTThreeDSecureAdditionalInformation()
+		info.shippingAddress = address
+		threeDSecureRequest.additionalInformation = info
+		
+		let customUI = BTThreeDSecureV2UICustomization()
+		let toolbarCustomization = BTThreeDSecureV2ToolbarCustomization()
+		toolbarCustomization.headerText = "BlueBet 3DS Checkout"
+		toolbarCustomization.backgroundColor = "#FF5A5F"
+		toolbarCustomization.buttonText = "Close"
+		toolbarCustomization.textColor = "#222222"
+		toolbarCustomization.textFontSize = 18
+		customUI.toolbarCustomization = toolbarCustomization
+		
+		threeDSecureRequest.v2UICustomization = customUI
+		
+		self.paymentFlowDriver?.startPaymentFlow(threeDSecureRequest, completion: { (result: BTPaymentFlowResult?, error) in
+			guard let threeDSecureResult = result as? BTThreeDSecureResult, let tokenizedCard = threeDSecureResult.tokenizedCard else {
+				print((error as? NSError)?.localizedDescription as? String ?? "")
+				return
+			}
+			if threeDSecureResult.tokenizedCard?.threeDSecureInfo.liabilityShiftPossible == true {
+				
+				if threeDSecureResult.tokenizedCard?.threeDSecureInfo.liabilityShifted == true {
+					print("3D Secure authentication success");
+					self.isHandlingResult = false
+				} else {
+					print("3D Secure authentication failed")
+					self.isHandlingResult = false
+				}
+			} else {
+				print("3D Secure authentication was not possible")
+				self.isHandlingResult = false
+			}
+			// Use the `tokenizedCard.nonce`
+			print(tokenizedCard)
+			
+			if let result = self.flutterResult {
+				self.handleResult(nonce: tokenizedCard, error: error, flutterResult: result)
+			}
+		})
+	}
+	
 	public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
                          didAuthorizePayment payment: PKPayment,
                                   handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
@@ -222,11 +312,19 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 	}
 	
 	public func paymentDriver(_ driver: Any, requestsPresentationOf viewController: UIViewController) {
-		
+		UIApplication.shared.delegate?.window??.rootViewController?.present(viewController, animated: true, completion: nil)
+
 	}
 	
 	public func paymentDriver(_ driver: Any, requestsDismissalOf viewController: UIViewController) {
-		
+		UIApplication.shared.delegate?.window??.rootViewController?.dismiss(animated: true, completion: nil)
+	}
+	
+	public func onLookupComplete(_ request: BTThreeDSecureRequest, lookupResult result: BTThreeDSecureResult, next: @escaping () -> Void) {
+		if result.lookup?.requiresUserAuthentication == true {
+			print("Requires User Authentication")
+		}
+		next()
 	}
 	
 	public func collectDeviceData(_ client: BTAPIClient?) {
