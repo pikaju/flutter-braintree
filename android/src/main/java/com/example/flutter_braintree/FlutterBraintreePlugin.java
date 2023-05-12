@@ -100,7 +100,29 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
       intent.putExtra("cvv", (String) request.get("cvv"));
       intent.putExtra("cardholderName", (String) request.get("cardholderName"));
       activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
-    } else if (call.method.equals("requestPaypalNonce")) {
+    } else if(call.method.equals("start3DSPayment")) {
+      Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
+      intent.putExtra("type", "start3DSPayment");
+      intent.putExtra("authorization", (String) call.argument("authorization"));
+      assert(call.argument("request") instanceof Map);
+      Map request = (Map) call.argument("request");
+      intent.putExtra("firstName", (String) request.get("firstName"));
+      intent.putExtra("lastName", (String) request.get("lastName"));
+      intent.putExtra("phoneNumber", (String) request.get("phoneNumber"));
+      intent.putExtra("streetAddress", (String) request.get("streetAddress"));
+      intent.putExtra("extendedAddress", (String) request.get("extendedAddress"));
+
+      intent.putExtra("locality", (String) request.get("locality"));
+      intent.putExtra("region", (String) request.get("region"));
+      intent.putExtra("postCode", (String) request.get("postCode"));
+      intent.putExtra("countryCodeAlpha2", (String) request.get("countryCodeAlpha2"));
+
+      intent.putExtra("amount", (String) request.get("amount").toString());
+      intent.putExtra("nonce", (String) request.get("nonce"));
+
+      activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
+    }
+    else if (call.method.equals("requestPaypalNonce")) {
       String authorization = call.argument("authorization");
       Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
       intent.putExtra("type", "requestPaypalNonce");
@@ -165,8 +187,10 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
             activeResult.success(data.getStringExtra("isReadyToPay"));
           } else if (type.equals("collectDeviceData")) {
             activeResult.success(data.getSerializableExtra("deviceData"));
+          } else if (type.equals("start3DSPayment")) {
+            activeResult.success(data.getSerializableExtra("paymentMethodNonce"));
           }
-           else {
+          else {
             Exception error = new Exception("Invalid activity result type.");
             activeResult.error("error", error.getMessage(), null);
           }

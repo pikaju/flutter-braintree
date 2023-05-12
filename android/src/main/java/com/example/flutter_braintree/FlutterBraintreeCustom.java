@@ -21,9 +21,15 @@ import com.braintreepayments.api.models.GooglePaymentRequest;
 import com.braintreepayments.api.models.PaymentMethodNonce;
 import com.braintreepayments.api.models.PayPalAccountNonce;
 import com.braintreepayments.api.DataCollector;
-
+import com.braintreepayments.api.ThreeDSecure;
 import com.google.android.gms.wallet.TransactionInfo;
 import com.google.android.gms.wallet.WalletConstants;
+
+import com.braintreepayments.api.interfaces.ThreeDSecureLookupListener;
+import com.braintreepayments.api.models.ThreeDSecureAdditionalInformation;
+import com.braintreepayments.api.models.ThreeDSecureLookup;
+import com.braintreepayments.api.models.ThreeDSecurePostalAddress;
+import com.braintreepayments.api.models.ThreeDSecureRequest;
 
 import java.util.HashMap;
 
@@ -41,6 +47,8 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
             String type = intent.getStringExtra("type");
             if (type.equals("tokenizeCreditCard")) {
                 tokenizeCreditCard();
+            } else if (type.equals("start3DSPayment")) {
+                request3DSpayment();
             } else if (type.equals("requestPaypalNonce")) {
                 requestPaypalNonce();
             } else if (type.equals("collectDeviceData")) {
@@ -87,6 +95,41 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
                 .validate(false)
                 .cardholderName(intent.getStringExtra("cardholderName"));
         Card.tokenize(braintreeFragment, builder);
+    }
+
+    protected void request3DSpayment() {
+        Intent intent = getIntent();
+        ThreeDSecurePostalAddress address = new ThreeDSecurePostalAddress()
+                .givenName(intent.getStringExtra("firstName")) // ASCII-printable characters required, else will throw a validation error
+                .surname(intent.getStringExtra("lastName")) // ASCII-printable characters required, else will throw a validation error
+                .phoneNumber(intent.getStringExtra("phoneNumber"))
+                .streetAddress(intent.getStringExtra("streetAddress"))
+                .extendedAddress(intent.getStringExtra("extendedAddress"))
+                .locality(intent.getStringExtra("locality"))
+                .region(intent.getStringExtra("region")) // ISO-3166-2 code
+                .postalCode(intent.getStringExtra("postCode"))
+                .countryCodeAlpha2(intent.getStringExtra("countryCodeAlpha2"));
+
+
+// For best results, provide as many additional elements as possible.
+        ThreeDSecureAdditionalInformation additionalInformation = new ThreeDSecureAdditionalInformation()
+                .shippingAddress(address);
+
+        ThreeDSecureRequest threeDSecureRequest = new ThreeDSecureRequest()
+                .amount(intent.getStringExtra("amount"))
+                .email(intent.getStringExtra("email"))
+                .billingAddress(address)
+                .nonce(intent.getStringExtra("nonce"))
+                .versionRequested(ThreeDSecureRequest.VERSION_2)
+                .additionalInformation(additionalInformation);
+
+        ThreeDSecure.performVerification(braintreeFragment, threeDSecureRequest, new ThreeDSecureLookupListener() {
+            @Override
+            public void onLookupComplete(ThreeDSecureRequest request, ThreeDSecureLookup lookup) {
+                // Optionally inspect the lookup result and prepare UI if a challenge is required
+                ThreeDSecure.continuePerformVerification(braintreeFragment, request, lookup);
+            }
+        });
     }
 
     protected void requestPaypalNonce() {
