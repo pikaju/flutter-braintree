@@ -229,20 +229,23 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 		info.shippingAddress = address
 		threeDSecureRequest.additionalInformation = info
 		
-		let customUI = BTThreeDSecureV2UICustomization()
-		let toolbarCustomization = BTThreeDSecureV2ToolbarCustomization()
-		toolbarCustomization.headerText = "BlueBet 3DS Checkout"
-		toolbarCustomization.backgroundColor = "#FF5A5F"
-		toolbarCustomization.buttonText = "Close"
-		toolbarCustomization.textColor = "#222222"
-		toolbarCustomization.textFontSize = 18
-		customUI.toolbarCustomization = toolbarCustomization
-		
-		threeDSecureRequest.v2UICustomization = customUI
+//		let customUI = BTThreeDSecureV2UICustomization()
+//		let toolbarCustomization = BTThreeDSecureV2ToolbarCustomization()
+//		toolbarCustomization.headerText = "BlueBet 3DS Checkout"
+//		toolbarCustomization.backgroundColor = "#FF5A5F"
+//		toolbarCustomization.buttonText = "Close"
+//		toolbarCustomization.textColor = "#222222"
+//		toolbarCustomization.textFontSize = 18
+//		customUI.toolbarCustomization = toolbarCustomization
+//
+//		threeDSecureRequest.v2UICustomization = customUI
 		
 		self.paymentFlowDriver?.startPaymentFlow(threeDSecureRequest, completion: { (result: BTPaymentFlowResult?, error) in
 			guard let threeDSecureResult = result as? BTThreeDSecureResult, let tokenizedCard = threeDSecureResult.tokenizedCard else {
+				print("Error in 3DS")
 				print((error as? NSError)?.localizedDescription as? String ?? "")
+				self.isHandlingResult = false
+				self.flutterResult?(nil)
 				return
 			}
 			if threeDSecureResult.tokenizedCard?.threeDSecureInfo.liabilityShiftPossible == true {
@@ -312,11 +315,13 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
 	}
 	
 	public func paymentDriver(_ driver: Any, requestsPresentationOf viewController: UIViewController) {
+		print("authentication presented")
 		UIApplication.shared.delegate?.window??.rootViewController?.present(viewController, animated: true, completion: nil)
 
 	}
 	
 	public func paymentDriver(_ driver: Any, requestsDismissalOf viewController: UIViewController) {
+		print("authentication dismissed")
 		UIApplication.shared.delegate?.window??.rootViewController?.dismiss(animated: true, completion: nil)
 	}
 	
