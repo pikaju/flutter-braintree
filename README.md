@@ -34,7 +34,7 @@ dependencies {
 In order for this plugin to support PayPal, Venmo or 3D Secure payments, you must allow for the
 browser switch by adding an intent filter to your `AndroidManifest.xml` (inside the `<application>` body):
 ```xml
-<activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
+<activity android:name="com.braintreepayments.api.DropInActivity" 
     android:launchMode="singleTask">
     <intent-filter>
         <action android:name="android.intent.action.VIEW" />
@@ -42,6 +42,8 @@ browser switch by adding an intent filter to your `AndroidManifest.xml` (inside 
         <category android:name="android.intent.category.BROWSABLE" />
         <data android:scheme="${applicationId}.braintree" />
     </intent-filter>
+</activity>
+<activity android:name="com.braintreepayments.api.ThreeDSecureActivity" android:theme="@style/Theme.AppCompat.Light" android:exported="true">
 </activity>
 ```
 
@@ -180,6 +182,30 @@ if (result != null) {
 } else {
   print('Selection was canceled.');
 }
+```
+
+To increase the chances of success with 3ds 2.0 challenge is possible to add additional information about the user
+as mentioned in the guide to [Migrate to 3ds 2.0](https://developer.paypal.com/braintree/docs/guides/3d-secure/migration).
+```dart
+var request = BraintreeDropInRequest(
+  clientToken: '<Insert your client token here>',
+  collectDeviceData: true,
+  requestThreeDSecureVerification: true,
+  email: "test@email.com",
+  amount: "0,01",
+  billingAddress: BraintreeBillingAddress(
+    givenName: "Jill",
+    surname: "Doe",
+    phoneNumber: "5551234567",
+    streetAddress: "555 Smith St",
+    extendedAddress: "#2",
+    locality: "Chicago",
+    region: "IL",
+    postalCode: "12345",
+    countryCodeAlpha2: "US",
+  ),
+  cardEnabled: true,
+);
 ```
 
 See `BraintreeDropInRequest` and `BraintreeDropInResult` for more documentation.

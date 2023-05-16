@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:alpha="0.0"
     android:visibility="invisible"
-    tools:context=".DropInActivity"
+    tools:context=".FlutterBraintreeCustom"
     tools:visibility="invisible">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

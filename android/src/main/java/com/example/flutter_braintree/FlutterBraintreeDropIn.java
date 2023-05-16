@@ -11,33 +11,38 @@ import io.flutter.plugin.common.PluginRegistry.ActivityResultListener;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 
-import com.braintreepayments.api.dropin.DropInActivity;
-import com.braintreepayments.api.dropin.DropInRequest;
-import com.braintreepayments.api.dropin.DropInResult;
-import com.braintreepayments.api.models.GooglePaymentRequest;
-import com.braintreepayments.api.models.PayPalRequest;
-import com.braintreepayments.api.models.PaymentMethodNonce;
 
+import androidx.annotation.Nullable;
+
+import com.braintreepayments.api.DropInRequest;
+import com.braintreepayments.api.DropInResult;
+import com.braintreepayments.api.GooglePayRequest;
+import com.braintreepayments.api.PayPalCheckoutRequest;
+import com.braintreepayments.api.PaymentMethodNonce;
+import com.braintreepayments.api.ThreeDSecureAdditionalInformation;
+import com.braintreepayments.api.ThreeDSecurePostalAddress;
+import com.braintreepayments.api.ThreeDSecureRequest;
 import com.google.android.gms.wallet.TransactionInfo;
 import com.google.android.gms.wallet.WalletConstants;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class FlutterBraintreeDropIn implements FlutterPlugin, ActivityAware, MethodCallHandler, ActivityResultListener {
+public class FlutterBraintreeDropIn  implements FlutterPlugin, ActivityAware, MethodCallHandler, ActivityResultListener, Serializable {
   private static final int DROP_IN_REQUEST_CODE = 0x1337;
 
   private Activity activity;
   private Result activeResult;
 
+
   public static void registerWith(Registrar registrar) {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_braintree.drop_in");
-    FlutterBraintreeDropIn dropIn = new FlutterBraintreeDropIn();
-    dropIn.activity = registrar.activity();
-    registrar.addActivityResultListener(dropIn);
-    channel.setMethodCallHandler(dropIn);
+    FlutterBraintreeDropIn plugin = new FlutterBraintreeDropIn();
+    plugin.activity = registrar.activity();
+    registrar.addActivityResultListener(plugin);
+    channel.setMethodCallHandler(plugin);
   }
 
   @Override
@@ -78,34 +83,72 @@ public class FlutterBraintreeDropIn implements FlutterPlugin, ActivityAware, Met
     if (call.method.equals("start")) {
       String clientToken = call.argument("clientToken");
       String tokenizationKey = call.argument("tokenizationKey");
-      DropInRequest dropInRequest = new DropInRequest()
-              .amount((String) call.argument("amount"))
-              .collectDeviceData((Boolean) call.argument("collectDeviceData"))
-              .requestThreeDSecureVerification((Boolean) call.argument("requestThreeDSecureVerification"))
-              .maskCardNumber((Boolean) call.argument("maskCardNumber"))
-              .vaultManager((Boolean) call.argument("vaultManagerEnabled"));
-
-
+      ThreeDSecureRequest threeDSecureRequest = new ThreeDSecureRequest();
+      String token = "";
       if (clientToken != null)
-        dropInRequest.clientToken(clientToken);
+        token = clientToken;
       else if (tokenizationKey != null)
-        dropInRequest.tokenizationKey(tokenizationKey);
+        token = tokenizationKey;
+
+      // For best results with 3ds 2.0, provide as many additional elements as possible.
+      HashMap<String, String> billingAddress = call.argument("billingAddress");
+      if(billingAddress != null){
+        ThreeDSecurePostalAddress address = new ThreeDSecurePostalAddress();
+        address.setGivenName(billingAddress.get("givenName")); // ASCII-printable characters required, else will throw a validation error
+        address.setSurname(billingAddress.get("surname")); // ASCII-printable characters required, else will throw a validation error
+        address.setPhoneNumber(billingAddress.get("phoneNumber"));
+        address.setStreetAddress(billingAddress.get("streetAddress"));
+        address.setExtendedAddress(billingAddress.get("extendedAddress"));
+        address.setLocality(billingAddress.get("locality"));
+        address.setRegion(billingAddress.get("region"));
+        address.setPostalCode(billingAddress.get("postalCode"));
+        address.setCountryCodeAlpha2(billingAddress.get("countryCodeAlpha2"));
+
+        ThreeDSecureAdditionalInformation additionalInformation = new ThreeDSecureAdditionalInformation();
+        additionalInformation.setShippingAddress(address);
+        threeDSecureRequest.setBillingAddress(address);
+        threeDSecureRequest.setAdditionalInformation(additionalInformation);
+      }
+
+
+
+      threeDSecureRequest.setAmount((String) call.argument("amount"));
+      String email = call.argument("email");
+      if(email != null){
+        threeDSecureRequest.setEmail(email);
+      }
+
+      threeDSecureRequest.setVersionRequested(ThreeDSecureRequest.VERSION_2);
+
+
+      DropInRequest dropInRequest = new DropInRequest();
+
+      dropInRequest.setVaultManagerEnabled((Boolean) call.argument("vaultManagerEnabled"));
+      dropInRequest.setThreeDSecureRequest(threeDSecureRequest);
+      dropInRequest.setMaskCardNumber((Boolean) call.argument("maskCardNumber"));
+
+
+      //.collectDeviceData((Boolean) call.argument("collectDeviceData"))
+      // .requestThreeDSecureVerification((Boolean) call.argument("requestThreeDSecureVerification"))
 
       readGooglePaymentParameters(dropInRequest, call);
       readPayPalParameters(dropInRequest, call);
       if (!((Boolean) call.argument("venmoEnabled")))
-        dropInRequest.disableVenmo();
+        dropInRequest.setVenmoDisabled(true);
       if (!((Boolean) call.argument("cardEnabled")))
-        dropInRequest.disableCard();
+        dropInRequest.setCardDisabled(true);
       if (!((Boolean) call.argument("paypalEnabled")))
-        dropInRequest.disablePayPal();
+        dropInRequest.setPayPalDisabled(true);
 
-      if (activeResult != null) {
+      if (this.activeResult != null) {
         result.error("drop_in_already_running", "Cannot launch another Drop-in activity while one is already running.", null);
         return;
       }
       this.activeResult = result;
-      activity.startActivityForResult(dropInRequest.getIntent(activity), DROP_IN_REQUEST_CODE);
+      Intent intent = new Intent(activity, DropInActivity.class);
+      intent.putExtra("token", token);
+      intent.putExtra("dropInRequest", dropInRequest);
+      this.activity.startActivityForResult(intent, DROP_IN_REQUEST_CODE);
     } else {
       result.notImplemented();
     }
@@ -114,60 +157,60 @@ public class FlutterBraintreeDropIn implements FlutterPlugin, ActivityAware, Met
   private static void readGooglePaymentParameters(DropInRequest dropInRequest, MethodCall call) {
     HashMap<String, Object> arg = call.argument("googlePaymentRequest");
     if (arg == null) {
-      dropInRequest.disableGooglePayment();
+      dropInRequest.setGooglePayDisabled(true);
       return;
     }
-    GooglePaymentRequest googlePaymentRequest = new GooglePaymentRequest()
-            .transactionInfo(TransactionInfo.newBuilder()
-                    .setTotalPrice((String) arg.get("totalPrice"))
-                    .setCurrencyCode((String) arg.get("currencyCode"))
-                    .setTotalPriceStatus(WalletConstants.TOTAL_PRICE_STATUS_FINAL)
-                    .build())
-            .billingAddressRequired((Boolean) arg.get("billingAddressRequired"))
-            .googleMerchantId((String) arg.get("merchantID"));
-    dropInRequest.googlePaymentRequest(googlePaymentRequest);
+    GooglePayRequest googlePayRequest = new GooglePayRequest();
+    googlePayRequest.setTransactionInfo(TransactionInfo.newBuilder()
+            .setTotalPrice((String) arg.get("totalPrice"))
+            .setTotalPriceStatus(WalletConstants.TOTAL_PRICE_STATUS_FINAL)
+            .setCurrencyCode((String) arg.get("currencyCode"))
+            .build());
+    googlePayRequest.setBillingAddressRequired(true);
+    dropInRequest.setGooglePayRequest(googlePayRequest);
   }
 
   private static void readPayPalParameters(DropInRequest dropInRequest, MethodCall call) {
     HashMap<String, Object> arg = call.argument("paypalRequest");
     if (arg == null) {
-      dropInRequest.disablePayPal();
+      dropInRequest.setPayPalDisabled(true);
       return;
     }
     String amount = (String) arg.get("amount");
-    PayPalRequest paypalRequest = amount == null ? new PayPalRequest() : new PayPalRequest(amount);
-    paypalRequest.currencyCode((String) arg.get("currencyCode"))
-            .displayName((String) arg.get("displayName"))
-            .billingAgreementDescription((String) arg.get("billingAgreementDescription"));
-    dropInRequest.paypalRequest(paypalRequest);
+    PayPalCheckoutRequest paypalRequest = new PayPalCheckoutRequest(amount);
+    paypalRequest.setCurrencyCode((String) arg.get("currencyCode"));
+    paypalRequest.setDisplayName((String) arg.get("displayName"));
+    paypalRequest.setBillingAgreementDescription((String) arg.get("billingAgreementDescription"));
+
+    dropInRequest.setPayPalRequest(paypalRequest);
   }
 
   @Override
-  public boolean onActivityResult(int requestCode, int resultCode, Intent data)  {
-    if (activeResult == null)
+  public boolean onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    if (this.activeResult == null)
       return false;
 
     switch (requestCode) {
       case DROP_IN_REQUEST_CODE:
         if (resultCode == Activity.RESULT_OK) {
-          DropInResult dropInResult = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
+          DropInResult dropInResult = data.getParcelableExtra("dropInResult");
           PaymentMethodNonce paymentMethodNonce = dropInResult.getPaymentMethodNonce();
           HashMap<String, Object> result = new HashMap<String, Object>();
 
           HashMap<String, Object> nonceResult = new HashMap<String, Object>();
-          nonceResult.put("nonce", paymentMethodNonce.getNonce());
-          nonceResult.put("typeLabel", paymentMethodNonce.getTypeLabel());
-          nonceResult.put("description", paymentMethodNonce.getDescription());
+          nonceResult.put("nonce", paymentMethodNonce.getString());
+          nonceResult.put("typeLabel", dropInResult.getPaymentMethodType().name());
+          nonceResult.put("description", dropInResult.getPaymentDescription());
           nonceResult.put("isDefault", paymentMethodNonce.isDefault());
 
           result.put("paymentMethodNonce", nonceResult);
           result.put("deviceData", dropInResult.getDeviceData());
-          activeResult.success(result);
+          this.activeResult.success(result);
         } else if (resultCode == Activity.RESULT_CANCELED) {
           activeResult.success(null);
         } else {
-          Exception error = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
-          activeResult.error("braintree_error", error.getMessage(), null);
+          String error = data.getStringExtra("error");
+          activeResult.error("braintree_error", error, null);
         }
         activeResult = null;
         return true;

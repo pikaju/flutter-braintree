@@ -50,6 +50,20 @@ class _MyAppState extends State<MyApp> {
                 var request = BraintreeDropInRequest(
                   tokenizationKey: tokenizationKey,
                   collectDeviceData: true,
+                  vaultManagerEnabled: true,
+                  requestThreeDSecureVerification: true,
+                  email: "test@email.com",
+                  billingAddress: BraintreeBillingAddress(
+                    givenName: "Jill",
+                    surname: "Doe",
+                    phoneNumber: "5551234567",
+                    streetAddress: "555 Smith St",
+                    extendedAddress: "#2",
+                    locality: "Chicago",
+                    region: "IL",
+                    postalCode: "12345",
+                    countryCodeAlpha2: "US",
+                  ),
                   googlePaymentRequest: BraintreeGooglePaymentRequest(
                     totalPrice: '4.20',
                     currencyCode: 'USD',
@@ -66,8 +80,7 @@ class _MyAppState extends State<MyApp> {
                       countryCode: 'US',
                       merchantIdentifier: '',
                       displayName: '',
-                      paymentSummaryItems: []
-                  ),
+                      paymentSummaryItems: []),
                   paypalRequest: BraintreePayPalRequest(
                     amount: '4.20',
                     displayName: 'Example company',
