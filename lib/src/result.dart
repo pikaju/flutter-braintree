@@ -2,6 +2,7 @@ class BraintreeDropInResult {
   const BraintreeDropInResult({
     required this.paymentMethodNonce,
     required this.deviceData,
+    this.eligibleFor3DSVerification
   });
 
   factory BraintreeDropInResult.fromJson(dynamic source) {
@@ -17,6 +18,8 @@ class BraintreeDropInResult {
 
   /// String of device data. `null`, if `collectDeviceData` was set to false.
   final String? deviceData;
+
+  final bool? eligibleFor3DSVerification;
 }
 
 class BraintreePaymentMethodNonce {
@@ -26,7 +29,8 @@ class BraintreePaymentMethodNonce {
     required this.description,
     required this.isDefault,
     this.paypalPayerId,
-    this.deviceData
+    this.deviceData,
+    this.eligibleFor3DSVerification
   });
 
   factory BraintreePaymentMethodNonce.fromJson(dynamic source) {
@@ -36,7 +40,8 @@ class BraintreePaymentMethodNonce {
       description: source['description'],
       isDefault: source['isDefault'],
       paypalPayerId: source['paypalPayerId'],
-        deviceData: source['deviceData']
+      deviceData: source['deviceData'],
+      eligibleFor3DSVerification: source['eligibleFor3DSVerification']
     );
   }
 
@@ -57,6 +62,8 @@ class BraintreePaymentMethodNonce {
   final String? paypalPayerId;
 
   final String? deviceData;
+
+  final bool? eligibleFor3DSVerification;
 
 }
 

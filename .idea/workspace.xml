@@ -24,9 +24,8 @@
   <component name="ChangeListManager">
     <list default="true" id="a91dc45c-820b-4f9c-9ec5-330558cb4d90" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/src/main/java/com/example/flutter_braintree/FlutterBraintreeCustom.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/example/flutter_braintree/FlutterBraintreeCustom.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/example/flutter_braintree/FlutterBraintreePlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/example/flutter_braintree/FlutterBraintreePlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/result.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/result.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -20,6 +20,7 @@ import com.braintreepayments.api.models.PayPalRequest;
 import com.braintreepayments.api.models.GooglePaymentRequest;
 import com.braintreepayments.api.models.PaymentMethodNonce;
 import com.braintreepayments.api.models.PayPalAccountNonce;
+import com.braintreepayments.api.models.GooglePaymentCardNonce;
 import com.braintreepayments.api.DataCollector;
 import com.braintreepayments.api.ThreeDSecure;
 import com.google.android.gms.wallet.TransactionInfo;
@@ -223,6 +224,14 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements Payment
         if (paymentMethodNonce instanceof PayPalAccountNonce) {
             PayPalAccountNonce paypalAccountNonce = (PayPalAccountNonce) paymentMethodNonce;
             nonceMap.put("paypalPayerId", paypalAccountNonce.getPayerId());
+        }
+        if (paymentMethodNonce instanceof GooglePaymentCardNonce) {
+            GooglePaymentCardNonce googlePaymentCardNonce = (GooglePaymentCardNonce) paymentMethodNonce;
+            if (googlePaymentCardNonce.isNetworkTokenized() == false) {
+                nonceMap.put("eligibleFor3DSVerification", true);
+            } else {
+                nonceMap.put("eligibleFor3DSVerification", false);
+            }
         }
         Intent result = new Intent();
         result.putExtra("type", "paymentMethodNonce");
