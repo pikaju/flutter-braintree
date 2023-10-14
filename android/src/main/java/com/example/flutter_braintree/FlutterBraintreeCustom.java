@@ -1,9 +1,11 @@
 package com.example.flutter_braintree;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.braintreepayments.api.BraintreeClient;
 import com.braintreepayments.api.Card;
@@ -26,10 +28,14 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
     private BraintreeClient braintreeClient;
     private PayPalClient payPalClient;
     private Boolean started = false;
+    private long creationTimestamp = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        creationTimestamp = System.currentTimeMillis();
+
         setContentView(R.layout.activity_flutter_braintree_custom);
         try {
             Intent intent = getIntent();
@@ -60,16 +66,15 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
         setIntent(newIntent);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//    }
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//    }
 
     protected void tokenizeCreditCard() {
         Intent intent = getIntent();
@@ -150,7 +155,12 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
     @Override
     public void onPayPalFailure(@NonNull Exception error) {
         if (error instanceof UserCanceledException) {
-            onCancel();
+            if(((UserCanceledException) error).isExplicitCancelation() || System.currentTimeMillis() - creationTimestamp > 500)
+            {
+                // PayPal sometimes sends a UserCanceledException early for no reason: filter it out
+                // Otherwise take every cancellation event
+                onCancel();
+            }
         } else {
             onError(error);
         }
