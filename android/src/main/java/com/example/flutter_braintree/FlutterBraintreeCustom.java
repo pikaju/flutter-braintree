@@ -150,12 +150,9 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
     @Override
     public void onPayPalFailure(@NonNull Exception error) {
         if (error instanceof UserCanceledException) {
-            if(((UserCanceledException) error).isExplicitCancelation()){
-                onCancel();
-            }
+            onCancel();
         } else {
             onError(error);
         }
-
     }
 }
