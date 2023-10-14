@@ -7,7 +7,7 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <application
-        android:icon="@mipmap/ic_launcher" >
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:theme="@style/LaunchTheme"
@@ -42,7 +42,8 @@
             android:exported="true">
         </activity>
         <activity android:name="com.example.flutter_braintree.FlutterBraintreeCustom"
-            android:theme="@style/Theme.AppCompat.Light" android:exported="true" android:launchMode="singleInstance">
+            android:theme="@style/bt_transparent_activity" android:exported="true"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
