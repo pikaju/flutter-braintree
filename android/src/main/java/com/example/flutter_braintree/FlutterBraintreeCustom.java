@@ -33,7 +33,8 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
         setContentView(R.layout.activity_flutter_braintree_custom);
         try {
             Intent intent = getIntent();
-            braintreeClient = new BraintreeClient(this, intent.getStringExtra("authorization"));
+            String returnUrlScheme = (getPackageName() + ".return.from.braintree").replace("_", "").toLowerCase();
+            braintreeClient = new BraintreeClient(this, intent.getStringExtra("authorization"), returnUrlScheme);
             String type = intent.getStringExtra("type");
             if (type.equals("tokenizeCreditCard")) {
                 tokenizeCreditCard();
