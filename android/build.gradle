@@ -32,6 +32,10 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 28
 
+    if (project.android.hasProperty("namespace")) {
+        namespace "com.example.flutter_braintree"
+    }
+
     defaultConfig {
         minSdkVersion 21
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
