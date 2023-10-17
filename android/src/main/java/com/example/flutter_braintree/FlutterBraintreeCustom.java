@@ -1,4 +1,7 @@
 package com.example.flutter_braintree;
+import static com.braintreepayments.api.PayPalCheckoutRequest.USER_ACTION_COMMIT;
+import static com.braintreepayments.api.PayPalCheckoutRequest.USER_ACTION_DEFAULT;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +19,7 @@ import com.braintreepayments.api.PayPalAccountNonce;
 import com.braintreepayments.api.PayPalCheckoutRequest;
 import com.braintreepayments.api.PayPalClient;
 import com.braintreepayments.api.PayPalListener;
+import com.braintreepayments.api.PayPalPaymentIntent;
 import com.braintreepayments.api.PayPalRequest;
 import com.braintreepayments.api.PayPalVaultRequest;
 import com.braintreepayments.api.PaymentMethodNonce;
@@ -110,6 +114,32 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
             // Checkout flow
             PayPalCheckoutRequest checkOutRequest = new PayPalCheckoutRequest(intent.getStringExtra("amount"));
             checkOutRequest.setCurrencyCode(intent.getStringExtra("currencyCode"));
+            checkOutRequest.setDisplayName(intent.getStringExtra("displayName"));
+            checkOutRequest.setBillingAgreementDescription(intent.getStringExtra("billingAgreementDescription"));
+
+            String userAction;
+            switch (intent.getStringExtra("payPalPaymentUserAction")) {
+                case "commit":
+                    userAction = USER_ACTION_COMMIT;
+                    break;
+                default:
+                    userAction = USER_ACTION_DEFAULT;
+            }
+            checkOutRequest.setUserAction(userAction);
+
+            String paymentIntent;
+            switch (intent.getStringExtra("payPalPaymentIntent")) {
+                case "order":
+                    paymentIntent = PayPalPaymentIntent.ORDER;
+                    break;
+                case "sale":
+                    paymentIntent = PayPalPaymentIntent.SALE;
+                    break;
+                default:
+                    paymentIntent = PayPalPaymentIntent.AUTHORIZE;
+            }
+            checkOutRequest.setIntent(paymentIntent);
+
             payPalClient.tokenizePayPalAccount(this, checkOutRequest);
         }
     }
