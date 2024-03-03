@@ -1,3 +1,7 @@
+## 4.0.0
+
+- Upgrade Drop-In SDK to 6.13.0
+
 ## 4.0.0-dev.1
 
 Credits go to [nicolobozzato](https://github.com/nicolobozzato) once again:
