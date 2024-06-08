@@ -33,6 +33,8 @@ dependencies {
 
 #### PayPal / Venmo / 3D Secure
 
+##### With Drop-In
+
 In order for this plugin to support PayPal, Venmo or 3D Secure payments, you must allow for the
 browser switch by adding an intent filter to your `AndroidManifest.xml` (inside the `<application>` body):
 
@@ -51,6 +53,30 @@ browser switch by adding an intent filter to your `AndroidManifest.xml` (inside 
 ```
 
 **Important:** Your app's URL scheme must begin with your app's package ID and end with `.braintree`. For example, if the Package ID is `com.your-company.your-app`, then your URL scheme should be `com.your-company.your-app.braintree`. `${applicationId}` is automatically applied with your app's package when using Gradle.
+**Note:** The scheme you define must use all lowercase letters. If your package contains underscores, the underscores should be removed when specifying the scheme in your Android Manifest.
+
+##### Without Drop-In
+
+If you want to use PayPal without Drop-In, you need to declare another intent filter to your `AndroidManifest.xml` (inside the `<application>` body):
+
+```xml
+<activity android:name="com.example.flutter_braintree.FlutterBraintreeCustom"
+    android:theme="@style/bt_transparent_activity" android:exported="true"
+    android:launchMode="singleInstance">
+    <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="${applicationId}.return.from.braintree" />
+    </intent-filter>
+</activity>
+<activity android:name="com.braintreepayments.api.ThreeDSecureActivity" android:theme="@style/Theme.AppCompat.Light" android:exported="true">
+</activity>
+```
+
+Please note that intent filter scheme is different from drop-in's one.
+
+**Important:** Your app's URL scheme must begin with your app's package ID and end with `.return.from.braintree`. For example, if the Package ID is `com.your-company.your-app`, then your URL scheme should be `com.your-company.your-app.return.from.braintree`. `${applicationId}` is automatically applied with your app's package when using Gradle.
 **Note:** The scheme you define must use all lowercase letters. If your package contains underscores, the underscores should be removed when specifying the scheme in your Android Manifest.
 
 #### Google Pay

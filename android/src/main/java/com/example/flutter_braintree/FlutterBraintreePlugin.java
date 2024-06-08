@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -108,6 +110,30 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
       intent.putExtra("payPalPaymentIntent", (String) request.get("payPalPaymentIntent"));
       intent.putExtra("payPalPaymentUserAction", (String) request.get("payPalPaymentUserAction"));
       intent.putExtra("billingAgreementDescription", (String) request.get("billingAgreementDescription"));
+
+      if(request.containsKey("shippingAddressOverride")){
+        Map shippingAddress = (Map) request.get("shippingAddressOverride");
+        JSONObject shippingAddressJson;
+        shippingAddressJson = new JSONObject();
+        assert shippingAddress != null;
+        try {
+          shippingAddressJson.put("recipientName",shippingAddress.get("recipientName"));
+          shippingAddressJson.put("streetAddress",shippingAddress.get("streetAddress"));
+          shippingAddressJson.put("extendedAddress",shippingAddress.get("extendedAddress"));
+          shippingAddressJson.put("locality",shippingAddress.get("locality"));
+          shippingAddressJson.put("countryCodeAlpha2",shippingAddress.get("countryCodeAlpha2"));
+          shippingAddressJson.put("postalCode",shippingAddress.get("postalCode"));
+          shippingAddressJson.put("region",shippingAddress.get("region"));
+        } catch (JSONException e) {
+          throw new RuntimeException(e);
+        }
+        intent.putExtra("shippingAddressOverride", (String) shippingAddressJson.toString());
+      }
+
+      intent.putExtra("requestBillingAgreement", (Boolean) request.get("requestBillingAgreement"));
+      intent.putExtra("shippingAddressEditable", (Boolean) request.get("shippingAddressEditable"));
+      intent.putExtra("shippingAddressRequired", (Boolean) request.get("shippingAddressRequired"));
+
       activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
     } else {
       result.notImplemented();

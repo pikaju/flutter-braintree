@@ -9,11 +9,13 @@
     <application
         android:icon="@mipmap/ic_launcher">
         <activity
-            android:name="io.flutter.embedding.android.FlutterActivity"
+            android:name=".MainActivity"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true"
+            android:launchMode="singleInstance">
             <!-- This keeps the window background of the activity showing
                  until Flutter renders its first frame. It can be removed if
                  there is no splash screen (such as the default splash screen
@@ -22,8 +24,8 @@
                 android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
                 android:value="true" />
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
@@ -36,12 +38,21 @@
                 <data android:scheme="com.example.flutterbraintreeexample.braintree" />
             </intent-filter>
         </activity>
-        <activity android:name="com.braintreepayments.api.ThreeDSecureActivity" android:exported="true">
+        <activity android:name="com.braintreepayments.api.ThreeDSecureActivity"
+            android:exported="true">
         </activity>
-        <activity android:name="com.example.flutter_braintree.FlutterBraintreeCustom" android:theme="@style/Theme.AppCompat.Light" android:exported="true">
+        <activity android:name="com.example.flutter_braintree.FlutterBraintreeCustom"
+            android:theme="@style/bt_transparent_activity" android:exported="true"
+            android:launchMode="singleInstance">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="com.example.flutterbraintreeexample.return.from.braintree" />
+            </intent-filter>
         </activity>
 
-        <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true"/>
+        <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true" />
 
         <meta-data
             android:name="flutterEmbedding"

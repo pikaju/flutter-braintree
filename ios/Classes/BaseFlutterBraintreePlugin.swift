@@ -26,6 +26,7 @@ open class BaseFlutterBraintreePlugin: NSObject {
 
     internal func buildPaymentNonceDict(nonce: BTPaymentMethodNonce?) -> [String: Any?] {
         var dict = [String: Any?]()
+        var billingAddress = [String: Any?]()
         dict["nonce"] = nonce?.nonce
         dict["typeLabel"] = nonce?.type
         dict["description"] = nonce?.nonce
@@ -33,7 +34,20 @@ open class BaseFlutterBraintreePlugin: NSObject {
         if let paypalNonce = nonce as? BTPayPalAccountNonce {
             dict["paypalPayerId"] = paypalNonce.payerID
             dict["description"] = paypalNonce.email
+            dict["email"] = paypalNonce.email
+            dict["firstName"] = paypalNonce.firstName
+            dict["lastName"] = paypalNonce.lastName
+            
+            billingAddress["recipientName"] = paypalNonce.billingAddress?.recipientName
+            billingAddress["streetAddress"] = paypalNonce.billingAddress?.streetAddress
+            billingAddress["extendedAddress"] = paypalNonce.billingAddress?.extendedAddress
+            billingAddress["locality"] = paypalNonce.billingAddress?.locality
+            billingAddress["countryCodeAlpha2"] = paypalNonce.billingAddress?.countryCodeAlpha2
+            billingAddress["postalCode"] = paypalNonce.billingAddress?.postalCode
+            billingAddress["region"] = paypalNonce.billingAddress?.region
+            dict["billingAddress"] = billingAddress
         }
+        
         return dict
     }
     

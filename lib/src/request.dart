@@ -1,3 +1,5 @@
+import 'package:flutter_braintree/flutter_braintree.dart';
+
 class BraintreeDropInRequest {
   BraintreeDropInRequest({
     this.clientToken,
@@ -105,27 +107,28 @@ class BraintreeBillingAddress {
   final String? postalCode;
   final String? countryCodeAlpha2;
 
-  BraintreeBillingAddress(
-      {this.givenName,
-      this.surname,
-      this.phoneNumber,
-      this.streetAddress,
-      this.extendedAddress,
-      this.locality,
-      this.region,
-      this.postalCode,
-      this.countryCodeAlpha2});
+  BraintreeBillingAddress({
+    this.givenName,
+    this.surname,
+    this.phoneNumber,
+    this.streetAddress,
+    this.extendedAddress,
+    this.locality,
+    this.region,
+    this.postalCode,
+    this.countryCodeAlpha2,
+  });
 
   Map<String, dynamic> toJson() => {
-        'givenName': givenName,
-        'surname': surname,
-        'phoneNumber': phoneNumber,
-        'streetAddress': streetAddress,
-        'extendedAddress': extendedAddress,
-        'locality': locality,
-        'region': region,
-        'postalCode': postalCode,
-        'countryCodeAlpha2': countryCodeAlpha2
+        'givenName': givenName ?? "",
+        'surname': surname ?? "",
+        'phoneNumber': phoneNumber ?? "",
+        'streetAddress': streetAddress ?? "",
+        'extendedAddress': extendedAddress ?? "",
+        'locality': locality ?? "",
+        'region': region ?? "",
+        'postalCode': postalCode ?? "",
+        'countryCodeAlpha2': countryCodeAlpha2 ?? ""
       };
 }
 
@@ -197,6 +200,10 @@ class BraintreePayPalRequest {
     this.currencyCode,
     this.displayName,
     this.billingAgreementDescription,
+    this.requestBillingAgreement = false,
+    this.shippingAddressEditable = true,
+    this.shippingAddressRequired = false,
+    this.shippingAddressOverride,
     this.payPalPaymentIntent = PayPalPaymentIntent.authorize,
     this.payPalPaymentUserAction = PayPalPaymentUserAction.default_,
   });
@@ -214,12 +221,24 @@ class BraintreePayPalRequest {
   /// Description for the billing agreement for the Vault flow.
   String? billingAgreementDescription;
 
+  /// activate the option to request the billing address agreement
+  bool requestBillingAgreement;
+
   /// The payment intent in the PayPal Checkout flow.
   PayPalPaymentIntent payPalPaymentIntent;
 
   /// The user action in the PayPal Checkout flow. See [PayPalPaymentUserAction]
   /// for additional documentation.
   PayPalPaymentUserAction payPalPaymentUserAction;
+
+  /// allow user to edit shipping address or not
+  bool shippingAddressEditable;
+
+  /// is shipping address required?
+  bool shippingAddressRequired;
+
+  // the address to override the shipping address defined in the customer account
+  BraintreePostalAddress? shippingAddressOverride;
 
   /// Converts this request object into a JSON-encodable format.
   Map<String, dynamic> toJson() => {
@@ -230,6 +249,11 @@ class BraintreePayPalRequest {
           'billingAgreementDescription': billingAgreementDescription,
         'payPalPaymentIntent': payPalPaymentIntent.name,
         'payPalPaymentUserAction': payPalPaymentUserAction.name,
+        'requestBillingAgreement': requestBillingAgreement,
+        'shippingAddressEditable': shippingAddressEditable,
+        'shippingAddressRequired': shippingAddressRequired,
+        if (shippingAddressOverride != null)
+          'shippingAddressOverride': shippingAddressOverride?.toJson(),
       };
 }
 

@@ -26,9 +26,18 @@ class _MyAppState extends State<MyApp> {
           children: <Widget>[
             Text('Nonce: ${nonce.nonce}'),
             SizedBox(height: 16),
+            Text(
+                'Billing Address: ${nonce.billingAddress?.toJson().toString()}'),
+            SizedBox(height: 16),
             Text('Type label: ${nonce.typeLabel}'),
             SizedBox(height: 16),
             Text('Description: ${nonce.description}'),
+            SizedBox(height: 16),
+            Text('First Name: ${nonce.firstName}'),
+            SizedBox(height: 16),
+            Text('Last Name: ${nonce.lastName}'),
+            SizedBox(height: 16),
+            Text('email: ${nonce.email}'),
           ],
         ),
       ),
@@ -132,7 +141,22 @@ class _MyAppState extends State<MyApp> {
             ),
             ElevatedButton(
               onPressed: () async {
-                final request = BraintreePayPalRequest(amount: '13.37');
+                final request = BraintreePayPalRequest(
+                    amount: '13.37',
+                    payPalPaymentUserAction: PayPalPaymentUserAction.commit,
+                    requestBillingAgreement: true,
+                    billingAgreementDescription: 'billing description text',
+                    shippingAddressEditable: false,
+                    shippingAddressRequired: true,
+                    shippingAddressOverride: BraintreePostalAddress(
+                      recipientName: "Doe Jr.",
+                      streetAddress: "555 Smith St",
+                      extendedAddress: "#2",
+                      locality: "Chicago",
+                      region: "IL",
+                      postalCode: "12345",
+                      countryCodeAlpha2: "US",
+                    ));
                 final result = await Braintree.requestPaypalNonce(
                   tokenizationKey,
                   request,
