@@ -87,7 +87,7 @@ class BraintreeDropInRequest {
           'applePayRequest': applePayRequest!.toJson(),
         'venmoEnabled': venmoEnabled,
         'cardEnabled': cardEnabled,
-        'paypalEnabled': cardEnabled,
+        'paypalEnabled': paypalEnabled,
         'maskCardNumber': maskCardNumber,
         'maskSecurityCode': maskSecurityCode,
         'vaultManagerEnabled': vaultManagerEnabled,
