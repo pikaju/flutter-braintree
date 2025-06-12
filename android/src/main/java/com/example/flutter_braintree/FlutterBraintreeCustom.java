@@ -21,6 +21,8 @@ import com.braintreepayments.api.UserCanceledException;
 
 
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalListener {
     private BraintreeClient braintreeClient;
@@ -41,6 +43,10 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
                 payPalClient = new PayPalClient(this, braintreeClient);
                 payPalClient.setListener(this);
                 requestPaypalNonce();
+            } else if (type.equals("requestGooglePayNonce")) {
+                requestGooglePayNonce();
+            } else if (type.equals("requestApplePayNonce")) {
+                requestApplePayNonce();
             } else {
                 throw new Exception("Invalid request type: " + type);
             }
@@ -106,6 +112,28 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
             checkOutRequest.setCurrencyCode(intent.getStringExtra("currencyCode"));
             payPalClient.tokenizePayPalAccount(this, checkOutRequest);
         }
+    }
+
+    protected void requestGooglePayNonce() {
+        Intent intent = getIntent();
+        GooglePaymentRequest request = new GooglePaymentRequest()
+                .transactionInfo(TransactionInfo.newBuilder()
+                        .setTotalPrice(intent.getStringExtra("totalPrice"))
+                        .setTotalPriceStatus(WalletConstants.TOTAL_PRICE_STATUS_FINAL)
+                        .setCurrencyCode(intent.getStringExtra("currencyCode"))
+                        .build())
+                .billingAddressRequired(intent.getBooleanExtra("billingAddressRequired", false))
+                .googleMerchantId(intent.getStringExtra("googleMerchantID"));
+
+        GooglePayment.requestPayment(braintreeFragment, request);
+    }
+
+    protected void requestApplePayNonce() {
+        // Apple Pay is not available on Android
+        Intent result = new Intent();
+        result.putExtra("error", new Exception("Apple Pay is not available on Android devices"));
+        setResult(2, result);
+        finish();
     }
 
     public void onPaymentMethodNonceCreated(PaymentMethodNonce paymentMethodNonce) {

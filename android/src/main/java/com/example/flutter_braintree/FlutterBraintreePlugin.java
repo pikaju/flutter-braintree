@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.braintreepayments.api.dropin.DropInActivity;
+import com.braintreepayments.api.dropin.DropInRequest;
+import com.braintreepayments.api.dropin.DropInResult;
+import com.braintreepayments.api.models.PaymentMethodNonce;
 
-
+import java.util.ArrayList;
 import java.util.Map;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -105,9 +109,35 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
       intent.putExtra("amount", (String) request.get("amount"));
       intent.putExtra("currencyCode", (String) request.get("currencyCode"));
       intent.putExtra("displayName", (String) request.get("displayName"));
+      intent.putExtra("isShippingAddressRequired", (Boolean) request.get("isShippingAddressRequired"));
       intent.putExtra("payPalPaymentIntent", (String) request.get("payPalPaymentIntent"));
       intent.putExtra("payPalPaymentUserAction", (String) request.get("payPalPaymentUserAction"));
       intent.putExtra("billingAgreementDescription", (String) request.get("billingAgreementDescription"));
+      activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
+    } else if (call.method.equals("requestGooglePayNonce")) {
+      String authorization = call.argument("authorization");
+      Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
+      intent.putExtra("type", "requestGooglePayNonce");
+      intent.putExtra("authorization", (String) call.argument("authorization"));
+      assert(call.argument("request") instanceof Map);
+      Map request = (Map) call.argument("request");
+      intent.putExtra("totalPrice", (String) request.get("totalPrice"));
+      intent.putExtra("currencyCode", (String) request.get("currencyCode"));
+      intent.putExtra("billingAddressRequired", (Boolean) request.get("billingAddressRequired"));
+      intent.putExtra("googleMerchantID", (String) request.get("googleMerchantID"));
+      activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
+    } else if (call.method.equals("requestApplePayNonce")) {
+      String authorization = call.argument("authorization");
+      Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
+      intent.putExtra("type", "requestApplePayNonce");
+      intent.putExtra("authorization", (String) call.argument("authorization"));
+      assert(call.argument("request") instanceof Map);
+      Map request = (Map) call.argument("request");
+      intent.putExtra("displayName", (String) request.get("displayName"));
+      intent.putExtra("currencyCode", (String) request.get("currencyCode"));
+      intent.putExtra("countryCode", (String) request.get("countryCode"));
+      intent.putExtra("merchantIdentifier", (String) request.get("merchantIdentifier"));
+      intent.putStringArrayListExtra("supportedNetworks", (ArrayList<String>) request.get("supportedNetworks"));
       activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
     } else {
       result.notImplemented();
