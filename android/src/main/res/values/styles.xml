@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Translucent AppCompat theme for FlutterBraintreeCustom so the native
+         Braintree v5 flow runs on top of the Flutter UI without a visible
+         blank activity. Must extend an AppCompat theme because the activity is
+         an AppCompatActivity. -->
+    <style name="bt_transparent_activity" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+</resources>

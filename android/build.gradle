@@ -1,59 +1,70 @@
-group 'com.example.flutter_braintree'
-version '1.0'
+// The Android Gradle Plugin is resolved from the consuming app (via its
+// settings.gradle pluginManagement), so this plugin does not pin its own AGP
+// version. Using the plugins {} block (instead of the legacy buildscript{} +
+// `apply plugin`) keeps it compatible with both AGP 8 and AGP 9 consumers.
+plugins {
+    id 'com.android.library'
+}
 
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-        jcenter()
-    }
+group = 'com.example.flutter_braintree'
+version = '1.0'
 
-    dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
-    }
+// AGP 9 provides built-in Kotlin; older AGP needs the standalone Kotlin Gradle
+// Plugin. Declaring it here (conditionally) also tells the Flutter Gradle tool
+// that this module manages its own Kotlin plugin, so it won't force-apply the
+// KGP — which would conflict with AGP 9's built-in Kotlin. This is a Java-only
+// module, so no Kotlin compiler options are configured.
+def agpMajorVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')[0].toInteger()
+if (agpMajorVersion < 9) {
+    apply plugin: 'org.jetbrains.kotlin.android'
 }
 
 rootProject.allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven {
-            url "https://cardinalcommerceprod.jfrog.io/artifactory/android"
+            url = "https://cardinalcommerceprod.jfrog.io/artifactory/android"
             credentials {
-                username 'braintree_team_sdk'
-                password 'AKCp8jQcoDy2hxSWhDAUQKXLDPDx6NYRkqrgFLRc3qDrayg6rrCbJpsKKyMwaykVL8FWusJpp'
+                username = 'braintree_team_sdk'
+                password = 'AKCp8jQcoDy2hxSWhDAUQKXLDPDx6NYRkqrgFLRc3qDrayg6rrCbJpsKKyMwaykVL8FWusJpp'
             }
         }
     }
 }
 
-apply plugin: 'com.android.library'
-
 android {
-    compileSdkVersion 28
+    compileSdk 36
 
     if (project.android.hasProperty("namespace")) {
-        namespace "com.example.flutter_braintree"
+        namespace = "com.example.flutter_braintree"
     }
 
     defaultConfig {
-        minSdkVersion 21
+        // Braintree Android SDK v5 requires a minimum of API 23.
+        minSdkVersion 23
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    lintOptions {
+    lint {
         disable 'InvalidPackage'
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 }
 
 dependencies {
-    implementation 'com.braintreepayments.api:drop-in:6.13.0'
-    implementation 'com.google.android.gms:play-services-wallet:16.0.0'
-    implementation 'androidx.appcompat:appcompat:1.4.0-alpha03'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    // Braintree Android SDK v5 (direct integration). The deprecated `drop-in`
+    // library has been removed; the cross-platform Flutter payment sheet drives
+    // these modules directly, mirroring the iOS v7 migration.
+    def braintreeVersion = '5.13.0'
+    implementation "com.braintreepayments.api:card:$braintreeVersion"
+    implementation "com.braintreepayments.api:paypal:$braintreeVersion"
+    implementation "com.braintreepayments.api:data-collector:$braintreeVersion"
+    implementation "com.braintreepayments.api:three-d-secure:$braintreeVersion"
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
     components.all {
         allVariants {
             withDependencies { deps ->

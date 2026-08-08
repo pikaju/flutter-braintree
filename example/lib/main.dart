@@ -1,21 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_braintree/flutter_braintree.dart';
+import 'package:braintree_flutter_plus/braintree_flutter_plus.dart';
 
 void main() => runApp(
       MaterialApp(
+        theme: ThemeData(
+          brightness: Brightness.light,
+          colorScheme: const ColorScheme(
+            brightness: Brightness.light,
+            primary: Colors.black,
+            onPrimary: Colors.white,
+            secondary: Colors.white,
+            onSecondary: Colors.black,
+            error: Color(0xff86151E),
+            onError: Colors.white,
+            surface: Colors.white,
+            onSurface: Colors.black,
+          ),
+          splashColor: Colors.transparent,
+        ),
         home: MyApp(),
       ),
     );
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  static final String tokenizationKey = 'sandbox_8hxpnkht_kzdtzv2btm4p7s5j';
+  static final String tokenizationKey = 'sandbox_x65773jc_yhgk5ghs4hkpgq4f';
 
   void showNonce(BraintreePaymentMethodNonce nonce) {
+    print('=== PayPal Response ===');
+    print('Nonce: ${nonce.nonce}');
+    print('Type Label: ${nonce.typeLabel}');
+    print('Description: ${nonce.description}');
+    print('Is Default: ${nonce.isDefault}');
+    print('Amount: ${nonce.amount}');
+    print('=====================');
+
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -29,6 +54,11 @@ class _MyAppState extends State<MyApp> {
             Text('Type label: ${nonce.typeLabel}'),
             SizedBox(height: 16),
             Text('Description: ${nonce.description}'),
+            if (nonce.amount != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: Text('Amount: ${nonce.amount}'),
+              ),
           ],
         ),
       ),
@@ -49,9 +79,10 @@ class _MyAppState extends State<MyApp> {
               onPressed: () async {
                 var request = BraintreeDropInRequest(
                   tokenizationKey: tokenizationKey,
+                  amount: '4.20',
                   collectDeviceData: true,
                   vaultManagerEnabled: true,
-                  requestThreeDSecureVerification: true,
+                  requestThreeDSecureVerification: false,
                   email: "test@email.com",
                   billingAddress: BraintreeBillingAddress(
                     givenName: "Jill",
@@ -70,24 +101,29 @@ class _MyAppState extends State<MyApp> {
                     billingAddressRequired: false,
                   ),
                   applePayRequest: BraintreeApplePayRequest(
-                      currencyCode: 'USD',
-                      supportedNetworks: [
-                        ApplePaySupportedNetworks.visa,
-                        ApplePaySupportedNetworks.masterCard,
-                        // ApplePaySupportedNetworks.amex,
-                        // ApplePaySupportedNetworks.discover,
-                      ],
-                      countryCode: 'US',
-                      merchantIdentifier: '',
-                      displayName: '',
-                      paymentSummaryItems: []),
+                    currencyCode: 'USD',
+                    supportedNetworks: [
+                      ApplePaySupportedNetworks.visa,
+                      ApplePaySupportedNetworks.masterCard,
+                      // ApplePaySupportedNetworks.amex,
+                      // ApplePaySupportedNetworks.discover,
+                    ],
+                    countryCode: 'US',
+                    merchantIdentifier: '',
+                    displayName: '',
+                    paymentSummaryItems: [],
+                  ),
                   paypalRequest: BraintreePayPalRequest(
                     amount: '4.20',
                     displayName: 'Example company',
+                    // Android only: PayPal (Braintree v5) returns via an App Link.
+                    // Replace with a domain you control + configure App Links.
+                    // See BraintreePayPalRequest.appLinkReturnUrl.
+                    appLinkReturnUrl: 'https://example.com/braintree-payments',
                   ),
                   cardEnabled: true,
                 );
-                final result = await BraintreeDropIn.start(request);
+                final result = await BraintreeDropIn.start(context, request);
                 if (result != null) {
                   showNonce(result.paymentMethodNonce);
                 }
@@ -101,6 +137,7 @@ class _MyAppState extends State<MyApp> {
                   expirationMonth: '12',
                   expirationYear: '2021',
                   cvv: '123',
+                  amount: '4.20',
                 );
                 final result = await Braintree.tokenizeCreditCard(
                   tokenizationKey,
@@ -116,8 +153,7 @@ class _MyAppState extends State<MyApp> {
               onPressed: () async {
                 final request = BraintreePayPalRequest(
                   amount: null,
-                  billingAgreementDescription:
-                      'I hereby agree that flutter_braintree is great.',
+                  billingAgreementDescription: 'I hereby agree that flutter_braintree is great.',
                   displayName: 'Your Company',
                 );
                 final result = await Braintree.requestPaypalNonce(
@@ -142,6 +178,19 @@ class _MyAppState extends State<MyApp> {
                 }
               },
               child: Text('PAYPAL CHECKOUT FLOW'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final result = await Braintree.showCreditCardForm(
+                  context,
+                  authorization: tokenizationKey,
+                  amount: '20.0',
+                );
+                if (result != null) {
+                  showNonce(result);
+                }
+              },
+              child: Text('SHOW CREDIT CARD DIALOG'),
             ),
           ],
         ),

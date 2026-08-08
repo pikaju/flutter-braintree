@@ -1,75 +1,93 @@
-# Braintree for Flutter
+# Braintree Flutter Plus
 
-A Flutter plugin that wraps the native [Braintree SDKs](https://www.braintreepayments.com/features/seamless-checkout/drop-in-ui).
+[![pub package](https://img.shields.io/pub/v/braintree_flutter_plus.svg)](https://pub.dev/packages/braintree_flutter_plus)
+[![GitHub](https://img.shields.io/github/license/adlyyy4/flutter-braintree)](https://github.com/adlyyy4/flutter-braintree/blob/main/LICENSE)
+
+An enhanced Flutter plugin that wraps the native [Braintree SDKs](https://www.braintreepayments.com/features/seamless-checkout/drop-in-ui) with the latest updates and improvements.
 Unlike other plugins, this plugin not only lets you start Braintree's native Drop-in UI, but also allows you to create your own custom Flutter UI with Braintree functionality.
+
+## 🔄 About This Fork
+
+This is an **actively maintained fork** of the original `flutter_braintree` package by [pikaju](https://github.com/pikaju/flutter-braintree), which is no longer being maintained. We've taken over development to provide:
+
+- 🛠️ **Critical bug fixes** and security updates
+- 📱 **Modern platform support** (iOS 16+, Android 12+)
+- 🔄 **Regular maintenance** and dependency updates
+- 📦 **Published as `braintree_flutter_plus`** on pub.dev
+
+> **Migration Note**: If you're using the original `flutter_braintree`, simply replace it with `braintree_flutter_plus` in your `pubspec.yaml` - the API remains the same!
+
+## ✨ What's New in Plus
+
+- **iOS Braintree SDK v7**: Fixes the Xcode 26 `-Wdeprecated-declarations` build failure; requires iOS 16+
+- **Android Braintree SDK v5**: replaces the deprecated `drop-in` library (end-of-life 2027) with the direct v5 SDK; requires Android API 23+
+- **Cross-platform Drop-in everywhere**: the native Drop-in SDKs (removed on both iOS and Android) are replaced by a single Flutter payment sheet on all platforms
+- **Enhanced Stability**: Updated Cardinal SDK and core dependencies
 
 ## Installation
 
-Add flutter_braintree to your `pubspec.yaml` file:
+Add braintree_flutter_plus to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
   ...
-  flutter_braintree: <version>
+  braintree_flutter_plus: ^5.0.0
 ```
 
 ### Android
 
 You must [migrate to AndroidX.](https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility)  
-In `/app/build.gradle`, set your `minSdkVersion` to at least `21`.
+In `/app/build.gradle`, set your `minSdkVersion` to at least `23` (required by Braintree Android v5).
 
-#### Card.io
+The plugin declares its own `FlutterBraintreeCustom` activity (for card / 3D Secure / PayPal), so no
+manual activity declaration is required for card tokenization. The 3D Secure challenge activity is
+provided automatically by the `three-d-secure` module.
 
-[Card.io](https://github.com/card-io) enables credit card scanning so as to remove the need to type in credit card details manually.
-This feature became optional in `flutter_braintree` version `0.6.0` to potentially reduce app sizes.
-To enable it for the Braintree Drop-in UI, add the following line to your `app` level `build.gradle` file:
+#### PayPal (browser-switch return)
 
-```gradle
-dependencies {
-    ...
-    implementation 'io.card:android-sdk:5.+'
-}
-```
-
-#### PayPal / Venmo / 3D Secure
-
-In order for this plugin to support PayPal, Venmo or 3D Secure payments, you must allow for the
-browser switch by adding an intent filter to your `AndroidManifest.xml` (inside the `<application>` body):
+Braintree Android v5 returns from the PayPal web flow either via a verified
+[Android App Link](https://developer.android.com/training/app-links) (recommended for production) or
+via a custom deep-link scheme fallback (works in sandbox without a domain). Add the `intent-filter`(s)
+you need to `FlutterBraintreeCustom` in your app's `AndroidManifest.xml` (inside `<application>`):
 
 ```xml
-<activity android:name="com.braintreepayments.api.DropInActivity"
-    android:launchMode="singleTask">
+<activity android:name="com.example.flutter_braintree.FlutterBraintreeCustom">
+    <!-- Deep-link fallback: <your.package.id-without-underscores>.braintree -->
     <intent-filter>
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="${applicationId}.braintree" />
+        <data android:scheme="com.your.app.braintree" />
+    </intent-filter>
+    <!-- App Link (production) -->
+    <intent-filter android:autoVerify="true">
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="https" android:host="your-domain.com" android:pathPrefix="/braintree-payments" />
     </intent-filter>
 </activity>
-<activity android:name="com.braintreepayments.api.ThreeDSecureActivity" android:theme="@style/Theme.AppCompat.Light" android:exported="true">
-</activity>
 ```
 
-**Important:** Your app's URL scheme must begin with your app's package ID and end with `.braintree`. For example, if the Package ID is `com.your-company.your-app`, then your URL scheme should be `com.your-company.your-app.braintree`. `${applicationId}` is automatically applied with your app's package when using Gradle.
-**Note:** The scheme you define must use all lowercase letters. If your package contains underscores, the underscores should be removed when specifying the scheme in your Android Manifest.
+- **Sandbox/testing (no domain):** just add the **deep-link** `intent-filter`. The plugin auto-derives
+  the scheme from your package id (underscores removed) + `.braintree`, so no extra config is needed.
+- **Production:** additionally register your domain in the Braintree Control Panel, host
+  `/.well-known/assetlinks.json`, add the **App Link** `intent-filter`, and pass
+  `BraintreePayPalRequest.appLinkReturnUrl`. See
+  [APP_LINK_SETUP.md](https://github.com/braintree/braintree_android/blob/main/APP_LINK_SETUP.md).
 
-#### Google Pay
-
-Add the wallet enabled meta-data tag to your `AndroidManifest.xml` (inside the `<application>` body):
-
-```xml
-<meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true"/>
-```
+> Card tokenization and 3D Secure do **not** require any of this — only PayPal.
+> Venmo and Google Pay are not currently supported by the Android v5 integration.
 
 ### iOS
 
 You may need to add or uncomment the following line at the top of your `ios/Podfile`:
 
 ```ruby
-platform :ios, '12.0'
+platform :ios, '16.0'
 ```
 
-**Warning:** Device data collection is not yet supported for iOS.
+Braintree v7 requires a minimum deployment target of **iOS 16.0**.
 
 #### PayPal / Venmo / 3D Secure
 
@@ -186,11 +204,15 @@ final request = BraintreeDropInRequest(
 );
 ```
 
-Then launch the drop-in:
+Then launch the drop-in (a `BuildContext` is required as of v6.0.0):
 
 ```dart
-BraintreeDropInResult result = await BraintreeDropIn.start(request);
+BraintreeDropInResult? result = await BraintreeDropIn.start(context, request);
 ```
+
+> As of v6.0.0 this presents a cross-platform Flutter payment sheet on **all** platforms (the native
+> Drop-in SDKs have been removed: iOS has no v7 release and the Android Drop-in is deprecated). The
+> sheet drives the direct Braintree SDKs (iOS v7, Android v5).
 
 Access the payment nonce:
 

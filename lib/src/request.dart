@@ -1,3 +1,10 @@
+/// Configuration for [BraintreeDropIn.start].
+///
+/// As of v6.0.0 the native iOS Drop-in SDK has been removed (it has no Braintree
+/// v7-compatible release). On iOS/web this request now drives a Flutter payment
+/// sheet; on Android it still drives the native Drop-in UI. For full control,
+/// prefer `Braintree.tokenizeCreditCard()`, `Braintree.requestPaypalNonce()`,
+/// `Braintree.requestApplePayNonce()`, or `Braintree.showCreditCardForm()`.
 class BraintreeDropInRequest {
   BraintreeDropInRequest({
     this.clientToken,
@@ -80,14 +87,12 @@ class BraintreeDropInRequest {
         if (amount != null) 'amount': amount,
         'collectDeviceData': collectDeviceData,
         'requestThreeDSecureVerification': requestThreeDSecureVerification,
-        if (googlePaymentRequest != null)
-          'googlePaymentRequest': googlePaymentRequest!.toJson(),
+        if (googlePaymentRequest != null) 'googlePaymentRequest': googlePaymentRequest!.toJson(),
         if (paypalRequest != null) 'paypalRequest': paypalRequest!.toJson(),
-        if (applePayRequest != null)
-          'applePayRequest': applePayRequest!.toJson(),
+        if (applePayRequest != null) 'applePayRequest': applePayRequest!.toJson(),
         'venmoEnabled': venmoEnabled,
         'cardEnabled': cardEnabled,
-        'paypalEnabled': cardEnabled,
+        'paypalEnabled': paypalEnabled,
         'maskCardNumber': maskCardNumber,
         'maskSecurityCode': maskSecurityCode,
         'vaultManagerEnabled': vaultManagerEnabled,
@@ -136,7 +141,11 @@ class BraintreeCreditCardRequest {
     required this.expirationYear,
     required this.cvv,
     this.cardholderName,
+    required this.amount,
   });
+
+  ///
+  String amount;
 
   /// Number shown on the credit card.
   String cardNumber;
@@ -158,7 +167,8 @@ class BraintreeCreditCardRequest {
         'expirationMonth': expirationMonth,
         'expirationYear': expirationYear,
         'cvv': cvv,
-        'cardholderName': cardholderName
+        'cardholderName': cardholderName,
+        'amount': amount,
       };
 }
 
@@ -199,6 +209,7 @@ class BraintreePayPalRequest {
     this.billingAgreementDescription,
     this.payPalPaymentIntent = PayPalPaymentIntent.authorize,
     this.payPalPaymentUserAction = PayPalPaymentUserAction.default_,
+    this.appLinkReturnUrl,
   });
 
   /// Amount of the transaction. If [amount] is `null`, PayPal will use the billing agreement (Vault) flow.
@@ -221,6 +232,21 @@ class BraintreePayPalRequest {
   /// for additional documentation.
   PayPalPaymentUserAction payPalPaymentUserAction;
 
+  /// Android only. The HTTPS App Link URL used to return to the app after the
+  /// PayPal web flow (Braintree Android v5). Recommended for production: the
+  /// domain must be registered in the Braintree Control Panel, hosted with an
+  /// `assetlinks.json`, and declared as an App Link `intent-filter` on
+  /// `FlutterBraintreeCustom`.
+  ///
+  /// Optional: if omitted (or if the App Link isn't verified on-device), the
+  /// plugin falls back to a custom deep-link scheme derived from the app's
+  /// package id (`<packageid-without-underscores>.braintree`), which works in
+  /// sandbox without a domain — provided the matching `intent-filter` is
+  /// declared. Ignored on iOS and web.
+  ///
+  /// See https://github.com/braintree/braintree_android/blob/main/APP_LINK_SETUP.md
+  String? appLinkReturnUrl;
+
   /// Converts this request object into a JSON-encodable format.
   Map<String, dynamic> toJson() => {
         if (amount != null) 'amount': amount,
@@ -230,6 +256,7 @@ class BraintreePayPalRequest {
           'billingAgreementDescription': billingAgreementDescription,
         'payPalPaymentIntent': payPalPaymentIntent.name,
         'payPalPaymentUserAction': payPalPaymentUserAction.name,
+        if (appLinkReturnUrl != null) 'appLinkReturnUrl': appLinkReturnUrl,
       };
 }
 
@@ -352,8 +379,7 @@ class BraintreeApplePayRequest {
 
   /// Converts this request object into a JSON-encodable format.
   Map<String, dynamic> toJson() => {
-        'paymentSummaryItems':
-            paymentSummaryItems.map((item) => item.toJson()).toList(),
+        'paymentSummaryItems': paymentSummaryItems.map((item) => item.toJson()).toList(),
         'currencyCode': currencyCode,
         'displayName': displayName,
         'countryCode': countryCode,

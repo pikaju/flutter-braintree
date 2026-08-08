@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flutter_braintree">
+ >
 
     <application>
-        <activity android:name=".DropInActivity"
-            android:theme="@style/bt_transparent_activity">
-        </activity>
+        <!-- Hosts the direct Braintree v5 flows (card tokenization, 3D Secure,
+             PayPal). Translucent so the underlying Flutter UI stays visible
+             while the native SDK calls run. `singleTop` lets the PayPal browser
+             switch return through onNewIntent while still delivering
+             startActivityForResult results.
+
+             Merchants using PayPal on Android must add an App Link
+             <intent-filter> (autoVerify https) to this activity from their app
+             manifest so the PayPal web flow can return to the app. See
+             lib/src/request.dart -> BraintreePayPalRequest.appLinkReturnUrl. -->
+        <activity
+            android:name=".FlutterBraintreeCustom"
+            android:theme="@style/bt_transparent_activity"
+            android:launchMode="singleTop"
+            android:exported="true" />
     </application>
 
 </manifest>

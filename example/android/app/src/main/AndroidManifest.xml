@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flutter_braintree_example">
+    >
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -10,6 +10,7 @@
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name="io.flutter.embedding.android.FlutterActivity"
+            android:exported="true"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
@@ -27,21 +28,37 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.braintreepayments.api.DropInActivity"
-            android:launchMode="singleTask">
+        <!-- PayPal (Braintree Android v5) returns to the app via an Android App
+             Link. The plugin declares FlutterBraintreeCustom (theme/launchMode);
+             here we add the App Link <intent-filter> so PayPal can return.
+
+             TODO(merchant): replace "example.com" with a domain you control,
+             host /.well-known/assetlinks.json on it, and register the domain in
+             the Braintree Control Panel. Until then, PayPal on Android will fail
+             to return. Card tokenization does NOT need this. See:
+             https://github.com/braintree/braintree_android/blob/main/APP_LINK_SETUP.md -->
+        <activity android:name="com.example.flutter_braintree.FlutterBraintreeCustom">
+            <!-- Deep-link scheme fallback (works in sandbox without a domain).
+                 Must equal the app's package id with underscores removed +
+                 ".braintree". The plugin derives the same value automatically. -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="com.example.flutterbraintreeexample.braintree" />
             </intent-filter>
+            <!-- App Link (production). TODO(merchant): replace "example.com" with a
+                 domain you control, host /.well-known/assetlinks.json, and
+                 register it in the Braintree Control Panel. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="example.com"
+                    android:pathPrefix="/braintree-payments" />
+            </intent-filter>
         </activity>
-        <activity android:name="com.braintreepayments.api.ThreeDSecureActivity" android:exported="true">
-        </activity>
-        <activity android:name="com.example.flutter_braintree.FlutterBraintreeCustom" android:theme="@style/Theme.AppCompat.Light" android:exported="true">
-        </activity>
-
-        <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true"/>
 
         <meta-data
             android:name="flutterEmbedding"
